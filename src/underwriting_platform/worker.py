@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import asyncio
 import signal
+import tempfile
+from pathlib import Path
 
 import httpx
 
@@ -34,7 +36,25 @@ async def run() -> None:
     async with httpx.AsyncClient() as client:
         stages = HttpStages(settings, client)
         workflow = Workflow(repository, stages, stages, stages)
-        await Worker(repository, workflow, settings).run_forever(stop)
+
+        async def readiness():
+            marker = Path(tempfile.gettempdir()) / "uw-worker-health"
+            while not stop.is_set():
+                try:
+                    if await asyncio.to_thread(repository.ready):
+                        marker.touch()
+                    else:
+                        marker.unlink(missing_ok=True)
+                except Exception:
+                    marker.unlink(missing_ok=True)
+                await asyncio.sleep(5)
+
+        probe = asyncio.create_task(readiness())
+        try:
+            await Worker(repository, workflow, settings).run_forever(stop)
+        finally:
+            probe.cancel()
+            await asyncio.gather(probe, return_exceptions=True)
 
 
 def main() -> None:

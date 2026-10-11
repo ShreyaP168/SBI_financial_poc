@@ -31,6 +31,7 @@ class Workflow:
         self.extraction = extraction
         self.underwriting = underwriting
         self.artifacts = artifacts
+        self.max_attempts = 3
 
     @staticmethod
     def _same_case(expected: str, actual: str) -> None:
@@ -57,6 +58,13 @@ class Workflow:
         self._same_case(case_id, extraction.case_id)
 
         partial = bool(extraction.case_json.get("processing_errors"))
+        if job.attempts < self.max_attempts and any(
+            error.get("retryable") is True
+            for error in extraction.case_json.get("processing_errors") or []
+        ):
+            # Retain extraction checkpoints, not full evidence/PDF copies for
+            # attempts which are already scheduled to retry.
+            raise ExtractionFailed()
         if "decision" in checkpoints and not partial:
             decision = DecisionResponse.model_validate(checkpoints["decision"])
         else:

@@ -12,10 +12,11 @@ def main():
     base_url = os.environ["UW_TEST_GATEWAY_URL"]
     token = os.environ["UW_GATEWAY_TOKEN"]
 
-    def request(path, *, body=None, authorized=True, key=None):
+    def request(path, *, body=None, authorized=True, key=None, review=False):
         headers = {"Content-Type": "application/json"}
         if authorized:
-            headers["Authorization"] = f"Bearer {token}"
+            credential = os.environ["UW_TEST_REVIEWER_TOKEN"] if review else token
+            headers["Authorization"] = f"Bearer {credential}"
         if key:
             headers["Idempotency-Key"] = key
         data = json.dumps(body).encode() if body is not None else None
@@ -97,6 +98,11 @@ def main():
         assert code == (200 if deliverable else 409), (case_id, code)
         if deliverable:
             assert document.startswith(b"%PDF")
+        else:
+            review_path = f"/v1/runs/{job_id}/review-case-sheet"
+            assert request(review_path)[0] == 401
+            review_code, review_document = request(review_path, review=True)
+            assert review_code == 200 and review_document.startswith(b"%PDF")
         print(
             json.dumps(
                 {

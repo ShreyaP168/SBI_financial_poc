@@ -30,6 +30,8 @@ class Document:
     native_text_pages: set[int] = field(default_factory=set)
     force_vision: bool = False
     layout_vision_pages: set[int] | None = None
+    ocr_pages: list[dict] = field(default_factory=list)
+    image_page_numbers: list[int] = field(default_factory=list)
 
     def to_anthropic_blocks(
         self, include_images: bool = True, text_max_chars: int = 200_000
@@ -60,11 +62,12 @@ class Document:
         if include_images and self.images_b64:
             n_imgs = len(self.images_b64)
             for i, img_b64 in enumerate(self.images_b64):
-                if i + 1 in self.native_text_pages and (
+                page_number = self.image_page_numbers[i] if self.image_page_numbers else i + 1
+                if page_number in self.native_text_pages and (
                     not self.force_vision
                     or (
                         self.layout_vision_pages is not None
-                        and i + 1 not in self.layout_vision_pages
+                        and page_number not in self.layout_vision_pages
                     )
                 ):
                     continue
@@ -77,7 +80,7 @@ class Document:
                 out.append(
                     {
                         "type": "text",
-                        "text": f"[Image page {i + 1}/{n_imgs} of "
+                        "text": f"[Image page {page_number}/{self.page_count} of "
                         f"document with {self.page_count} pages]",
                     }
                 )
@@ -136,6 +139,16 @@ def prepare_doc(
     page_count = 0
     native_text_pages: set[int] = set()
     layout_vision_pages: set[int] = set()
+    ocr_pages: list[dict] = []
+    image_page_numbers: list[int] = []
+    uncovered_pages: list[int] = []
+
+    def ocr_image(image, number):
+        from underwriting_platform.ocr import read_page
+
+        result = read_page(image, number)
+        ocr_pages.append(result)
+        return result.get("text") or ""
 
     if p.suffix.lower() == ".pdf":
         try:
@@ -149,6 +162,23 @@ def prepare_doc(
                 for i, pg in enumerate(pages_for_text):
                     try:
                         page_text = pg.extract_text() or ""
+                        if len(page_text.strip()) < 80:
+                            if pg.width * pg.height * (150 / 72) ** 2 > 25_000_000:
+                                ocr_pages.append({"page": i + 1, "status": "render_limit"})
+                            else:
+                                candidate = ocr_image(pg.to_image(resolution=150).original, i + 1)
+                                if candidate:
+                                    # OCR is a candidate transcription, never native text.
+                                    text_parts.append(
+                                        f"--- page {i + 1} ---\n[Local OCR candidate]\n{candidate}"
+                                    )
+                                    if page_text.strip():
+                                        text_parts.append(
+                                            f"[Native text on this page]\n{page_text}"
+                                        )
+                                    continue
+                            if i + 1 > max_pages_image and not page_text.strip():
+                                uncovered_pages.append(i + 1)
                         # Native forms need vision only where graphical marks,
                         # widgets or unreadable glyphs can carry extra facts.
                         checkbox_shapes = any(
@@ -173,7 +203,8 @@ def prepare_doc(
                             if len(page_text.strip()) >= 200 and not pg.images and not pg.annots:
                                 native_text_pages.add(i + 1)
                     except Exception:
-                        pass
+                        if i + 1 > max_pages_image:
+                            uncovered_pages.append(i + 1)
                 text = "\n\n".join(text_parts)
         except Exception as e:
             logger.warning("pdfplumber failed on %s: %s", p.name, e)
@@ -183,10 +214,11 @@ def prepare_doc(
         try:
             with pdfplumber.open(str(p)) as pdf:
                 pages_for_image = pdf.pages[:max_pages_image]
-                for pg in pages_for_image:
+                for index, pg in enumerate(pages_for_image):
                     try:
                         im = pg.to_image(resolution=dpi).original
                         images_b64.append(_encode_image_capped(im))
+                        image_page_numbers.append(index + 1)
                     except Exception as ie:
                         logger.warning("page-render failed on %s: %s", p.name, ie)
         except Exception as e:
@@ -199,6 +231,10 @@ def prepare_doc(
             im = Image.open(str(p))
             images_b64.append(_encode_image_capped(im))
             page_count = 1
+            candidate = ocr_image(im, 1)
+            if candidate:
+                text = f"--- page 1 ---\n[Local OCR candidate]\n{candidate}"
+            image_page_numbers.append(1)
         except Exception as e:
             return Document(filename=p.name, text="", extraction_error=str(e))
     else:
@@ -213,6 +249,9 @@ def prepare_doc(
         page_count=page_count,
         native_text_pages=native_text_pages,
         layout_vision_pages=layout_vision_pages,
+        ocr_pages=ocr_pages,
+        image_page_numbers=image_page_numbers,
+        extraction_error="UNCOVERED_SCANNED_PAGES" if uncovered_pages else None,
     )
 
 

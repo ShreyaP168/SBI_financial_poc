@@ -241,6 +241,9 @@ class MasterOrchestrator:
             from underwriting_platform.infrastructure.files import fingerprint
 
             store = None
+            from underwriting_platform.infrastructure.evidence import validate_intake_size
+
+            validate_intake_size(Path(case_dir), CONFIG_ROOT)
             if cfg is not None or self.checkpoint_root is not None:
                 try:
                     digest = hashlib.sha256(
@@ -251,9 +254,14 @@ class MasterOrchestrator:
                         (self.checkpoint_root or CACHE_ROOT / "agent-stages") / revision
                     )
                     if budget is not None:
-                        saved = store.read("budget") or {}
-                        budget.spent = int(saved.get("spent", 0)) + int(saved.get("reserved", 0))
-                        budget.on_change = lambda snapshot: store.write("budget", snapshot)
+                        from underwriting_platform.orchestrator.budget_ledger import attach_budget
+
+                        attach_budget(
+                            budget,
+                            self.checkpoint_root or CACHE_ROOT / "agent-stages",
+                            case_id,
+                            store,
+                        )
                 except FileNotFoundError:
                     store = None
                 except Exception as error:
@@ -995,6 +1003,18 @@ class MasterOrchestrator:
             case_json["reconciliation"]["field_overrides_applied"] = False
         # 5. Build extraction report
         extraction_report = {
+            "local_ocr": {
+                "provider_tokens": 0,
+                "documents": {d.filename: d.ocr_pages for d in documents if d.ocr_pages},
+                "pages_completed": sum(
+                    r.get("status") == "completed" for d in documents for r in d.ocr_pages
+                ),
+                "pages_failed": sum(
+                    r.get("status") in {"failed", "render_limit"}
+                    for d in documents
+                    for r in d.ocr_pages
+                ),
+            },
             "source_owner": source_owner,
             "duplicate_aliases": duplicate_aliases,
             "case_id": case_id,

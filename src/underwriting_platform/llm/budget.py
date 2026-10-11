@@ -20,6 +20,7 @@ class CaseBudget:
     reserved: int = 0
     _condition: asyncio.Condition = field(default_factory=asyncio.Condition, repr=False)
     on_change: object = field(default=None, repr=False)
+    on_close: object = field(default=None, repr=False)
     usage: list[dict] = field(default_factory=list, repr=False)
 
     def persist(self):
@@ -61,4 +62,6 @@ def case_scope(limit: int, *, spent: int = 0):
     try:
         yield budget
     finally:
+        if budget.on_close is not None:
+            budget.on_close()
         current_budget.reset(token)

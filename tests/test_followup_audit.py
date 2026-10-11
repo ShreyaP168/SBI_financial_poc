@@ -73,7 +73,10 @@ def test_failed_agent_checkpoint_does_not_survive_recovered_configuration(tmp_pa
     assert store.agent("source") is None
     store.write("source", vars(failed))
     assert store.agent("source") is None
-    succeeded = AgentResult(block={"applicant": {"age": 35}})
+    succeeded = AgentResult(
+        block={"applicant": {"age": 35}},
+        field_sources={"applicant.age": [{"document": "proposal.pdf", "page": 1, "raw_value": 35}]},
+    )
     store.save_agent("source", succeeded)
     assert store.agent("source").block == succeeded.block
 

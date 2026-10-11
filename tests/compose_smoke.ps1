@@ -15,10 +15,12 @@ $testPort = $listener.LocalEndpoint.Port
 $listener.Stop()
 $gatewayToken = [guid]::NewGuid().ToString('N')
 $serviceToken = [guid]::NewGuid().ToString('N')
+$reviewerToken = [guid]::NewGuid().ToString('N')
 $databasePassword = [guid]::NewGuid().ToString('N')
 $environment = @(
     "UW_GATEWAY_TOKEN=$gatewayToken",
     "UW_SERVICE_TOKEN=$serviceToken",
+    "UW_REVIEWER_TOKEN=$reviewerToken",
     "UW_DB_PASSWORD=$databasePassword",
     "UW_TEST_PORT=$testPort",
     ('UW_CASE_HOST_PATH=' + (Join-Path $runDirectory 'cases').Replace('\', '/')),
@@ -29,7 +31,10 @@ Set-Content -LiteralPath $envFile -Value $environment -Encoding ascii
 $composeArgs = @('--env-file', $envFile, '-f', (Join-Path $projectRoot 'compose.yaml'), '-f', (Join-Path $projectRoot 'compose.test.yaml'), '-p', $runName)
 $savedToken = $env:UW_GATEWAY_TOKEN
 $savedUrl = $env:UW_TEST_GATEWAY_URL
+$savedReviewer = $env:UW_TEST_REVIEWER_TOKEN
 try {
+    & docker run --rm --network none --mount ('type=bind,source=' + (Join-Path $projectRoot 'tests/support') + ',target=/app/test_support,readonly') underwriting-platform:local python /app/test_support/local_ocr_smoke.py
+    if ($LASTEXITCODE -ne 0) { throw 'Offline local OCR engines failed' }
     & docker compose @composeArgs up -d --no-build --wait --wait-timeout 120
     if ($LASTEXITCODE -ne 0) {
         & docker compose @composeArgs logs --no-color --tail 100 gateway worker jobs-db
@@ -39,11 +44,13 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Concurrent PostgreSQL initialization failed' }
     $env:UW_GATEWAY_TOKEN = $gatewayToken
     $env:UW_TEST_GATEWAY_URL = "http://127.0.0.1:$testPort"
+    $env:UW_TEST_REVIEWER_TOKEN = $reviewerToken
     & $Python (Join-Path $PSScriptRoot 'support/smoke_client.py')
     if ($LASTEXITCODE -ne 0) { throw 'Synthetic service workflow failed' }
 } finally {
     $env:UW_GATEWAY_TOKEN = $savedToken
     $env:UW_TEST_GATEWAY_URL = $savedUrl
+    $env:UW_TEST_REVIEWER_TOKEN = $savedReviewer
     # This unique test project owns these containers and ephemeral volumes.
     & docker compose @composeArgs down --volumes --remove-orphans
     if ($LASTEXITCODE -eq 0) {

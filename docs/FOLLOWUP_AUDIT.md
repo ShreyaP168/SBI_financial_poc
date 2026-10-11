@@ -62,6 +62,8 @@ No Key Vault URL, authenticated Azure administrator, OIDC issuer/audience or app
 storage policy is configured here. Production mode remains blocked. Shared tokens
 and one extraction/artifact instance remain controlled-POC constraints.
 
-Local tests do not prove hosted GitHub CI ran. The previously requested push was
-denied for `ashishdat`; collaborator access must be available before publishing.
+The initial push denial was subsequently resolved: the code-only `f04dfe9` release
+was published on GitHub main. Hosted CI ran: both Python jobs passed, and the
+service smoke failed on the disabled worker health check. The current correction
+and validation status are tracked in `RECOVERY_AUDIT.md`.
 Do not claim all seven cases passed: only these four have source documents here.

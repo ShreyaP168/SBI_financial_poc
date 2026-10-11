@@ -12,7 +12,9 @@ from underwriting_platform.agents.base import AgentResult
 
 class StageStore:
     def __init__(self, root: Path):
-        self.root = root
+        from underwriting_platform.infrastructure.files import native_path
+
+        self.root = native_path(root)
 
     def read(self, key: str):
         path = self.root / (hashlib.sha256(key.encode()).hexdigest() + ".json")
@@ -41,10 +43,21 @@ class StageStore:
         data = self.read(key)
         if data is not None and data.get("error"):
             return None
+        if data is not None:
+            from underwriting_platform.contracts.evidence import uncited_applicant_fields
+
+            if uncited_applicant_fields(data.get("block") or {}, data.get("field_sources") or {}):
+                return None
         return AgentResult(**data) if data is not None else None
 
     def save_agent(self, key: str, result: AgentResult):
         # Provider/configuration failures can recover without source changes.
         # Retry policy decides immediate retries; durable caches retain success only.
-        if not result.error:
+        from underwriting_platform.contracts.evidence import uncited_applicant_fields
+
+        if (
+            not result.error
+            and not result.source_findings
+            and not uncited_applicant_fields(result.block, result.field_sources)
+        ):
             self.write(key, asdict(result))

@@ -149,7 +149,16 @@ def retain_inputs(
         data = source.read_bytes()
         files[relative] = retain_blob(data, target, store)
     dependencies = {}
-    for name in ("anthropic", "google-genai", "pymupdf", "reportlab", "openpyxl", "pydantic"):
+    for name in (
+        "anthropic",
+        "google-genai",
+        "pymupdf",
+        "reportlab",
+        "openpyxl",
+        "pydantic",
+        "rapidocr-onnxruntime",
+        "onnxruntime",
+    ):
         try:
             dependencies[name] = version(name)
         except PackageNotFoundError:

@@ -3,6 +3,7 @@
 import hashlib
 import json
 import os
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
 EXTERNAL_SOURCES = (
@@ -68,11 +69,32 @@ def cache_revision(
     input_digest: str, config_root: Path, *, package_root: Path | None = None
 ) -> str:
     revision = hashlib.sha256(("extraction-2:" + input_digest).encode())
+    from underwriting_platform.configuration import local_ocr
+
+    revision.update(
+        str(
+            (
+                local_ocr.provider(),
+                local_ocr.get("OCR_PSM"),
+                local_ocr.get("OCR_LANGUAGE"),
+                local_ocr.get("OCR_TIMEOUT_SECONDS"),
+                os.getenv("TESSDATA_PREFIX"),
+            )
+        ).encode()
+    )
+    for asset in local_ocr.assets():
+        revision.update(str(asset).encode())
+        revision.update(asset.read_bytes())
+    for name in ("rapidocr-onnxruntime", "onnxruntime", "numpy", "opencv-python"):
+        try:
+            revision.update(f"{name}:{version(name)}".encode())
+        except PackageNotFoundError:
+            revision.update(f"{name}:not-installed".encode())
     package = package_root or Path(__file__).resolve().parents[1]
     # Include implementation as well as prompts: parser changes invalidate old joins.
     roots = [
         config_root,
-        *(package / name for name in ("agents", "orchestrator", "llm", "configuration")),
+        *(package / name for name in ("agents", "orchestrator", "llm", "configuration", "ocr")),
     ]
     for root in roots:
         for source in sorted(root.rglob("*")):

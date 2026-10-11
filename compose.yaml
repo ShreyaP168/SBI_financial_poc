@@ -44,6 +44,7 @@ services:
   gateway:
     <<: *service
     environment:
+      UW_REVIEWER_TOKEN: ${UW_REVIEWER_TOKEN:-}
       <<: *worker-env
       UW_SERVICE_ROLE: gateway
       UW_GATEWAY_TOKEN: ${UW_GATEWAY_TOKEN:?Set UW_GATEWAY_TOKEN}
@@ -81,6 +82,7 @@ services:
     <<: *service
     deploy: {replicas: 1}
     environment:
+      UW_REVIEWER_TOKEN: ${UW_REVIEWER_TOKEN:-}
       UW_SERVICE_ROLE: artifacts
       UW_SERVICE_TOKEN: ${UW_SERVICE_TOKEN:?Set UW_SERVICE_TOKEN}
       UW_ARTIFACT_ROOT: /app/runtime/artifacts
@@ -91,7 +93,12 @@ services:
     <<: *service
     command: [uw-worker]
     environment: *worker-env
-    healthcheck: {disable: true}
+    healthcheck:
+      test: [CMD, python, -c, "from pathlib import Path; import time; assert time.time()-Path('/tmp/uw-worker-health').stat().st_mtime < 30"]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+      start_period: 20s
     depends_on:
       jobs-db: {condition: service_healthy}
       extraction: {condition: service_healthy}

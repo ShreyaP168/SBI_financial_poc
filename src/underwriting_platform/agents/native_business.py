@@ -17,6 +17,9 @@ def reconcile_native_business(case, documents, kinds):
         sections = re.split(r"--- page (\d+) ---\n", document.text)
         for index in range(1, len(sections), 2):
             page, text = int(sections[index]), sections[index + 1]
+            if any(record.get("page") == page for record in document.ocr_pages):
+                # OCR candidates are not exact native-text evidence repairs.
+                continue
             for line in text.splitlines():
                 match = re.search(
                     r"Name of Business Organization\s+(.+?)\s+Your Role\b", line, re.I

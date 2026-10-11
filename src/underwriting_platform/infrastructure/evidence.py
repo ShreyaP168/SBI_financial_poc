@@ -6,11 +6,32 @@ import json
 import re
 from pathlib import Path
 
-from underwriting_platform.application.errors import InvalidRequest, MissingCase
+from underwriting_platform.application.errors import EvidenceTooLarge, InvalidRequest, MissingCase
 from underwriting_platform.infrastructure.files import native_path, scoped_path
 
 # File-backed POC handoffs are bounded; large folders require streaming/object storage.
 MAX_EVIDENCE_BYTES = 64 * 1024 * 1024
+
+
+def validate_intake_size(folder: Path, config_root: Path):
+    from underwriting_platform.configuration.extraction import evidence_paths
+
+    source_bytes = (
+        sum(
+            path.stat().st_size
+            for path in folder.iterdir()
+            if path.is_file()
+            and path.suffix.lower()
+            in {".pdf", ".zip", ".jpg", ".jpeg", ".png", ".tif", ".tiff", ".webp"}
+        )
+        if folder.is_dir()
+        else 0
+    )
+    reference_bytes = sum(
+        path.stat().st_size for path in evidence_paths(config_root).values() if path.is_file()
+    )
+    if source_bytes + reference_bytes > MAX_EVIDENCE_BYTES:
+        raise EvidenceTooLarge()
 
 
 def export_evidence(cache: Path, case_id: str, revision: str) -> dict:
@@ -35,7 +56,7 @@ def export_evidence(cache: Path, case_id: str, revision: str) -> dict:
                         raise InvalidRequest()
                     total_bytes += source.stat().st_size
                     if total_bytes > MAX_EVIDENCE_BYTES:
-                        raise InvalidRequest()
+                        raise EvidenceTooLarge()
                     content = source.read_bytes()
                     files[source.relative_to(bundle).as_posix()] = {
                         "sha256": hashlib.sha256(content).hexdigest(),

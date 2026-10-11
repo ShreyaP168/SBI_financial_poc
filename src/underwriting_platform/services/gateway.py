@@ -127,4 +127,36 @@ def build_app(
         except httpx.HTTPError as exc:
             raise DependencyUnavailable() from exc
 
+    @app.get(
+        "/v1/runs/{job_id}/review-case-sheet",
+        dependencies=[Depends(authentication(settings.reviewer_token))],
+    )
+    async def review(job_id: uuid.UUID):
+        job = await asyncio.to_thread(repository.get, str(job_id))
+        if job is None:
+            raise HTTPException(404, "Job not found")
+        if job.result is None:
+            raise HTTPException(409, "Review artifact is not yet available")
+        path = f"/v1/artifacts/{job.result.artifact.artifact_id}/review-case-sheet"
+        try:
+            response = await app.state.download_client.get(
+                settings.artifacts_url + path,
+                headers={"Authorization": f"Bearer {settings.reviewer_token}"},
+            )
+        except httpx.HTTPError:
+            raise DependencyUnavailable() from None
+        if response.status_code == 404:
+            raise HTTPException(404, "Review artifact not found")
+        if response.status_code != 200:
+            raise DependencyUnavailable()
+        return Response(
+            content=response.content,
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f'attachment; filename="{job.request.case_id}_review_only.pdf"',
+                "Cache-Control": "no-store",
+                "X-UW-Review-Only": "true",
+            },
+        )
+
     return app

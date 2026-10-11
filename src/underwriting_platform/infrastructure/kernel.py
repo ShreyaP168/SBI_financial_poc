@@ -140,20 +140,27 @@ class KernelExtractor:
         from underwriting_platform.configuration.extraction import cache_revision
 
         revision = cache_revision(digest, self.settings.config_root)
+        from underwriting_platform.infrastructure.evidence import validate_intake_size
+
+        validate_intake_size(folder, self.settings.config_root)
         target = native_path(
             scoped_path(self.settings.extraction_cache, request.case_id) / f"{revision}.json"
         )
         if target.is_file():
+            from underwriting_platform.contracts.evidence import uncited_applicant_fields
+
             cached = ExtractionResponse.model_validate_json(target.read_text(encoding="utf8"))
             if not (
                 cached.case_json.get("processing_errors")
                 or cached.case_json.get("extraction_findings")
                 or cached.case_json.get("_contract_issues")
+                or uncited_applicant_fields(cached.case_json)
             ):
                 return cached
             target.unlink()
         response = asyncio.run(self._extract_async(request, folder, digest))
         from underwriting_platform.contracts.canonical import case_issues
+        from underwriting_platform.contracts.evidence import uncited_applicant_fields
 
         issues = case_issues(response.case_json)
         if issues:
@@ -165,6 +172,7 @@ class KernelExtractor:
             response.case_json.get("processing_errors")
             or response.case_json.get("extraction_findings")
             or response.case_json.get("_contract_issues")
+            or uncited_applicant_fields(response.case_json)
             or []
         )
         if (
@@ -241,15 +249,21 @@ class KernelExtractor:
             with case_scope(
                 client.cfg.token_budget_per_case, spent=prior.get("spent", 0)
             ) as budget:
+                from underwriting_platform.configuration.paths import CACHE_ROOT
+                from underwriting_platform.orchestrator.budget_ledger import attach_budget
+
+                attach_budget(budget, CACHE_ROOT / "agent-stages", request.case_id)
                 try:
                     await run_identity_verification(result.case_json, folder)
                     result.case_json.setdefault("_processing_stages", {})["identity"] = "completed"
                 except Exception as exc:
+                    from underwriting_platform.application.retry_policy import retryable_dependency
+
                     result.case_json.setdefault("processing_errors", []).append(
                         {
                             "stage": "identity_verification",
                             "type": type(exc).__name__,
-                            "retryable": False,
+                            "retryable": retryable_dependency(exc),
                         }
                     )
                 result.case_json["_token_budget"] = budget.snapshot()
@@ -352,6 +366,10 @@ class KernelArtifacts:
                     timeout=60,
                 )
                 if response.status_code != 200:
+                    if response.status_code == 413:
+                        from underwriting_platform.application.errors import EvidenceTooLarge
+
+                        raise EvidenceTooLarge()
                     raise DependencyUnavailable()
                 evidence = response.json()
             snapshot = folder / "frozen-evidence"

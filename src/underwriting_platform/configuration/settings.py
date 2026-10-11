@@ -16,6 +16,7 @@ class Settings:
     role: str = "gateway"
     service_token: str = field(default="", repr=False)
     gateway_token: str = field(default="", repr=False)
+    reviewer_token: str = field(default="", repr=False)
     database_url: str = field(default="sqlite:///" + str(RUNTIME_ROOT / "jobs.sqlite3"), repr=False)
     case_root: Path = CASE_ROOT
     artifact_root: Path = RUNTIME_ROOT / "artifacts"
@@ -37,6 +38,7 @@ class Settings:
             role=os.getenv("UW_SERVICE_ROLE", "gateway"),
             service_token=os.getenv("UW_SERVICE_TOKEN", ""),
             gateway_token=os.getenv("UW_GATEWAY_TOKEN", ""),
+            reviewer_token=os.getenv("UW_REVIEWER_TOKEN", ""),
             database_url=os.getenv(
                 "UW_DATABASE_URL", "sqlite:///" + str(RUNTIME_ROOT / "jobs.sqlite3")
             ),
@@ -56,6 +58,8 @@ class Settings:
         )
 
     def __post_init__(self) -> None:
+        if self.reviewer_token and self.reviewer_token in {self.gateway_token, self.service_token}:
+            raise ValueError("Reviewer credential must differ from client and service credentials")
         if self.deployment_mode != "controlled_poc":
             raise ValueError(
                 "Production deployment is blocked until tenant authorization and data lifecycle prerequisites are implemented and verified"

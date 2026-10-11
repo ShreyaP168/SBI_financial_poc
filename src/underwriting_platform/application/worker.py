@@ -32,6 +32,7 @@ class Worker:
         self.repository = repository
         self.workflow = workflow
         self.settings = settings
+        self.workflow.max_attempts = settings.max_attempts
         self.owner = str(uuid.uuid4())
 
     async def _heartbeat(self, job_id: str) -> None:

@@ -7,6 +7,7 @@ from pydantic import ValidationError
 
 from underwriting_platform.application.errors import (
     DependencyUnavailable,
+    EvidenceTooLarge,
     InvalidRequest,
     MissingCase,
     ProcessingRejected,
@@ -45,6 +46,8 @@ class HttpStages:
             )
             if response.status_code == 404:
                 raise MissingCase()
+            if response.status_code == 413:
+                raise EvidenceTooLarge()
             if response.status_code == 422:
                 try:
                     code = response.json().get("code")

@@ -20,6 +20,12 @@ class InvalidRequest(ApplicationError):
     public_message = "The request does not meet the service contract."
 
 
+class EvidenceTooLarge(ApplicationError):
+    code = "EVIDENCE_TOO_LARGE"
+    status_code = 413
+    public_message = "Source and reference evidence exceed the supported case size."
+
+
 class DependencyUnavailable(ApplicationError):
     code = "DEPENDENCY_UNAVAILABLE"
     status_code = 503

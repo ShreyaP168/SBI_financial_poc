@@ -1,7 +1,7 @@
 """PDF/QC service owns artifact storage and its delivery gate."""
 
 from fastapi import Depends
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 
 from underwriting_platform.application.errors import ArtifactBlocked, MissingCase
 from underwriting_platform.application.ports import ArtifactPort
@@ -51,6 +51,26 @@ def build_app(settings: Settings | None = None, adapter: ArtifactPort | None = N
             folder / "case-sheet.pdf",
             media_type="application/pdf",
             filename=f"{metadata.case_id}_case_sheet.pdf",
+        )
+
+    @app.get(
+        "/v1/artifacts/{artifact_id}/review-case-sheet",
+        dependencies=[Depends(authentication(settings.reviewer_token))],
+    )
+    async def review(artifact_id: str):
+        from underwriting_platform.infrastructure.review_artifact import review_pdf
+
+        folder = scoped_path(settings.artifact_root, artifact_id, artifact=True)
+        if not (folder / "manifest.json").is_file() or not (folder / "case-sheet.pdf").is_file():
+            raise MissingCase()
+        return Response(
+            content=review_pdf(folder / "case-sheet.pdf"),
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f'attachment; filename="{artifact_id}_review_only.pdf"',
+                "Cache-Control": "no-store",
+                "X-UW-Review-Only": "true",
+            },
         )
 
     return app

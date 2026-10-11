@@ -1,0 +1,4 @@
+Adapted from local SBI Bond sbil_qc_service, 2026-10-11.
+rapidocr.py: SHA256 4deed956a055f35876fcb7cbed0ba340a61723e7b73f977dc64c67f255cafa14
+tesseract.py: SHA256 31ee3a7de29afdb92881422353dd3f9cb502dc43024d59f59a2305d35cd5cbfc
+SBI Bond adapters originated in CDP; platform imports and timeout configuration changed.

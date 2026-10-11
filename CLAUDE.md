@@ -13,9 +13,12 @@ in `docs/history`; do not describe it as current behavior.
 - Canonical contracts validate data; shared completion/delivery policy decides
   whether a decision can be released. QC PASS is not decision completeness.
 - Never bypass QC/completeness for downloads. Diagnostic HTTP routes are removed;
-  review artifacts remain private local files.
+  separate reviewer credentials permit watermarked review-only sheets through
+  `/v1/runs/{job_id}/review-case-sheet`. Client delivery gates remain enforced.
 - Preserve successful stage checkpoints, paid-spend accounting and the approved
-  200,000-token cap across retries. Never claim estimated savings are measurements.
+  200,000-token cap across revisions and retries. Never reset the case ledger
+  during deploys; exhausted budgets require explicit additional authorization.
+  Never claim estimated savings are measurements.
 - Never log applicant content or provider exception bodies. Secrets must remain
   outside Git; production credentials require a managed secret store.
 - Extraction and artifact storage are independent with a bounded internal HTTP
