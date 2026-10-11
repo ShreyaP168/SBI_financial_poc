@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "underwriting-platform"
+version = "1.2.0"
+description = "Versioned underwriting services and durable case-sheet workflows"
+requires-python = ">=3.11"
+dynamic = ["dependencies"]
+
+[project.optional-dependencies]
+secrets = ["azure-identity>=1.20,<2", "azure-keyvault-secrets>=4.9,<5"]
+dev = ["pytest==9.0.3", "pytest-asyncio==1.3.0", "ruff==0.17.0", "build==1.6.1"]
+
+[project.scripts]
+uw-api = "underwriting_platform.services.main:main"
+uw-case = "underwriting_platform.pipeline.run:main"
+uw-batch = "underwriting_platform.pipeline.batch:main"
+uw-worker = "underwriting_platform.worker:main"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"underwriting_platform.agents" = ["prompts/*.txt"]
+"underwriting_platform.renderer" = ["fonts/*.ttf"]
+"underwriting_platform.resources" = ["config/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+cache_dir = "../data/runtime/pytest-cache"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src"]
+cache-dir = "../data/runtime/ruff-cache"
+extend-exclude = ["build", "dist"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# The inherited policy kernel is validated by regression tests. Apply the full
+# lint policy to the new application layers; migrate kernel lint separately.
+"src/underwriting_platform/agents/**" = ["E4", "E7", "F401", "F541", "F841", "I", "UP", "B"]
+"src/underwriting_platform/engine/**" = ["E4", "E7", "F401", "F541", "F841", "I", "UP", "B"]
+"src/underwriting_platform/llm/**" = ["E4", "E7", "F401", "F541", "F841", "I", "UP", "B"]
+"src/underwriting_platform/orchestrator/**" = ["E4", "E7", "F401", "F541", "F841", "I", "UP", "B"]
+"src/underwriting_platform/renderer/**" = ["E4", "E7", "F401", "F541", "F841", "I", "UP", "B"]
+"src/underwriting_platform/qc/**" = ["E4", "E7", "F401", "F541", "F841", "I", "UP", "B"]
+"src/underwriting_platform/pipeline/**" = ["E4", "E7", "F401", "F541", "F841", "I", "UP", "B"]

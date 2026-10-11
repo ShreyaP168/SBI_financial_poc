@@ -1,0 +1,41 @@
+{
+  "_comment":       "TALIC brand profile — drives the qc/ delivery-time gate and the renderer's brand strings. Per-insurer copy: change `project_slug`, `insurer`, `verdict_terminology`, and `redact.internal_codenames`; everything else is shared cross-project. Sister profiles live in IFL and Kotak repos.",
+  "_updated":       "2026-05-17",
+  "project_slug":   "talic",
+  "engine_version": "v9-talic",
+  "insurer": {
+    "canonical":       "Tata AIA Life Insurance",
+    "permitted_forms": ["Tata AIA Life Insurance", "Tata AIA Life", "TALIC", "Tata AIA"]
+  },
+  "brand": {
+    "system_name": "TruAI UW System",
+    "operator":    "Datamatics",
+    "require_per_page_header": false
+  },
+  "currency": {
+    "symbol":           "₹",
+    "code":             "INR",
+    "permitted_forms":  ["₹", "INR"]
+  },
+  "date_format": "DD-MM-YYYY",
+  "vocabulary": {
+    "doc_caf":      "CAF",
+    "doc_proposal": "Proposal Form",
+    "live_photo":   "Live photo at medicals"
+  },
+  "redact": {
+    "internal_codenames": ["v9", "v8.4", "v8.2", "v8", "Phase 8b", "Phase 8a", "Phase 7", "TATA scaffold", "uw_engine_v9"],
+    "internal_vocab":     ["STP_OK", "STP_BLOCK", "STP_CONDITIONAL"]
+  },
+  "verdict_terminology": {
+    "_comment":             "Engine label -> TALIC xlsx APP_STATUS taxonomy. Used by the renderer (already wired) and the QC layer (cross-checks rendered pill text vs verdict.label).",
+    "STANDARD_ACCEPTANCE":  "Issued",
+    "CONDITIONAL":          "Postpone",
+    "REFER":                "Postpone",
+    "POSTPONE":             "Postpone",
+    "DECLINE":              "Decline",
+    "PROBABLE_DECLINE":     "Probable Decline",
+    "ERROR":                "ERROR"
+  },
+  "app_status_values": ["Issued", "Postpone", "Decline", "Probable Decline"]
+}

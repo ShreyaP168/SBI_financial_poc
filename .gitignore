@@ -1,0 +1,26 @@
+# Credentials and local state
+.env
+*.env
+!.env.example
+!.services.env.example
+.local-secrets/
+data/
+runtime/
+output*/
+# Python and build tooling
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+build/
+dist/
+# Generated artifacts and editor state
+*.pdf
+!docs/*.pdf
+*.log
+.vscode/
+.idea/

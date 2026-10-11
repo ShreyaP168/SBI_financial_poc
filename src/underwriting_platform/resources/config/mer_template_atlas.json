@@ -1,0 +1,2022 @@
+{
+  "_comment": "TATA AIA Medical Examination Report - template-anchored field atlas. Bounding boxes are pixel coordinates at 300 DPI page renders (2481x3508). Used by engine.mer_template_processor for deterministic pixel-diff checkbox detection. Hand-regenerated if the MER form changes.",
+  "_dpi": 300,
+  "_page_size_px": [
+    2481,
+    3508
+  ],
+  "_template_pdf": "D:/107_APA/TALIC/Templates/Medical-Examination-Report.pdf",
+  "_generated": "2026-05-18",
+  "fields": {
+    "section_a.identity_proof.aadhar": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        389,
+        797,
+        62,
+        62
+      ]
+    },
+    "section_a.identity_proof.driving_licence": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        625,
+        797,
+        62,
+        62
+      ]
+    },
+    "section_a.identity_proof.voter_id": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1039,
+        797,
+        61,
+        62
+      ]
+    },
+    "section_a.identity_proof.pan_card": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1334,
+        797,
+        61,
+        62
+      ]
+    },
+    "section_a.identity_proof.passport": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1629,
+        797,
+        62,
+        62
+      ]
+    },
+    "section_a.identity_proof.employee_id": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1925,
+        797,
+        61,
+        62
+      ]
+    },
+    "section_a.identity_proof.other": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        389,
+        868,
+        62,
+        61
+      ]
+    },
+    "section_a.gender.male": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        271,
+        1010,
+        61,
+        61
+      ]
+    },
+    "section_a.gender.female": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        448,
+        1010,
+        62,
+        61
+      ]
+    },
+    "section_a.gender.transgender": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        684,
+        1010,
+        62,
+        61
+      ]
+    },
+    "section_a.look_older.yes": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        921,
+        1081,
+        61,
+        61
+      ]
+    },
+    "section_a.look_older.no": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1098,
+        1081,
+        61,
+        61
+      ]
+    },
+    "section_d.tobacco.yes": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        767,
+        1736,
+        62,
+        61
+      ]
+    },
+    "section_d.tobacco.no": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1003,
+        1736,
+        62,
+        61
+      ]
+    },
+    "section_d.tobacco_type.cigar": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        295,
+        1814,
+        61,
+        61
+      ]
+    },
+    "section_d.tobacco_type.cigarette": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        531,
+        1814,
+        61,
+        61
+      ]
+    },
+    "section_d.tobacco_type.beedi": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        826,
+        1814,
+        62,
+        61
+      ]
+    },
+    "section_d.tobacco_type.gutkha": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1062,
+        1814,
+        62,
+        61
+      ]
+    },
+    "section_d.tobacco_type.loose_tobacco": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1299,
+        1814,
+        61,
+        61
+      ]
+    },
+    "section_d.tobacco_type.nicotine_gum": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1535,
+        1814,
+        61,
+        61
+      ]
+    },
+    "section_d.tobacco_type.other_nicotine": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1889,
+        1814,
+        62,
+        61
+      ]
+    },
+    "section_d.alcohol.yes": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        531,
+        2050,
+        61,
+        61
+      ]
+    },
+    "section_d.alcohol.no": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        767,
+        2050,
+        62,
+        61
+      ]
+    },
+    "section_d.alcohol_type.beer": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        295,
+        2121,
+        61,
+        61
+      ]
+    },
+    "section_d.alcohol_type.wine": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        590,
+        2121,
+        61,
+        61
+      ]
+    },
+    "section_d.alcohol_type.hard_liquor": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        885,
+        2121,
+        62,
+        61
+      ]
+    },
+    "section_d.alcohol_type.country_liquor": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1239,
+        2121,
+        62,
+        61
+      ]
+    },
+    "section_d.narcotics.yes": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        531,
+        2321,
+        61,
+        62
+      ]
+    },
+    "section_d.narcotics.no": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        767,
+        2321,
+        62,
+        62
+      ]
+    },
+    "section_d.narcotic_type.cocaine": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        236,
+        2392,
+        61,
+        62
+      ]
+    },
+    "section_d.narcotic_type.amphetamines": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        472,
+        2392,
+        61,
+        62
+      ]
+    },
+    "section_d.narcotic_type.marijuana": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        826,
+        2392,
+        62,
+        62
+      ]
+    },
+    "section_d.narcotic_type.barbiturates": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1121,
+        2392,
+        62,
+        62
+      ]
+    },
+    "section_d.narcotic_type.other_stimulants": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1417,
+        2392,
+        61,
+        62
+      ]
+    },
+    "section_e.parents_suffer.yes": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        354,
+        2642,
+        61,
+        62
+      ]
+    },
+    "section_e.parents_suffer.no": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        531,
+        2642,
+        61,
+        62
+      ]
+    },
+    "section_e.father.living": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        489,
+        2773,
+        50,
+        49
+      ]
+    },
+    "section_e.father.no_impairment": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        772,
+        2773,
+        50,
+        49
+      ]
+    },
+    "section_e.father.diabetes": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1150,
+        2773,
+        50,
+        49
+      ]
+    },
+    "section_e.father.hypertension": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1481,
+        2773,
+        50,
+        49
+      ]
+    },
+    "section_e.father.stroke": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1859,
+        2773,
+        50,
+        49
+      ]
+    },
+    "section_e.father.deceased": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        489,
+        2827,
+        50,
+        50
+      ]
+    },
+    "section_e.father.heart_disease": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        772,
+        2827,
+        50,
+        50
+      ]
+    },
+    "section_e.father.cancer": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1150,
+        2827,
+        50,
+        50
+      ]
+    },
+    "section_e.father.other": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1481,
+        2827,
+        50,
+        50
+      ]
+    },
+    "section_e.mother.living": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        489,
+        2892,
+        50,
+        50
+      ]
+    },
+    "section_e.mother.no_impairment": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        772,
+        2892,
+        50,
+        50
+      ]
+    },
+    "section_e.mother.diabetes": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1150,
+        2892,
+        50,
+        50
+      ]
+    },
+    "section_e.mother.hypertension": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1481,
+        2892,
+        50,
+        50
+      ]
+    },
+    "section_e.mother.stroke": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1859,
+        2892,
+        50,
+        50
+      ]
+    },
+    "section_e.mother.deceased": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        489,
+        2946,
+        50,
+        50
+      ]
+    },
+    "section_e.mother.heart_disease": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        772,
+        2946,
+        50,
+        50
+      ]
+    },
+    "section_e.mother.cancer": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1150,
+        2946,
+        50,
+        50
+      ]
+    },
+    "section_e.mother.other": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1481,
+        2946,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_1.gender_m": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        143,
+        3066,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_1.gender_f": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        255,
+        3066,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_1.living": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        489,
+        3011,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_1.no_impairment": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        772,
+        3011,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_1.diabetes": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1150,
+        3011,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_1.hypertension": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1481,
+        3011,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_1.stroke": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1859,
+        3011,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_1.deceased": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        489,
+        3066,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_1.heart_disease": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        772,
+        3066,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_1.cancer": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1150,
+        3066,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_1.other": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1481,
+        3066,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_2.gender_m": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        143,
+        3185,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_2.gender_f": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        255,
+        3185,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_2.living": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        489,
+        3131,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_2.no_impairment": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        772,
+        3131,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_2.diabetes": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1150,
+        3131,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_2.hypertension": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1481,
+        3131,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_2.stroke": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1859,
+        3131,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_2.deceased": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        489,
+        3185,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_2.heart_disease": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        772,
+        3185,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_2.cancer": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1150,
+        3185,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_2.other": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1481,
+        3185,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_3.gender_m": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        143,
+        3305,
+        50,
+        49
+      ]
+    },
+    "section_e.sibling_3.gender_f": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        255,
+        3305,
+        50,
+        49
+      ]
+    },
+    "section_e.sibling_3.living": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        489,
+        3250,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_3.no_impairment": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        772,
+        3250,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_3.diabetes": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1150,
+        3250,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_3.hypertension": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1481,
+        3250,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_3.stroke": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1859,
+        3250,
+        50,
+        50
+      ]
+    },
+    "section_e.sibling_3.deceased": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        489,
+        3305,
+        50,
+        49
+      ]
+    },
+    "section_e.sibling_3.heart_disease": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        772,
+        3305,
+        50,
+        49
+      ]
+    },
+    "section_e.sibling_3.cancer": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1150,
+        3305,
+        50,
+        49
+      ]
+    },
+    "section_e.sibling_3.other": {
+      "kind": "checkbox",
+      "page": 1,
+      "bbox": [
+        1481,
+        3305,
+        50,
+        49
+      ]
+    },
+    "section_f.auscultatory.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        767,
+        332,
+        62,
+        61
+      ]
+    },
+    "section_f.auscultatory.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        944,
+        332,
+        62,
+        61
+      ]
+    },
+    "section_f.diabetes.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        696,
+        495,
+        62,
+        61
+      ]
+    },
+    "section_f.diabetes.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        885,
+        495,
+        62,
+        61
+      ]
+    },
+    "section_f.hypertension.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1948,
+        495,
+        62,
+        61
+      ]
+    },
+    "section_f.hypertension.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2125,
+        495,
+        62,
+        61
+      ]
+    },
+    "section_f.end_organ_damage.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1948,
+        744,
+        62,
+        61
+      ]
+    },
+    "section_f.end_organ_damage.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2125,
+        744,
+        62,
+        61
+      ]
+    },
+    "section_f.hiv_aids.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1948,
+        896,
+        62,
+        62
+      ]
+    },
+    "section_f.hiv_aids.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2125,
+        896,
+        62,
+        62
+      ]
+    },
+    "section_f5.hyperlipidaemia.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        1242,
+        50,
+        50
+      ]
+    },
+    "section_f5.hyperlipidaemia.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        1242,
+        49,
+        50
+      ]
+    },
+    "section_f5.cabg_ptca_valve_pacemaker.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        1242,
+        50,
+        50
+      ]
+    },
+    "section_f5.cabg_ptca_valve_pacemaker.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        1242,
+        50,
+        50
+      ]
+    },
+    "section_f5.chest_pain_angina.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        1308,
+        50,
+        50
+      ]
+    },
+    "section_f5.chest_pain_angina.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        1308,
+        49,
+        50
+      ]
+    },
+    "section_f5.appendectomy_haemorrhoidectomy_colectomy.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        1308,
+        50,
+        50
+      ]
+    },
+    "section_f5.appendectomy_haemorrhoidectomy_colectomy.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        1308,
+        50,
+        50
+      ]
+    },
+    "section_f5.cad_mi_ccf_arrhythmias.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        1375,
+        50,
+        49
+      ]
+    },
+    "section_f5.cad_mi_ccf_arrhythmias.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        1375,
+        49,
+        49
+      ]
+    },
+    "section_f5.knee_hip_discectomy.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        1374,
+        50,
+        49
+      ]
+    },
+    "section_f5.knee_hip_discectomy.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        1374,
+        50,
+        49
+      ]
+    },
+    "section_f5.congenital_rheumatic_heart.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        1444,
+        50,
+        49
+      ]
+    },
+    "section_f5.congenital_rheumatic_heart.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        1444,
+        49,
+        49
+      ]
+    },
+    "section_f5.lithotripsy_cholecystectomy_splenectomy.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        1440,
+        50,
+        50
+      ]
+    },
+    "section_f5.lithotripsy_cholecystectomy_splenectomy.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        1440,
+        50,
+        50
+      ]
+    },
+    "section_f5.stroke_tia_paralysis.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        1509,
+        50,
+        50
+      ]
+    },
+    "section_f5.stroke_tia_paralysis.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        1509,
+        49,
+        50
+      ]
+    },
+    "section_f5.hysterectomy_oophorectomy_mastectomy.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        1507,
+        50,
+        49
+      ]
+    },
+    "section_f5.hysterectomy_oophorectomy_mastectomy.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        1507,
+        50,
+        49
+      ]
+    },
+    "section_f5.asthma_bronchitis_copd_tb.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        1574,
+        50,
+        50
+      ]
+    },
+    "section_f5.asthma_bronchitis_copd_tb.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        1574,
+        49,
+        50
+      ]
+    },
+    "section_f5.biopsy_fnac_endoscopy.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        1572,
+        50,
+        50
+      ]
+    },
+    "section_f5.biopsy_fnac_endoscopy.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        1572,
+        50,
+        50
+      ]
+    },
+    "section_f5.anaemia_thalassaemia.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        1643,
+        50,
+        50
+      ]
+    },
+    "section_f5.anaemia_thalassaemia.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        1643,
+        49,
+        50
+      ]
+    },
+    "section_f5.other_surgery_organ_transplant.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        1640,
+        50,
+        49
+      ]
+    },
+    "section_f5.other_surgery_organ_transplant.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        1640,
+        50,
+        49
+      ]
+    },
+    "section_f5.hernia_lipoma_cyst.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        1709,
+        50,
+        50
+      ]
+    },
+    "section_f5.hernia_lipoma_cyst.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        1709,
+        49,
+        50
+      ]
+    },
+    "section_f5.hospitalisation_any.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        1706,
+        50,
+        50
+      ]
+    },
+    "section_f5.hospitalisation_any.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        1706,
+        50,
+        50
+      ]
+    },
+    "section_f5.physical_mental_disability.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        1775,
+        50,
+        49
+      ]
+    },
+    "section_f5.physical_mental_disability.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        1775,
+        49,
+        49
+      ]
+    },
+    "section_f5.renal_gall_stone.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        1840,
+        50,
+        50
+      ]
+    },
+    "section_f5.renal_gall_stone.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        1840,
+        49,
+        50
+      ]
+    },
+    "section_f5.blood_urine_tests.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        1839,
+        50,
+        50
+      ]
+    },
+    "section_f5.blood_urine_tests.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        1839,
+        50,
+        50
+      ]
+    },
+    "section_f5.arthritis_spondylosis_gout.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        1909,
+        50,
+        50
+      ]
+    },
+    "section_f5.arthritis_spondylosis_gout.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        1909,
+        49,
+        50
+      ]
+    },
+    "section_f5.ecg_xray_usg_ivp_pft.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        1909,
+        50,
+        50
+      ]
+    },
+    "section_f5.ecg_xray_usg_ivp_pft.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        1909,
+        50,
+        50
+      ]
+    },
+    "section_f5.visual_hearing_speech.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        1974,
+        50,
+        50
+      ]
+    },
+    "section_f5.visual_hearing_speech.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        1974,
+        49,
+        50
+      ]
+    },
+    "section_f5.tmt_echo_stress_angiogram.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        1973,
+        50,
+        50
+      ]
+    },
+    "section_f5.tmt_echo_stress_angiogram.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        1973,
+        50,
+        50
+      ]
+    },
+    "section_f5.hyperthyroid_hypothyroid_goitre.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        2042,
+        50,
+        50
+      ]
+    },
+    "section_f5.hyperthyroid_hypothyroid_goitre.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        2042,
+        49,
+        50
+      ]
+    },
+    "section_f5.ct_mri_pap_mammogram.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        2040,
+        50,
+        49
+      ]
+    },
+    "section_f5.ct_mri_pap_mammogram.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        2040,
+        50,
+        49
+      ]
+    },
+    "section_f5.hepatitis.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        2108,
+        50,
+        50
+      ]
+    },
+    "section_f5.hepatitis.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        2108,
+        49,
+        50
+      ]
+    },
+    "section_f5.preemployment_master_executive_health.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        2107,
+        50,
+        50
+      ]
+    },
+    "section_f5.preemployment_master_executive_health.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        2107,
+        50,
+        50
+      ]
+    },
+    "section_f5.epilepsy_neurology.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        848,
+        2175,
+        50,
+        50
+      ]
+    },
+    "section_f5.epilepsy_neurology.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        1014,
+        2175,
+        49,
+        50
+      ]
+    },
+    "section_f5.medication_taken.yes": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2029,
+        2174,
+        50,
+        49
+      ]
+    },
+    "section_f5.medication_taken.no": {
+      "kind": "checkbox",
+      "page": 2,
+      "bbox": [
+        2195,
+        2174,
+        50,
+        49
+      ]
+    },
+    "section_6.circulatory_vascular.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        204,
+        49,
+        50
+      ]
+    },
+    "section_6.circulatory_vascular.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2203,
+        204,
+        50,
+        50
+      ]
+    },
+    "section_6.central_peripheral_nervous.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        367,
+        49,
+        50
+      ]
+    },
+    "section_6.central_peripheral_nervous.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2203,
+        367,
+        50,
+        50
+      ]
+    },
+    "section_6.neurological_psychiatric.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        481,
+        49,
+        50
+      ]
+    },
+    "section_6.neurological_psychiatric.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2203,
+        481,
+        50,
+        50
+      ]
+    },
+    "section_6.respiratory.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        600,
+        49,
+        50
+      ]
+    },
+    "section_6.respiratory.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2203,
+        600,
+        50,
+        50
+      ]
+    },
+    "section_6.renal_reproductive.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        719,
+        49,
+        49
+      ]
+    },
+    "section_6.renal_reproductive.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2203,
+        719,
+        50,
+        49
+      ]
+    },
+    "section_6.hepato_biliary.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        832,
+        49,
+        50
+      ]
+    },
+    "section_6.hepato_biliary.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2203,
+        832,
+        50,
+        50
+      ]
+    },
+    "section_6.gastrointestinal.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        906,
+        49,
+        49
+      ]
+    },
+    "section_6.gastrointestinal.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2203,
+        906,
+        50,
+        49
+      ]
+    },
+    "section_6.musculo_skeletal.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        1021,
+        49,
+        50
+      ]
+    },
+    "section_6.musculo_skeletal.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2203,
+        1021,
+        50,
+        50
+      ]
+    },
+    "section_6.blood_spleen_lymphatic.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        1137,
+        49,
+        50
+      ]
+    },
+    "section_6.blood_spleen_lymphatic.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2203,
+        1137,
+        50,
+        50
+      ]
+    },
+    "section_6.cancer_tumour.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        1254,
+        49,
+        50
+      ]
+    },
+    "section_6.cancer_tumour.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2203,
+        1254,
+        50,
+        50
+      ]
+    },
+    "section_6.sensory_skin.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        1325,
+        49,
+        50
+      ]
+    },
+    "section_6.sensory_skin.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2203,
+        1325,
+        50,
+        50
+      ]
+    },
+    "section_6.endocrine_autoimmune.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        1441,
+        49,
+        49
+      ]
+    },
+    "section_6.endocrine_autoimmune.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2203,
+        1441,
+        50,
+        49
+      ]
+    },
+    "section_6.communicable_std.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        1558,
+        49,
+        50
+      ]
+    },
+    "section_6.communicable_std.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2203,
+        1558,
+        50,
+        50
+      ]
+    },
+    "section_7.pregnant.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        1701,
+        50,
+        50
+      ]
+    },
+    "section_7.pregnant.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2204,
+        1701,
+        49,
+        50
+      ]
+    },
+    "section_7.breast_uterus_cervix.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        1769,
+        50,
+        50
+      ]
+    },
+    "section_7.breast_uterus_cervix.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2204,
+        1769,
+        49,
+        50
+      ]
+    },
+    "section_7.gestational_complications.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        1843,
+        50,
+        49
+      ]
+    },
+    "section_7.gestational_complications.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2204,
+        1843,
+        49,
+        49
+      ]
+    },
+    "section_8.other_history.yes": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        1991,
+        2017,
+        50,
+        50
+      ]
+    },
+    "section_8.other_history.no": {
+      "kind": "checkbox",
+      "page": 3,
+      "bbox": [
+        2204,
+        2017,
+        49,
+        50
+      ]
+    },
+    "section_knows_examinee.yes": {
+      "kind": "checkbox",
+      "page": 4,
+      "bbox": [
+        1754,
+        614,
+        50,
+        50
+      ]
+    },
+    "section_knows_examinee.no": {
+      "kind": "checkbox",
+      "page": 4,
+      "bbox": [
+        1943,
+        614,
+        50,
+        50
+      ]
+    },
+    "section_regular_physician.yes": {
+      "kind": "checkbox",
+      "page": 4,
+      "bbox": [
+        1754,
+        734,
+        50,
+        50
+      ]
+    },
+    "section_regular_physician.no": {
+      "kind": "checkbox",
+      "page": 4,
+      "bbox": [
+        1943,
+        734,
+        50,
+        50
+      ]
+    },
+    "section_blood_sample_collected.yes": {
+      "kind": "checkbox",
+      "page": 4,
+      "bbox": [
+        1754,
+        854,
+        50,
+        50
+      ]
+    },
+    "section_blood_sample_collected.no": {
+      "kind": "checkbox",
+      "page": 4,
+      "bbox": [
+        1943,
+        854,
+        50,
+        50
+      ]
+    },
+    "section_j.fasting": {
+      "kind": "checkbox",
+      "page": 4,
+      "bbox": [
+        542,
+        929,
+        50,
+        50
+      ]
+    },
+    "section_j.non_fasting": {
+      "kind": "checkbox",
+      "page": 4,
+      "bbox": [
+        542,
+        988,
+        50,
+        50
+      ]
+    },
+    "section_j.not_applicable": {
+      "kind": "checkbox",
+      "page": 4,
+      "bbox": [
+        542,
+        1047,
+        50,
+        50
+      ]
+    },
+    "examination_place.clinic": {
+      "kind": "checkbox",
+      "page": 4,
+      "bbox": [
+        1404,
+        1957,
+        62,
+        61
+      ]
+    },
+    "examination_place.diagnostic_centre": {
+      "kind": "checkbox",
+      "page": 4,
+      "bbox": [
+        1640,
+        1957,
+        62,
+        61
+      ]
+    },
+    "examination_place.examinee_residence": {
+      "kind": "checkbox",
+      "page": 4,
+      "bbox": [
+        1404,
+        2028,
+        62,
+        61
+      ]
+    }
+  }
+}

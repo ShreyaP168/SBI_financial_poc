@@ -1,0 +1,13 @@
+# Compose >= 2.24.4. Only synthetic data and test tokens; no provider calls.
+services:
+  gateway:
+    ports: !override ["127.0.0.1:${UW_TEST_PORT:-18080}:8000"]
+  extraction:
+    command: [uvicorn, extraction_fixture:create_app, --factory, --host, 0.0.0.0, --port, "8000", --no-access-log]
+    environment:
+      PYTHONPATH: /app/test_support
+    volumes:
+      - ./tests/support:/app/test_support:ro
+  worker:
+    volumes:
+      - ./tests/support:/app/test_support:ro

@@ -1,0 +1,109 @@
+name: underwriting-platform
+
+x-service: &service
+  image: underwriting-platform:local
+  build: .
+  restart: unless-stopped
+  init: true
+  read_only: true
+  tmpfs:
+    - /tmp
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  networks: [backend]
+  healthcheck:
+    test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=5)"]
+    interval: 10s
+    timeout: 6s
+    retries: 12
+    start_period: 20s
+
+x-worker-env: &worker-env
+  UW_DATABASE_URL: postgresql://underwriting:${UW_DB_PASSWORD:?Set UW_DB_PASSWORD}@jobs-db:5432/underwriting
+  UW_SERVICE_TOKEN: ${UW_SERVICE_TOKEN:?Set UW_SERVICE_TOKEN}
+  UW_EXTRACTION_URL: http://extraction:8000
+  UW_UNDERWRITING_URL: http://underwriting:8000
+  UW_ARTIFACTS_URL: http://artifacts:8000
+
+services:
+  jobs-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: underwriting
+      POSTGRES_USER: underwriting
+      POSTGRES_PASSWORD: ${UW_DB_PASSWORD:?Set UW_DB_PASSWORD}
+    volumes: [jobs-data:/var/lib/postgresql/data]
+    networks: [backend]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U underwriting -d underwriting"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  gateway:
+    <<: *service
+    environment:
+      <<: *worker-env
+      UW_SERVICE_ROLE: gateway
+      UW_GATEWAY_TOKEN: ${UW_GATEWAY_TOKEN:?Set UW_GATEWAY_TOKEN}
+    ports: ["127.0.0.1:8000:8000"]
+    networks: [backend, ingress]
+    depends_on:
+      jobs-db: {condition: service_healthy}
+
+  extraction:
+    <<: *service
+    deploy: {replicas: 1}
+    environment:
+      UW_SERVICE_ROLE: extraction
+      UW_SERVICE_TOKEN: ${UW_SERVICE_TOKEN:?Set UW_SERVICE_TOKEN}
+      UW_CASE_ROOT: /app/cases
+      UW_EXTRACTION_CACHE: /app/runtime/extractions
+      UW_CACHE_ROOT: /app/runtime/cache
+      UW_REFERENCE_ROOT: /app/reference_docs
+    env_file:
+      - path: "${UW_PROVIDER_ENV_FILE:-./.provider-settings.env}"
+        required: false
+    volumes:
+      - "${UW_CASE_HOST_PATH:-../data/cases/Financial Evaluation}:/app/cases:ro"
+      - "${UW_REFERENCE_HOST_PATH:-../data/references}:/app/reference_docs:ro"
+      - extraction-data:/app/runtime
+    networks: [backend, provider-egress]
+
+  underwriting:
+    <<: *service
+    environment:
+      UW_SERVICE_ROLE: underwriting
+      UW_SERVICE_TOKEN: ${UW_SERVICE_TOKEN:?Set UW_SERVICE_TOKEN}
+
+  artifacts:
+    <<: *service
+    deploy: {replicas: 1}
+    environment:
+      UW_SERVICE_ROLE: artifacts
+      UW_SERVICE_TOKEN: ${UW_SERVICE_TOKEN:?Set UW_SERVICE_TOKEN}
+      UW_ARTIFACT_ROOT: /app/runtime/artifacts
+      UW_EXTRACTION_URL: http://extraction:8000
+    volumes: [artifact-data:/app/runtime]
+
+  worker:
+    <<: *service
+    command: [uw-worker]
+    environment: *worker-env
+    healthcheck: {disable: true}
+    depends_on:
+      jobs-db: {condition: service_healthy}
+      extraction: {condition: service_healthy}
+      underwriting: {condition: service_healthy}
+      artifacts: {condition: service_healthy}
+
+networks:
+  backend: {internal: true}
+  ingress: {}
+  provider-egress: {}
+
+volumes:
+  jobs-data: {}
+  extraction-data: {}
+  artifact-data: {}

@@ -1,0 +1,42 @@
+{
+  "_comment": "Tier-1 / Top-cities list used to flag applicant.is_top_location on the case sheet. Match against applicant.city OR applicant.pincode (first 3 digits).",
+  "_updated": "2026-04-27",
+  "_source":  "RBI Tier-1 + TATA AIA UW practice (top metros + adjoining urban agglomerates)",
+  "tier1_cities": [
+    "Mumbai", "Navi Mumbai", "Thane", "Greater Mumbai",
+    "Delhi", "New Delhi", "Gurgaon", "Gurugram", "Noida", "Faridabad", "Ghaziabad",
+    "Bangalore", "Bengaluru",
+    "Chennai",
+    "Hyderabad", "Secunderabad",
+    "Kolkata",
+    "Pune",
+    "Ahmedabad", "Gandhinagar"
+  ],
+  "tier2_cities": [
+    "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Indore", "Coimbatore",
+    "Kochi", "Cochin", "Vadodara", "Surat", "Visakhapatnam", "Vizag",
+    "Bhopal", "Patna", "Ludhiana", "Agra", "Nashik", "Faridabad",
+    "Meerut", "Rajkot", "Vijayawada", "Madurai", "Varanasi", "Srinagar",
+    "Aurangabad", "Dhanbad", "Amritsar", "Allahabad", "Ranchi", "Howrah",
+    "Jabalpur", "Gwalior", "Jodhpur", "Raipur", "Chandigarh", "Mysore"
+  ],
+  "tier1_pincode_prefixes": {
+    "_comment":   "First 3 digits of pincode → city tier mapping. Used when city is absent but pincode is.",
+    "400":        "Mumbai",
+    "401":        "Mumbai-Suburb",
+    "402":        "Navi Mumbai",
+    "410":        "Pune",
+    "411":        "Pune",
+    "412":        "Pune",
+    "560":        "Bangalore",
+    "600":        "Chennai",
+    "110":        "Delhi",
+    "120":        "Faridabad",
+    "201":        "Noida",
+    "122":        "Gurgaon",
+    "700":        "Kolkata",
+    "500":        "Hyderabad",
+    "380":        "Ahmedabad",
+    "382":        "Gandhinagar"
+  }
+}

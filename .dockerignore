@@ -1,0 +1,9 @@
+*
+!Dockerfile
+!pyproject.toml
+!requirements.txt
+!src/
+!src/**
+src/**/__pycache__
+src/**/*.pyc
+src/**/.geocode_cache.json

@@ -1,0 +1,255 @@
+{
+  "insurer": "TATA AIA Life Insurance",
+  "version": "Feb-2026",
+  "llm": {
+    "backend": "azure_claude",
+    "note": "Set LLM_BACKEND env var to override: 'claude' | 'azure_claude' | 'gemini'",
+    "azure_claude": {
+      "endpoint": "https://kaiseries-claude-resource.services.ai.azure.com/anthropic/",
+      "api_key": "",
+      "deployment": "claude-sonnet-4-6",
+      "api_version": "2025-04-01-preview",
+      "max_tokens": 4096,
+      "note_endpoint": "Get endpoint from Azure AI Foundry portal \u2192 your resource \u2192 Overview \u2192 Target URI",
+      "note_auth": "Set AZURE_CLAUDE_ENDPOINT + AZURE_CLAUDE_API_KEY in .env (preferred over hardcoding here)",
+      "model_note": "Sonnet 4.6 deployment with bumped quota (2.5M tpm + 2.5k rpm as of 2026-05-26). Cheaper than Opus 4.6 \u2014 recommended for high-volume POC batches.",
+      "note_client": "Uses AnthropicFoundry from anthropic SDK \u2014 handles Azure auth automatically"
+    },
+    "claude": {
+      "model": "claude-sonnet-4-6",
+      "max_tokens": 4096,
+      "env_key": "ANTHROPIC_API_KEY",
+      "model_note": "claude-sonnet-4-6 = latest Sonnet on Anthropic direct API"
+    },
+    "gemini": {
+      "model": "gemini-2.0-flash",
+      "max_output_tokens": 4096,
+      "env_key": "GEMINI_API_KEY"
+    }
+  },
+  "income_multiples": {
+    "18-30": 35,
+    "31-35": 30,
+    "36-40": 25,
+    "41-45": 20,
+    "46-50": 15,
+    "51-55": 10,
+    "56-60": 5,
+    "61-65": 0
+  },
+  "hlv_grids": {
+    "_comment": "v3 §11 — three multiplier grids per Term UW Feb 2026 p.15. Base = single-life HLV ceiling; ADB-ATPD = accidental-death rider grid; CI-HC = critical-illness/hospital-cash rider grid.",
+    "base": {
+      "18-30": 35,
+      "31-35": 30,
+      "36-40": 25,
+      "41-45": 20,
+      "46-50": 15,
+      "51-55": 10,
+      "56-60": 5,
+      "61-65": 5
+    },
+    "adb_atpd": {
+      "_note": "Same as base for SA <= 3Cr. For SA > 3Cr: 15× @ 18-60, 5× @ 61-65.",
+      "default_18-60": 15,
+      "default_61-65": 5,
+      "sa_threshold_cr": 3
+    },
+    "ci_hc": {
+      "18-30": 12,
+      "31-35": 12,
+      "36-40": 10,
+      "41-45": 10,
+      "46-50": 7.5,
+      "51-55": 5,
+      "56-60": 0,
+      "61-65": 0
+    }
+  },
+  "profile_classifier": {
+    "_comment": "v3 §2 #26 — drives Phase 2 conditional sections. 11 profiles.",
+    "rules": [
+      {"profile": "NRI", "if": {"residency_in": ["NRI", "PIO", "OCI"]}},
+      {"profile": "Senior 61-65", "if": {"age_min": 61, "age_max": 65}},
+      {"profile": "Homemaker", "if": {"employment_type": "Homemaker"}},
+      {"profile": "Student", "if": {"employment_type": "Student"}},
+      {"profile": "Agriculturist", "if": {"employment_type": "Agriculturist"}},
+      {"profile": "Transgender", "if": {"gender": "Other"}},
+      {"profile": "Business Insurance", "if": {"product_type_contains": "Keyman"}},
+      {"profile": "Credit Protect", "if": {"product_type_contains": "Credit Protect"}},
+      {"profile": "SEP-VTU", "if": {"product_type_contains": "Shubh Employee Protect"}},
+      {"profile": "Standard Self-Employed", "if": {"employment_type_in": ["Self-Employed Professional", "Self-Employed Business"]}},
+      {"profile": "Standard Salaried", "if": {"default": true}}
+    ]
+  },
+  "bmi_bands": {
+    "_comment": "v3 §2 #28 — boundaries per medical UW grid.",
+    "underweight_max": 18.5,
+    "normal_max": 24.9,
+    "overweight_max": 29.9,
+    "labels": {
+      "Underweight": "<18.5",
+      "Normal": "18.5-24.9",
+      "Overweight": "25-29.9",
+      "Obese": "30+"
+    }
+  },
+  "pending_categories": {
+    "_comment": "v3 — typed PENDING reasons rendered in the case-sheet Source column. External-integration categories (BUREAU, ASKME, CKYC, AML, PHONEPE, HR_SYSTEM, VAHAN, TRUAI) removed — documents are the sole source of truth.",
+    "PENDING_PIN_MASTER": "PENDING — PIN master (negative-PIN list)",
+    "PENDING_PRODUCT_MASTER": "PENDING — Product master config",
+    "PENDING_CHANNEL_MASTER": "PENDING — Channel risk master config",
+    "PENDING_INDUSTRY_GRID": "PENDING — Industry/Occupation risk grid",
+    "PENDING_UW_INPUT": "PENDING — UW reviewer input",
+    "PENDING_ENGINE_GAP_PHASE2": "PENDING — Phase 2 engine work",
+    "PENDING_ENGINE_GAP_PHASE3": "PENDING — Phase 3 integration",
+    "PENDING_DOC": "PENDING — document not submitted"
+  },
+  "top_companies": {
+    "enabled": true,
+    "max_sa_crore": 3,
+    "requires": [
+      "salary_slip_1month",
+      "id_proof"
+    ],
+    "list": [
+      "HCL Technologies",
+      "Infosys",
+      "TCS",
+      "Wipro",
+      "Accenture",
+      "IBM",
+      "Cognizant",
+      "Tech Mahindra",
+      "Capgemini",
+      "Oracle",
+      "SAP",
+      "Goldman Sachs",
+      "Morgan Stanley",
+      "JP Morgan",
+      "Citibank",
+      "HSBC",
+      "Amazon",
+      "Google",
+      "Microsoft",
+      "Meta",
+      "Apple",
+      "Flipkart",
+      "Bright Money Technology",
+      "Razorpay",
+      "PhonePe",
+      "Paytm",
+      "HDFC Bank",
+      "ICICI Bank",
+      "Axis Bank",
+      "Kotak Mahindra Bank",
+      "SBI"
+    ]
+  },
+  "self_employed": {
+    "itr_years_required": 3,
+    "average_years": 2,
+    "ca_coi_mandatory": true,
+    "firm_pl_required": true
+  },
+  "medicals": {
+    "vmer_max_age": 50,
+    "physical_mandatory_above_age": 50,
+    "vmer_max_sa_crore": 10
+  },
+  "mrss": {
+    "min_income": 1500000,
+    "min_sa": 20000000,
+    "min_education": "HSC",
+    "min_age": 21,
+    "max_age": 50
+  },
+  "gating": {
+    "graduate_min_income": 500000,
+    "tsar_2cr_min_income": 750000,
+    "_sa_tier_min_income_comment": "SA-tier income floor — minimum verified annual income required at each Sum Assured band. Mirrors Term UW Feb-2026 page 4 (Non-Grad column = conservative ceiling so we don't under-gate when education is unknown). Each entry: {sa_max_inr, min_income_inr}. Bands evaluated bottom-up; first band with sa_max >= proposed_sa wins.",
+    "sa_tier_min_income": [
+      {"sa_max_inr":   9999999,  "min_income_inr":  500000,  "label": "Up to ₹1 Cr SA → ₹5L min income"},
+      {"sa_max_inr":   20000000, "min_income_inr": 1500000,  "label": "₹1-2 Cr SA → ₹15L min income"},
+      {"sa_max_inr":   50000000, "min_income_inr": 1500000,  "label": "₹2-5 Cr SA → ₹15L min income"},
+      {"sa_max_inr":  100000000, "min_income_inr": 2500000,  "label": "₹5-10 Cr SA → ₹25L min income"},
+      {"sa_max_inr":  250000000, "min_income_inr": 5000000,  "label": "₹10-25 Cr SA → ₹50L min income"},
+      {"sa_max_inr": 9999999999, "min_income_inr": 10000000, "label": "Above ₹25 Cr SA → ₹1 Cr min income"}
+    ],
+    "valid_residential_status": [
+      "Resident Indian",
+      "RI",
+      "Resident"
+    ]
+  },
+  "foir_threshold_pct": 55,
+  "max_per_life_crore": 100,
+  "bank_stmt_months_min": 6,
+  "salary_slip_months_min": 3,
+  "rate_limiting": {
+    "note": "Tuned 2026-05-26 for Sonnet 4.6 deployment with bumped quota: 2,501,000 tpm + 2,501 rpm. Previous values (80k/60) were causing 429 storms at concurrency=4.",
+    "max_concurrent_requests": 16,
+    "max_concurrent_per_case": 6,
+    "max_retries": 5,
+    "base_delay_sec": 2.0,
+    "max_delay_sec": 60.0,
+    "min_request_gap_ms": 50,
+    "jitter": true,
+    "azure_tpm_limit": 2501000,
+    "azure_rpm_limit": 2501
+  },
+  "earned_income_heads": {
+    "salary": true,
+    "business_profession": true,
+    "firm_remuneration": true,
+    "firm_interest_on_capital": true,
+    "firm_profit_share_10_2a": true,
+    "pension_retirement": true
+  },
+  "excluded_income_heads": {
+    "house_property": false,
+    "capital_gains_short": false,
+    "capital_gains_long": false,
+    "other_sources": false,
+    "other_sources_interest": false,
+    "other_sources_dividend": false,
+    "other_sources_winnings": false,
+    "family_pension": false,
+    "agricultural_income": false,
+    "other_exempt": false
+  },
+  "excluded_income_flag_threshold_pct": 20,
+  "income_basis_priority": [
+    "salary_slip",
+    "bank_salary_credits",
+    "itr_with_coi",
+    "ca_computation",
+    "aml_summary"
+  ],
+  "bank_primary_requires_months_min": 3,
+  "employer_employee": {
+    "detection_policy_type_values": ["Employer-Employee", "EE"],
+    "mandatory_employer_docs": ["company_financial"],
+    "flag_if_employer_docs_missing": {
+      "code": "EE-COMPANY-MISSING",
+      "severity": "HIGH",
+      "title": "Employer company financials missing for EE case",
+      "detail": "Employer-Employee policies require audited company financials for the employer. Not provided."
+    }
+  },
+  "fx": {
+    "staleness_warn_days": 7,
+    "stale_flag": {
+      "code": "FX-STALE",
+      "severity": "MEDIUM",
+      "title": "FX rates more than 7 days old"
+    }
+  },
+  "medical_grid_by_sa": {
+    "_comment": "SA bucket → required tests. Source: TATA AIA Annexure 4.",
+    "upto_1cr":   ["MER", "CBC", "HBA1C"],
+    "1_to_3cr":   ["MER", "MSU", "BPB-F", "TMT", "CBC", "HBA1C", "PSA_male_55plus"],
+    "3_to_5cr":   ["MER", "MSU", "BPB-F", "TMT", "CBC", "HBA1C", "Lipid", "PSA_male_55plus"],
+    "5cr_plus":   ["Full Medical Grid per SA band — refer Annexure 4"]
+  }
+}

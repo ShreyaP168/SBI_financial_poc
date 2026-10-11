@@ -1,0 +1,232 @@
+{
+  "_meta": {
+    "version":         "v9-2026-04-27",
+    "source_document": "Term Underwriting Guidelines for UW V5 - Feb26.pdf",
+    "insurer":         "TATA AIA Life Insurance",
+    "doc_path":        "D:/107_APA/TALIC/Term Underwriting Guidelines for UW V5 - Feb26.pdf",
+    "notes":           "Catalogue derived from the Feb-2026 UW guidelines TOC + product-specific UW pages. Codes match the abbreviations used in the source PDF; aliases capture the marketing names that appear on CAFs and proposal forms."
+  },
+
+  "term_plans": [
+    {
+      "code":          "SML_GOLD",
+      "name":          "Shubh Maha Life Gold",
+      "aliases":       ["Shubh Maha Life Gold", "SML Gold", "Shubh Maha Life Gold Plan"],
+      "category":      "term",
+      "ulip":          false,
+      "uw_rules_ref":  "Page 27-28",
+      "max_entry_age": 45,
+      "max_tsar_cr":   3.0,
+      "min_income_lacs_graduate":      3,
+      "min_income_lacs_self_employed": 5,
+      "notes":         "Term plan with limited age band 18-45. The 'Shubh Flexi' marketing name in some CAFs maps to this plan; verify against product code in proposal."
+    },
+    {
+      "code":          "MRSS",
+      "name":          "Maha Raksha Supreme Select",
+      "aliases":       ["Maha Raksha Supreme Select", "MRSS", "MRSS Select", "Maha Raksha Supreme Plus", "MRS Select"],
+      "category":      "term",
+      "ulip":          false,
+      "uw_rules_ref":  "Page 29, 37-40",
+      "min_income_for_mrss_lacs": 15,
+      "min_education": "HSC",
+      "min_sa_cr":     2.0,
+      "notes":         "MRSS Select uses SRS/SRP product boundary; min income ₹15L, HSC education, min SA ₹2 Cr. Below HSC not allowed."
+    },
+    {
+      "code":          "MRS",
+      "name":          "Maha Raksha Supreme",
+      "aliases":       ["Maha Raksha Supreme", "MRS"],
+      "category":      "term",
+      "ulip":          false,
+      "uw_rules_ref":  "Inherits MRSS Select page 29",
+      "notes":         "Predecessor / parallel of MRSS Select; minimum income criteria can be considered basis latest year income."
+    },
+    {
+      "code":          "SARAL_JEEVAN",
+      "name":          "Saral Jeevan Bima",
+      "aliases":       ["Saral Jeevan Bima", "SJB", "POS Saral Jeevan Bima"],
+      "category":      "term",
+      "subcategory":   "pos_term",
+      "ulip":          false,
+      "uw_rules_ref":  "Page 30-31",
+      "notes":         "IRDAI-mandated standardised term plan (POS-eligible). ACM not applicable. Cumulative SA tracked across 24 months of TATA AIA SJB applications."
+    },
+    {
+      "code":          "CREDIT_PROTECT",
+      "name":          "Credit Protect",
+      "aliases":       ["Credit Protect", "Tata AIA Credit Protect", "CP"],
+      "category":      "term",
+      "subcategory":   "loan_linked",
+      "ulip":          false,
+      "uw_rules_ref":  "Page 32-33",
+      "loan_to_cover_ratio_max": 1.05,
+      "notes":         "Single-life cover linked to a secured loan (Home / Auto / Gold / Education). Loan account number + sanction letter mandatory. Single-ownership eligible for FW / Surrogate ≤ 2 Cr."
+    },
+    {
+      "code":          "SEP",
+      "name":          "Shubh Employee Protect",
+      "aliases":       ["Shubh Employee Protect", "SEP", "SEP-VTU", "Employer-Employee Scheme"],
+      "category":      "term",
+      "subcategory":   "employer_employee",
+      "ulip":          false,
+      "uw_rules_ref":  "Page 34-36",
+      "rop_allowed":   false,
+      "notes":         "Group / employer-employee scheme. Only Non-ROP. Assignment & affidavit mandated. VMER mandatory."
+    }
+  ],
+
+  "ilp_series": [
+    {"code": "PR",                "name": "Param Rakshak",                "aliases": ["PR"],                                        "ulip": true, "follows_term_uw": false},
+    {"code": "PR_2_0",             "name": "Param Rakshak 2.0",            "aliases": ["PR 2.0", "Param Rakshak 2.0"],               "ulip": true, "follows_term_uw": false},
+    {"code": "PR_II",              "name": "Param Rakshak II",             "aliases": ["PR II", "Param Rakshak II"],                 "ulip": true, "follows_term_uw": false},
+    {"code": "PR_II_2_0",          "name": "Param Rakshak II 2.0",         "aliases": ["PR II 2.0", "Param Rakshak II 2.0"],         "ulip": true, "follows_term_uw": false},
+    {"code": "PR_III",             "name": "Param Rakshak III",            "aliases": ["PR III", "Param Rakshak III"],               "ulip": true, "follows_term_uw": false},
+    {"code": "PR_PRO",             "name": "Param Rakshak Pro",            "aliases": ["PR PRO", "Param Rakshak Pro"],               "ulip": true, "follows_term_uw": false},
+    {"code": "PR_ELITE",           "name": "Param Rakshak Elite",          "aliases": ["PR Elite", "Param Rakshak Elite"],           "ulip": true, "follows_term_uw": false},
+    {"code": "PR_PLUS",            "name": "Param Rakshak Plus",           "aliases": ["PR+", "PR Plus", "Param Rakshak Plus"],      "ulip": true, "follows_term_uw": false},
+    {"code": "PR_PRIME",           "name": "Param Rakshak Prime",          "aliases": ["PR Prime", "PRPRIME"],                       "ulip": true, "follows_term_uw": true,
+     "note": "Follows pure term UW guidelines."},
+    {"code": "PR_4",               "name": "Param Rakshak 4",              "aliases": ["PR4"],                                        "ulip": true, "follows_term_uw": true,
+     "note": "Follows pure term UW guidelines."},
+    {"code": "PR_LIFE",            "name": "Param Rakshak Life",           "aliases": ["PR Life"],                                    "ulip": true, "follows_term_uw": false},
+    {"code": "PR_LIFE_PRO",        "name": "Param Rakshak Life Pro",       "aliases": ["PR Life Pro"],                                "ulip": true, "follows_term_uw": false},
+    {"code": "PR_LIFE_PRO_PLUS",   "name": "Param Rakshak Life Pro Plus",  "aliases": ["PR Life Pro+", "PR Life Pro Plus"],          "ulip": true, "follows_term_uw": false},
+    {"code": "PR_LIFE_PRO_ADV",    "name": "Param Rakshak Life Pro Advance","aliases": ["PR Life Pro Advance"],                      "ulip": true, "follows_term_uw": false},
+    {"code": "PR_LIFE_GROWTH_PLUS","name": "Param Rakshak Life Growth Plus","aliases": ["PR Life Growth +", "PR Life Growth Plus"],   "ulip": true, "follows_term_uw": false},
+    {"code": "PR_LIFE_MAXIMA_PLUS","name": "Param Rakshak Life Maxima Plus","aliases": ["PR Life Maxima+", "PR Life Maxima Plus"],    "ulip": true, "follows_term_uw": false},
+    {"code": "PR_LIFE_PLUS_2_0",    "name": "Param Rakshak Life Plus 2.0",  "aliases": ["PR Life Plus 2.0"],                          "ulip": true, "follows_term_uw": false},
+    {"code": "PR_LIFE_ADVANTAGE_PLUS","name": "Param Rakshak Life Advantage Plus","aliases": ["PR Life Advantage +"],                "ulip": true, "follows_term_uw": true,
+     "note": "Follows pure term UW guidelines."},
+    {"code": "PR_ROP",             "name": "Param Rakshak Return-of-Premium","aliases": ["PR ROP"],                                  "ulip": true, "follows_term_uw": false},
+    {"code": "PR_ROP_2_0",          "name": "Param Rakshak ROP 2.0",        "aliases": ["PR ROP 2.0", "PR ROP2.0"],                   "ulip": true, "follows_term_uw": false}
+  ],
+
+  "endowment_and_savings_plans": [
+    {
+      "code":     "SHUBH_FLEXI_INCOME",
+      "name":     "Shubh Flexi Income Plan",
+      "aliases":  ["Shubh Flexi", "Shubh Flexi Income", "Shubh Flexi Income Plan",
+                    "Tata AIA Shubh Flexi Income Plan"],
+      "category": "endowment",
+      "ulip":     false,
+      "notes":    "Non-term endowment / income product — outside the scope of the Term UW Guidelines Feb-2026 doc. UW guideline reference TBD."
+    },
+    {
+      "code":     "FORTUNE_GUARANTEE",
+      "name":     "Fortune Guarantee Plan",
+      "aliases":  ["Fortune Guarantee", "Fortune Guarantee Plan",
+                    "Tata AIA Fortune Guarantee Plan"],
+      "category": "endowment",
+      "ulip":     false
+    },
+    {
+      "code":     "SMART_SAMPOORNA_RAKSHA",
+      "name":     "Smart Sampoorna Raksha",
+      "aliases":  ["Smart Sampoorna Raksha", "SSR Smart"],
+      "category": "savings",
+      "ulip":     false
+    },
+    {
+      "code":     "DIAMOND_SAVINGS",
+      "name":     "Diamond Savings Plan",
+      "aliases":  ["Diamond Savings", "Diamond Savings Plan",
+                    "Tata AIA Diamond Savings Plan"],
+      "category": "endowment",
+      "ulip":     false
+    }
+  ],
+
+  "ssr_series": [
+    {"code": "SSR",      "name": "Sampoorna Samriddhi Raksha",  "aliases": ["SSR"],            "ulip": true, "uw_rules_ref": "Page 22-23"},
+    {"code": "SSR_PRO",  "name": "Sampoorna Samriddhi Raksha Pro","aliases": ["SSR Pro"],     "ulip": true, "uw_rules_ref": "Page 22-23"},
+    {"code": "SSRS",     "name": "Sampoorna Samriddhi Raksha Smart","aliases": ["SSRS"],     "ulip": true, "uw_rules_ref": "Page 22-23"},
+    {"code": "SSR_11X",  "name": "Sampoorna Samriddhi Raksha 11x","aliases": ["SSR 11x"],     "ulip": true, "note": "ACM not applicable."},
+    {"code": "SSR_15X",  "name": "Sampoorna Samriddhi Raksha 15x","aliases": ["SSR 15x"],     "ulip": true, "note": "ACM not applicable."}
+  ],
+
+  "business_insurance_schemes": [
+    {"code": "KEYMAN",       "name": "Keyman Insurance / Keyperson Cover",
+     "uw_rules_ref": "Page 41-42",
+     "insurable_value_formula": "Lower of: avg directors' remuneration × 10  OR  avg gross profit × 3 × shareholding%  OR  (avg NPAT + 30% avg depreciation) × 5 × shareholding% — minus existing/simultaneous Keyperson cover in company name",
+     "max_tenure_years_default": 65,
+     "max_cover_inr_default":    1000000000,
+     "extension_to_75_years":    "Family-owned company only; affidavit + life-and-pulse"},
+
+    {"code": "PARTNERSHIP",  "name": "Partnership Insurance",
+     "uw_rules_ref": "Page 42",
+     "insurable_value_formula": "Lower of: avg gross profit × 3 × shareholding%  OR  (avg NPAT + 30% avg depreciation) × 5 × shareholding% — minus existing/simultaneous partnership cover in firm name"},
+
+    {"code": "EMPLOYER_EMPLOYEE", "name": "Employer-Employee Scheme (EE)",
+     "uw_rules_ref": "Page 41",
+     "uses_product_code": "SEP",
+     "rop_allowed": false,
+     "assignment": "Immediate or Conditional, with affidavit"},
+
+    {"code": "HUF",           "name": "HUF Cover (life of Karta)",
+     "uw_rules_ref": "Page 41",
+     "rop_allowed": false}
+  ],
+
+  "riders": [
+    {"code": "ADB",            "name": "Accidental Death Benefit Rider",
+     "category": "rider",
+     "income_multiple_grid": "uw_rules.hlv_grids.adb_atpd",
+     "max_above_3cr_age_18_60": 15,
+     "max_above_3cr_age_61_65": 5,
+     "notes": "Same as base plan grid for SA ≤ 3 Cr; fixed 15× / 5× above 3 Cr."},
+
+    {"code": "ATPD",           "name": "Accidental Total Permanent Disability Rider",
+     "category": "rider",
+     "income_multiple_grid": "uw_rules.hlv_grids.adb_atpd",
+     "notes": "Same grid as ADB."},
+
+    {"code": "CRITICARE_PLUS", "name": "CriticarePlus (Critical Illness Rider)",
+     "category": "rider",
+     "income_multiple_grid": "uw_rules.hlv_grids.ci_hc",
+     "max_age_eligible": 55,
+     "notes": "12× / 10× / 7.5× / 5× by age band per uw_rules.hlv_grids.ci_hc."},
+
+    {"code": "HOSPICARE",      "name": "Hospicare (Hospital Cash Rider)",
+     "category": "rider",
+     "income_multiple_grid": "uw_rules.hlv_grids.ci_hc",
+     "max_age_eligible": 55},
+
+    {"code": "TTI",            "name": "Term Top-up Insurance (TTI Rider)",
+     "category": "rider",
+     "allowed_with_business_insurance": true,
+     "notes": "Only rider permitted alongside Keyman / Partnership."},
+
+    {"code": "LSPO",           "name": "Life Stage Plus Option (LSPO) Benefit",
+     "category": "feature",
+     "uw_rules_ref": "Page 43",
+     "max_entry_age": 50,
+     "self_proposed_only": true,
+     "not_available_for": ["Homemaker", "Agriculture", "Business Insurance"],
+     "notes": "Additional SA approved post-LSPO trigger event; UW done at exercise time, not at issuance."}
+  ],
+
+  "uw_categories": {
+    "_comment": "Cross-cutting UW guideline categories the orchestrator + reconciler use to gate behaviour.",
+    "nri":               {"min_income_lacs_graduate": 10, "min_income_lacs_hsc": 25, "max_age": 60, "uw_rules_ref": "Page 5"},
+    "homemaker":         {"max_age": 50, "min_income_combined_lacs": 10, "max_sar_cr": 1.0, "min_education": "Graduate", "uw_rules_ref": "Page 24"},
+    "student":           {"uw_rules_ref": "Page 9"},
+    "replacement_cover": {"uw_rules_ref": "Page 41"},
+    "pos_term":          {"uw_rules_ref": "Page 41", "products": ["SARAL_JEEVAN"]},
+    "rural":             {"acm_applicable": false}
+  },
+
+  "_lookup_helpers": {
+    "_comment": "These arrays power resolve_product(text) — the identity agent searches the proposal form for any matching alias and returns the canonical code+name.",
+    "all_codes_by_priority":  [
+      "SARAL_JEEVAN", "CREDIT_PROTECT", "SEP", "MRSS", "MRS", "SML_GOLD",
+      "PR_LIFE_PRO_ADV", "PR_LIFE_PRO_PLUS", "PR_LIFE_GROWTH_PLUS",
+      "PR_LIFE_MAXIMA_PLUS", "PR_LIFE_PLUS_2_0",
+      "PR_LIFE_ADVANTAGE_PLUS", "PR_LIFE_PRO", "PR_LIFE",
+      "PR_ROP_2_0", "PR_ROP",
+      "PR_PRIME", "PR_PRO", "PR_ELITE", "PR_PLUS",
+      "PR_III", "PR_II_2_0", "PR_II", "PR_2_0", "PR_4", "PR",
+      "SSR_PRO", "SSRS", "SSR_15X", "SSR_11X", "SSR"
+    ]
+  }
+}

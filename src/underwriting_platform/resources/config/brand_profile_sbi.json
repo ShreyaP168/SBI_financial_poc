@@ -1,0 +1,17 @@
+{
+  "project_slug": "sbi-smart-shield-plus",
+  "engine_version": "v9-sbi",
+  "insurer": {"canonical": "SBI Life Insurance", "permitted_forms": ["SBI Life", "SBI Life Insurance", "SBI Life Insurance Company Ltd."]},
+  "brand": {"system_name": "TruAI UW", "operator": "Datamatics", "require_per_page_header": false},
+  "currency": {"symbol": "₹", "code": "INR", "permitted_forms": ["₹", "INR", "Rs."]},
+  "date_format": "DD-MM-YYYY",
+  "redact": {"internal_codenames": ["uw_engine_v9"], "internal_vocab": ["STP_OK", "STP_BLOCK", "STP_CONDITIONAL"]},
+  "verdict_terminology": {
+    "STANDARD_ISSUANCE": "STANDARD ISSUANCE",
+    "FURTHER_REQUIREMENT": "FURTHER REQUIREMENT",
+    "REFER": "REFER TO MANUAL UW",
+    "DECLINE": "DECLINE",
+    "INCOMPLETE": "INCOMPLETE - MANUAL REVIEW",
+    "ERROR": "REVIEW REQUIRED"
+  }
+}

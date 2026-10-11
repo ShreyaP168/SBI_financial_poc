@@ -1,0 +1,785 @@
+{
+  "_comment": "TALIC medical reference ranges imported from D:/107_APA/TALIC/Master-File/Medical Data ranges.xlsx. Used by engine.lab_ranges to override agent-extracted reference_range + re-classify lab status (NORMAL/HIGH/LOW). Per Datamatics LAYOUT Sheet1 Med #11 (C305285193 regression): the agent's range guess is sometimes wrong; this master table provides the canonical gender-specific values.",
+  "_source": "D:/107_APA/TALIC/Master-File/Medical Data ranges.xlsx",
+  "_updated": "2026-05-18",
+  "version": 1,
+  "cbc_lft_others": [
+    {
+      "field": "ALBUMIN",
+      "male_min": 3.5,
+      "male_max": 5.5,
+      "female_min": 3.5,
+      "female_max": 5.5,
+      "units": "gm/dl",
+      "qualitative": false
+    },
+    {
+      "field": "ALKALINE PHOSPHATE",
+      "male_min": 30.0,
+      "male_max": 140.0,
+      "female_min": 30.0,
+      "female_max": 140.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "Anti HCV",
+      "male_min": "Reactive/Non Reactive/Positive/Negative",
+      "male_max": "Reactive/Non Reactive/Positive/Negative",
+      "female_min": "Reactive/Non Reactive/Positive/Negative",
+      "female_max": "Reactive/Non Reactive/Positive/Negative",
+      "units": "No Units",
+      "qualitative": true
+    },
+    {
+      "field": "Basophils",
+      "male_min": 0.0,
+      "male_max": 1.0,
+      "female_min": 0.0,
+      "female_max": 2.0,
+      "units": "%",
+      "qualitative": false
+    },
+    {
+      "field": "BUN",
+      "male_min": 6.0,
+      "male_max": 25.0,
+      "female_min": 6.0,
+      "female_max": 25.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "Calcium/ Ca/ Ca++",
+      "male_min": 8.5,
+      "male_max": 10.5,
+      "female_min": 8.5,
+      "female_max": 10.5,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "Chlorides/ CL/ CHLOR/ Cl-",
+      "male_min": 95.0,
+      "male_max": 105.0,
+      "female_min": 95.0,
+      "female_max": 105.0,
+      "units": "MMOL/L",
+      "qualitative": false
+    },
+    {
+      "field": "CHOLESTROL",
+      "male_min": 120.0,
+      "male_max": 220.0,
+      "female_min": 120.0,
+      "female_max": 220.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "COTININE",
+      "male_min": "Reactive/Non Reactive/Positive/Negative",
+      "male_max": "Reactive/Non Reactive/Positive/Negative",
+      "female_min": "Reactive/Non Reactive/Positive/Negative",
+      "female_max": "Reactive/Non Reactive/Positive/Negative",
+      "units": "No Units",
+      "qualitative": true
+    },
+    {
+      "field": "CREATININE",
+      "male_min": 0.5,
+      "male_max": 1.2,
+      "female_min": 0.5,
+      "female_max": 1.1,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "DIRECT BILRUBIN",
+      "male_min": 0.0,
+      "male_max": 0.3,
+      "female_min": 0.0,
+      "female_max": 0.3,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "Eisnophils",
+      "male_min": 0.0,
+      "male_max": 4.0,
+      "female_min": 0.0,
+      "female_max": 4.0,
+      "units": "%",
+      "qualitative": false
+    },
+    {
+      "field": "ESR",
+      "male_min": 0.0,
+      "male_max": 20.0,
+      "female_min": 0.0,
+      "female_max": 25.0,
+      "units": "mm/hr",
+      "qualitative": false
+    },
+    {
+      "field": "FBS",
+      "male_min": 70.0,
+      "male_max": 110.0,
+      "female_min": 70.0,
+      "female_max": 110.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "GGTP",
+      "male_min": 5.0,
+      "male_max": 60.0,
+      "female_min": 5.0,
+      "female_max": 40.0,
+      "units": "U/L",
+      "qualitative": false
+    },
+    {
+      "field": "GLOBULIN",
+      "male_min": 2.0,
+      "male_max": 3.5,
+      "female_min": 2.0,
+      "female_max": 3.5,
+      "units": "gm/dl",
+      "qualitative": false
+    },
+    {
+      "field": "Haemoglobin",
+      "male_min": 11.0,
+      "male_max": 17.0,
+      "female_min": 9.6,
+      "female_max": 17.0,
+      "units": "gm/dl",
+      "qualitative": false
+    },
+    {
+      "field": "HBA1C",
+      "male_min": 4.0,
+      "male_max": 6.0,
+      "female_min": 4.0,
+      "female_max": 6.0,
+      "units": "%",
+      "qualitative": false
+    },
+    {
+      "field": "HBEAG",
+      "male_min": "Reactive/Non Reactive/Positive/Negative",
+      "male_max": "Reactive/Non Reactive/Positive/Negative",
+      "female_min": "Reactive/Non Reactive/Positive/Negative",
+      "female_max": "Reactive/Non Reactive/Positive/Negative",
+      "units": "No Units",
+      "qualitative": true
+    },
+    {
+      "field": "HBSAG",
+      "male_min": "Reactive/Non Reactive/Positive/Negative",
+      "male_max": "Reactive/Non Reactive/Positive/Negative",
+      "female_min": "Reactive/Non Reactive/Positive/Negative",
+      "female_max": "Reactive/Non Reactive/Positive/Negative",
+      "units": "No Units",
+      "qualitative": true
+    },
+    {
+      "field": "HDL CHOLESTROL",
+      "male_min": 35.0,
+      "male_max": 55.0,
+      "female_min": 35.0,
+      "female_max": 55.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "HIV-1",
+      "male_min": "Reactive/Non Reactive/Positive/Negative",
+      "male_max": "Reactive/Non Reactive/Positive/Negative",
+      "female_min": "Reactive/Non Reactive/Positive/Negative",
+      "female_max": "Reactive/Non Reactive/Positive/Negative",
+      "units": "No Units",
+      "qualitative": true
+    },
+    {
+      "field": "HIV-2",
+      "male_min": "Reactive/Non Reactive/Positive/Negative",
+      "male_max": "Reactive/Non Reactive/Positive/Negative",
+      "female_min": "Reactive/Non Reactive/Positive/Negative",
+      "female_max": "Reactive/Non Reactive/Positive/Negative",
+      "units": "No Units",
+      "qualitative": true
+    },
+    {
+      "field": "INDIRECT BILRUBIN",
+      "male_min": 0.3,
+      "male_max": 1.0,
+      "female_min": 0.3,
+      "female_max": 1.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "LDL CHOLESTROL",
+      "male_min": 80.0,
+      "male_max": 160.0,
+      "female_min": 60.0,
+      "female_max": 160.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "LDL HDL CHOL RATIO",
+      "male_min": 0.0,
+      "male_max": 3.5,
+      "female_min": 0.0,
+      "female_max": 3.5,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "Lymphocytes",
+      "male_min": 20.0,
+      "male_max": 45.0,
+      "female_min": 20.0,
+      "female_max": 45.0,
+      "units": "%",
+      "qualitative": false
+    },
+    {
+      "field": "MCH",
+      "male_min": 26.0,
+      "male_max": 32.0,
+      "female_min": 26.0,
+      "female_max": 32.0,
+      "units": "pg",
+      "qualitative": false
+    },
+    {
+      "field": "MCHC",
+      "male_min": 30.0,
+      "male_max": 35.0,
+      "female_min": 30.0,
+      "female_max": 35.0,
+      "units": "%",
+      "qualitative": false
+    },
+    {
+      "field": "MCV",
+      "male_min": 75.0,
+      "male_max": 102.0,
+      "female_min": 75.0,
+      "female_max": 102.0,
+      "units": "fl",
+      "qualitative": false
+    },
+    {
+      "field": "Microalbuminuria",
+      "male_min": 6.0,
+      "male_max": 20.0,
+      "female_min": 6.0,
+      "female_max": 20.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "Monocytes",
+      "male_min": 2.0,
+      "male_max": 10.0,
+      "female_min": 1.0,
+      "female_max": 8.0,
+      "units": "%",
+      "qualitative": false
+    },
+    {
+      "field": "Neutrophils",
+      "male_min": 45.0,
+      "male_max": 75.0,
+      "female_min": 45.0,
+      "female_max": 75.0,
+      "units": "%",
+      "qualitative": false
+    },
+    {
+      "field": "PCV",
+      "male_min": 41.0,
+      "male_max": 52.0,
+      "female_min": 36.0,
+      "female_max": 46.0,
+      "units": "%",
+      "qualitative": false
+    },
+    {
+      "field": "Phosphorus/ Inorganic phosphate/PO4",
+      "male_min": 2.7,
+      "male_max": 4.5,
+      "female_min": 2.7,
+      "female_max": 4.5,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "PLATELETS",
+      "male_min": 150000.0,
+      "male_max": 450000.0,
+      "female_min": 150000.0,
+      "female_max": 450000.0,
+      "units": "/cumm",
+      "qualitative": false
+    },
+    {
+      "field": "Potassium/ K/ K+",
+      "male_min": 3.5,
+      "male_max": 5.0,
+      "female_min": 3.5,
+      "female_max": 5.0,
+      "units": "MMOL/L",
+      "qualitative": false
+    },
+    {
+      "field": "PSA",
+      "male_min": 0.0,
+      "male_max": 4.0,
+      "female_min": 0.0,
+      "female_max": 4.0,
+      "units": "ng/ml",
+      "qualitative": false
+    },
+    {
+      "field": "RBC",
+      "male_min": 4.5,
+      "male_max": 6.0,
+      "female_min": 4.5,
+      "female_max": 6.0,
+      "units": "million/cumm",
+      "qualitative": false
+    },
+    {
+      "field": "SERUM BILRUBIN",
+      "male_min": 0.1,
+      "male_max": 1.2,
+      "female_min": 0.1,
+      "female_max": 1.2,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "SGOT",
+      "male_min": 0.0,
+      "male_max": 60.0,
+      "female_min": 0.0,
+      "female_max": 60.0,
+      "units": "U/L",
+      "qualitative": false
+    },
+    {
+      "field": "SGPT",
+      "male_min": 0.0,
+      "male_max": 60.0,
+      "female_min": 0.0,
+      "female_max": 60.0,
+      "units": "U/L",
+      "qualitative": false
+    },
+    {
+      "field": "Sodium/ Na/ Na+",
+      "male_min": 136.0,
+      "male_max": 152.0,
+      "female_min": 136.0,
+      "female_max": 152.0,
+      "units": "mmol/l",
+      "qualitative": false
+    },
+    {
+      "field": "Total Protien",
+      "male_min": 6.0,
+      "male_max": 8.4,
+      "female_min": 6.0,
+      "female_max": 8.4,
+      "units": "gm/dl",
+      "qualitative": false
+    },
+    {
+      "field": "TRIGLYCERIDES",
+      "male_min": 40.0,
+      "male_max": 200.0,
+      "female_min": 40.0,
+      "female_max": 200.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "UREA",
+      "male_min": 8.0,
+      "male_max": 48.0,
+      "female_min": 8.0,
+      "female_max": 48.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "Uric Acid",
+      "male_min": 0.0,
+      "male_max": 7.0,
+      "female_min": 0.0,
+      "female_max": 7.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "VLDL CHOLESTROL",
+      "male_min": 2.0,
+      "male_max": 30.0,
+      "female_min": 2.0,
+      "female_max": 30.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "WBC",
+      "male_min": 4000.0,
+      "male_max": 11000.0,
+      "female_min": 4000.0,
+      "female_max": 11000.0,
+      "units": "/cumm",
+      "qualitative": false
+    },
+    {
+      "field": "AG Ratio",
+      "male_min": 1.0,
+      "male_max": 2.0,
+      "female_min": 1.0,
+      "female_max": 2.0,
+      "units": "g/dl",
+      "qualitative": false
+    },
+    {
+      "field": "AFP",
+      "male_min": 0.0,
+      "male_max": 40.0,
+      "female_min": 0.0,
+      "female_max": 40.0,
+      "units": "ng/ml",
+      "qualitative": false
+    },
+    {
+      "field": "OGTT",
+      "male_min": 0.0,
+      "male_max": 110.0,
+      "female_min": 0.0,
+      "female_max": 110.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "PG2",
+      "male_min": 80.0,
+      "male_max": 140.0,
+      "female_min": 80.0,
+      "female_max": 140.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "RBS",
+      "male_min": 80.0,
+      "male_max": 140.0,
+      "female_min": 80.0,
+      "female_max": 140.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "RDW",
+      "male_min": 11.8,
+      "male_max": 14.5,
+      "female_min": 12.2,
+      "female_max": 16.1,
+      "units": "FL",
+      "qualitative": false
+    },
+    {
+      "field": "Sepecific Gravity",
+      "male_min": 1.0,
+      "male_max": 1.03,
+      "female_min": 1.0,
+      "female_max": 1.03,
+      "units": "",
+      "qualitative": false
+    },
+    {
+      "field": "TSH",
+      "male_min": 0.3,
+      "male_max": 4.5,
+      "female_min": 0.3,
+      "female_max": 4.5,
+      "units": "uu/ml",
+      "qualitative": false
+    },
+    {
+      "field": "Totoal Chol/HDL Ratio",
+      "male_min": 2.0,
+      "male_max": 5.0,
+      "female_min": 2.0,
+      "female_max": 5.0,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "TTLT3",
+      "male_min": 75.0,
+      "male_max": 195.0,
+      "female_min": 75.0,
+      "female_max": 195.0,
+      "units": "ng/dl",
+      "qualitative": false
+    },
+    {
+      "field": "TTLT4",
+      "male_min": 4.0,
+      "male_max": 12.0,
+      "female_min": 4.0,
+      "female_max": 12.0,
+      "units": "ug/dl",
+      "qualitative": false
+    },
+    {
+      "field": "LAB FIELD",
+      "male_min": "Male",
+      "male_max": null,
+      "female_min": "Female",
+      "female_max": null,
+      "units": "Units",
+      "qualitative": false
+    },
+    {
+      "field": "ALKALINE PHOSPHATE",
+      "male_min": 30.0,
+      "male_max": 160.0,
+      "female_min": 30.0,
+      "female_max": 160.0,
+      "units": "IU/L",
+      "qualitative": false
+    },
+    {
+      "field": "CREATININE",
+      "male_min": 0.5,
+      "male_max": 1.2,
+      "female_min": 0.5,
+      "female_max": 1.1,
+      "units": "mg/dl",
+      "qualitative": false
+    },
+    {
+      "field": "GGTP",
+      "male_min": 5.0,
+      "male_max": 60.0,
+      "female_min": 5.0,
+      "female_max": 40.0,
+      "units": "U/L",
+      "qualitative": false
+    },
+    {
+      "field": "TSH",
+      "male_min": 0.3,
+      "male_max": 4.5,
+      "female_min": 0.3,
+      "female_max": 4.5,
+      "units": "uu/ml",
+      "qualitative": false
+    },
+    {
+      "field": "Free T3",
+      "male_min": 1.4,
+      "male_max": 4.4,
+      "female_min": 1.4,
+      "female_max": 4.4,
+      "units": "pg/ml",
+      "qualitative": false
+    },
+    {
+      "field": "Free T4",
+      "male_min": 0.8,
+      "male_max": 2.3,
+      "female_min": 0.8,
+      "female_max": 2.3,
+      "units": "ng/dl",
+      "qualitative": false
+    },
+    {
+      "field": "Test",
+      "male_min": "Range",
+      "male_max": "Unit",
+      "female_min": null,
+      "female_max": null,
+      "units": "",
+      "qualitative": false
+    },
+    {
+      "field": "CEA",
+      "male_min": "0-5",
+      "male_max": "U/ml",
+      "female_min": null,
+      "female_max": null,
+      "units": "",
+      "qualitative": false
+    },
+    {
+      "field": "CA 125",
+      "male_min": "0-35",
+      "male_max": "U/ml",
+      "female_min": null,
+      "female_max": null,
+      "units": "",
+      "qualitative": false
+    },
+    {
+      "field": "CA 19-9",
+      "male_min": "0-35",
+      "male_max": "U/ml",
+      "female_min": null,
+      "female_max": null,
+      "units": "",
+      "qualitative": false
+    },
+    {
+      "field": "CA 15-3",
+      "male_min": "0-30",
+      "male_max": "U/ml",
+      "female_min": null,
+      "female_max": null,
+      "units": "",
+      "qualitative": false
+    }
+  ],
+  "auto_calculated_fields": [
+    "1.A/G Ratio : Albumin / Globulin (auto-calculated field) (If available in lab report, then capture the value else it needs to be auto calculated)",
+    "2. TOTAL CHOLESTEROL/HDL RATIO - TOTAL Cholesterol /HDL Cholesterol (auto-calculated field) (If available in lab report, then capture the value else it needs to be auto calculated)",
+    "3. Serum or Total BILIRUBIN/ BIL/ Bili :   Direct + Indirect bilirubin (If available in lab report, then capture the value else it needs to be auto calculated)",
+    "4.Direct Bilirubin :   Serum/Total Bilirubin – Indirect Bilirubin(If available in lab report, then capture the value else it needs to be auto calculated)",
+    "5.Indirect Bilirubin :   Serum/Total Bilirubin – direct Bilirubin(If available in lab report, then capture the value else it needs to be auto calculated)",
+    "6.Total Protein :  Albumin + Globulin (Auto-calculate field) (If available in lab report, then capture the value else it needs to be auto calculated)"
+  ],
+  "rua": [
+    {
+      "section": "Chemical Examination",
+      "field": "PH",
+      "sample_value": "6.5",
+      "range": "4.6 - 8.0",
+      "unit": "NA"
+    },
+    {
+      "section": "Chemical Examination",
+      "field": "Sepecific Gravity",
+      "sample_value": "1.02",
+      "range": "1.000 - 1.030",
+      "unit": "NA"
+    },
+    {
+      "section": "Physical Examination",
+      "field": "Protiens",
+      "sample_value": "Positive",
+      "range": "Postive/Negative",
+      "unit": "Mg/dl"
+    },
+    {
+      "section": "Physical Examination",
+      "field": "Glucose",
+      "sample_value": "Negative",
+      "range": "Postive/Negative",
+      "unit": "Mg/dl"
+    },
+    {
+      "section": "Physical Examination",
+      "field": "ketones",
+      "sample_value": "Negative",
+      "range": "Postive/Negative",
+      "unit": "Mg/dl"
+    },
+    {
+      "section": "Physical Examination",
+      "field": "Bile Salts",
+      "sample_value": "Negative",
+      "range": "Postive/Negative",
+      "unit": "Mg/dl"
+    },
+    {
+      "section": "Physical Examination",
+      "field": "Bile Pigments",
+      "sample_value": "Negative",
+      "range": "Postive/Negative",
+      "unit": "Mg/dl"
+    },
+    {
+      "section": "Physical Examination",
+      "field": "Nitrites",
+      "sample_value": "Negative",
+      "range": "Postive/Negative",
+      "unit": "NA"
+    },
+    {
+      "section": "Physical Examination",
+      "field": "Blood",
+      "sample_value": "Negative",
+      "range": "Postive/Negative",
+      "unit": "cells/ul"
+    },
+    {
+      "section": "Physical Examination",
+      "field": "urobillinogen",
+      "sample_value": "Normal",
+      "range": "Postive/Negative",
+      "unit": "Mg/dl"
+    },
+    {
+      "section": "Physical Examination",
+      "field": "Leukocytes",
+      "sample_value": "Negative",
+      "range": "Postive/Negative",
+      "unit": "cells/ul"
+    },
+    {
+      "section": "Microscopic Examination",
+      "field": "PUS Cells",
+      "sample_value": "5.0 - 6.0",
+      "range": "0 - 5",
+      "unit": "/HPF"
+    },
+    {
+      "section": "Microscopic Examination",
+      "field": "RBC Cells",
+      "sample_value": "Nil",
+      "range": "0 - 5",
+      "unit": "/HPF"
+    },
+    {
+      "section": "Microscopic Examination",
+      "field": "Epithilial Cells",
+      "sample_value": "3.0 - 4.0",
+      "range": "0 - 5",
+      "unit": "/HPF"
+    },
+    {
+      "section": "Microscopic Examination",
+      "field": "Casts",
+      "sample_value": "nil",
+      "range": "Nil",
+      "unit": null
+    },
+    {
+      "section": "Microscopic Examination",
+      "field": "Crystals",
+      "sample_value": "nil",
+      "range": "Nil",
+      "unit": null
+    },
+    {
+      "section": "Microscopic Examination",
+      "field": "Others(Yeast & Bacteria)",
+      "sample_value": "absent",
+      "range": "Nil",
+      "unit": null
+    }
+  ]
+}

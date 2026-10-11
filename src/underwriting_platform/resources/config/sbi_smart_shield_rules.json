@@ -1,0 +1,252 @@
+{
+  "_meta": {
+    "insurer": "SBI Life Insurance",
+    "product": "Smart Shield Plus (4C)",
+    "version": "POC-2026-06-24",
+    "sources": [
+      "Undewriring Guidelines for Smart Shield Plus V02.docx",
+      "Protection Plans and Surrogate Income guidelines.docx",
+      "Explanation on IIB and CIBIL Score rules.msg (Rakesh Shetty, SBI Life, 2026-06-18)",
+      "Scores.xlsx",
+      "IIB, prev insurance.docx"
+    ],
+    "note": "Additive rule set for the SBI Financial Underwriting POC. Does not modify uw_rules.json (TATA AIA). Activated only when case_json.sbi_bureau is present."
+  },
+
+  "income_multiplier_table": {
+    "_source": "Undewriring Guidelines for Smart Shield Plus V02.docx -- 'Verified Income multiplicative factor' row, nested table (income >= INR 5 lakhs vs < INR 5 lakhs, by age at entry). This table is a NESTED table inside the row's cell -- a naive top-level table read misses it; confirmed present via docx XML inspection and python-docx cell.tables[0] on 2026-06-25.",
+    "income_band_threshold_inr": 500000,
+    "bands": [
+      {"age_min": 18, "age_max": 30, "multiplier_income_gte_5l": 35, "multiplier_income_lt_5l": 25},
+      {"age_min": 31, "age_max": 35, "multiplier_income_gte_5l": 30, "multiplier_income_lt_5l": 25},
+      {"age_min": 36, "age_max": 40, "multiplier_income_gte_5l": 25, "multiplier_income_lt_5l": 20},
+      {"age_min": 41, "age_max": 45, "multiplier_income_gte_5l": 20, "multiplier_income_lt_5l": 15},
+      {"age_min": 46, "age_max": 50, "multiplier_income_gte_5l": 15, "multiplier_income_lt_5l": 12},
+      {"age_min": 51, "age_max": 55, "multiplier_income_gte_5l": 10, "multiplier_income_lt_5l": 10},
+      {"age_min": 56, "age_max": 60, "multiplier_income_gte_5l": 5,  "multiplier_income_lt_5l": 5},
+      {"age_min": 61, "age_max": 999, "multiplier_income_gte_5l": 5, "multiplier_income_lt_5l": null,
+       "income_lt_5l_note": "Individual Consideration -- not a numeric multiplier per source table; refer for manual UW when age > 60 and income < INR 5 lakhs."}
+    ]
+  },
+
+  "entry_age": {
+    "_source": "Protection Plans and Surrogate Income guidelines.docx — Smart Shield Plus (4C) row 'Entry Age'",
+    "whole_life_rp": {"min": 45, "max": 60},
+    "whole_life_sp_lp": {"min": 45, "max": 65},
+    "other_than_wl_rp": {"min": 18, "max": 60},
+    "other_than_wl_sp_lp": {"min": 18, "max": 65},
+    "better_half_benefit": {"min": 18, "max": 55}
+  },
+  "max_age_at_maturity": {
+    "whole_life_years": 100,
+    "other_than_wl_years": 79
+  },
+  "basic_sum_assured": {
+    "min_inr": 2500000,
+    "max_inr": null,
+    "_note": "Max: No Limit per source table."
+  },
+
+  "qualification_gate": {
+    "_source": "Undewriring Guidelines for Smart Shield Plus V02.docx — Qualifications row; Protection Plans docx — Qualification row",
+    "disallowed": ["Illiterate", "Below SSC"],
+    "tiers": [
+      {"qualification": "SSC", "min_income_inr": 1000000},
+      {"qualification": "HSC", "min_income_inr": 500000},
+      {"qualification": "Graduate", "min_income_inr": 500000},
+      {"qualification": "Post-Graduate", "min_income_inr": 500000}
+    ]
+  },
+
+  "occupation_income_proof_gate": {
+    "_source": "Undewriring Guidelines for Smart Shield Plus V02.docx — Financial Underwriting Male/Female row",
+    "salaried_professional_no_proof_max_sa_inr": 3000000,
+    "salaried_min_income_inr": 500000,
+    "govt_psu_reputed_min_income_inr": 250000,
+    "govt_psu_reputed_max_sa_with_lower_income_inr": 5000000,
+    "business_self_employed_proof_mandatory": true,
+    "business_proof_mandatory_above_sa_inr": 3000000,
+    "self_employed_proof_mandatory_any_sa": true,
+    "disallowed_petty_business_occupations": [
+      "Pan shop", "Rickshaw driver", "Scrap merchant", "Tuition",
+      "Beauty parlor", "Vegetable vendor", "Kirana shop", "Kirana store",
+      "Small merchant", "Sweet shop", "Sweet business", "Confectionery"
+    ],
+    "_disallowed_petty_business_occupations_note": "'Kirana store' and 'Sweet shop'/'Sweet business'/'Confectionery' are not separate literal entries in V02.docx — both classified by the client as forms of the document's 'Small merchant' petty-business category (client-confirmed)."
+  },
+
+  "medical_grid": {
+    "_source": "Undewriring Guidelines for Smart Shield Plus V02.docx — 'Medical Grid' table. Added 2026-10-09 per client instruction to strictly follow SBI guideline (previously treated as entirely out of scope for this POC's case sheet — client review of a specific case's missing-medical finding established the grid IS part of the product's own mandatory underwriting requirements and should be surfaced).",
+    "min_sa_for_any_medical_inr": 2500000,
+    "age_bands": ["18-35", "36-40", "41-50", "51-55", "Above 55"],
+    "sa_bands": [
+      {
+        "sa_min_inr": 2500000, "sa_max_inr": 10000000, "label": "₹25L–₹1Cr",
+        "tests_by_age": {
+          "18-35": "MER, Cat A/B/C/D, ECG, Nicotine, HBA1C",
+          "36-40": "MER, Cat A/B/C/D, ECG, Nicotine, HBA1C",
+          "41-50": "MER, Cat A/B/C/D, TMT, Nicotine, HBA1C",
+          "51-55": "MER, Cat A/B/C/D, TMT, Nicotine, HBA1C",
+          "Above 55": "MER, Cat A/B/C/D, TMT, Nicotine, PSA, HBA1C"
+        }
+      },
+      {
+        "sa_min_inr": 10000001, "sa_max_inr": 30000000, "label": "₹1Cr–₹3Cr",
+        "tests_by_age": {
+          "18-35": "MER, Cat A/B/C/D, ECG, Nicotine, HBA1C",
+          "36-40": "MER, Cat A/B/C/D, ECG, Nicotine, HBA1C",
+          "41-50": "MER, Cat A/B/C/D, TMT, Nicotine, HBA1C",
+          "51-55": "MER, Cat A/B/C/D, TMT, Nicotine, HBA1C",
+          "Above 55": "MER, Cat A/B/C/D, TMT, Nicotine, PSA, HBA1C"
+        }
+      },
+      {
+        "sa_min_inr": 30000001, "sa_max_inr": 150000000, "label": "₹3Cr–₹15Cr",
+        "tests_by_age": {
+          "18-35": "MER, Cat A/B/C/D, ECG, Nicotine, HBA1C",
+          "36-40": "MER, Cat A/B/C/D, TMT, Nicotine, HBA1C",
+          "41-50": "MER, Cat A/B/C/D, TMT, Nicotine, HBA1C",
+          "51-55": "MER, Cat A/B/C/D, TMT, Nicotine, HBA1C",
+          "Above 55": "MER, Cat A/B/C/D, TMT, Nicotine, PSA, HBA1C"
+        }
+      },
+      {
+        "sa_min_inr": 150000001, "sa_max_inr": 250000000, "label": "₹15Cr–₹25Cr",
+        "tests_by_age": {
+          "18-35": "MER+A+B+C+D+TMT+HbA1c+Nicotine+USG Whole abdomen & Pelvis+2D echo+Urine Microalbumin+Anti HCV+PFTs+CXR+Fundoscopy (eye exam if age>40)",
+          "36-40": "MER+A+B+C+D+TMT+HbA1c+Nicotine+USG Whole abdomen & Pelvis+2D echo+Urine Microalbumin+Anti HCV+PFTs+CXR+Fundoscopy (eye exam if age>40)",
+          "41-50": "MER+A+B+C+D+TMT+HbA1c+Nicotine+USG Whole abdomen & Pelvis+2D echo+Urine Microalbumin+Anti HCV+PFTs+CXR+Fundoscopy (eye exam if age>40)",
+          "51-55": "MER+A+B+C+D+TMT+HbA1c+Nicotine+USG Whole abdomen & Pelvis+2D echo+Urine Microalbumin+Anti HCV+PFTs+CXR+Fundoscopy (eye exam if age>40)",
+          "Above 55": "MER+A+B+C+D+TMT+HbA1c+Nicotine+USG Whole abdomen & Pelvis+2D echo+Urine Microalbumin+Anti HCV+PFTs+CXR+Fundoscopy (eye exam if age>40)"
+        }
+      },
+      {
+        "sa_min_inr": 250000001, "sa_max_inr": null, "label": "Above ₹25Cr",
+        "tests_by_age": {
+          "18-35": "MER, MSU, FBS, HbA1c, Lipid profile, KFT, LFT, CBC, HBsAg, Anti HCV, HIV-I&II, Chest X-Ray, Urine Microalbumin, USG whole abdomen, Stress ECHO, TMT, PFT, Fundoscopy (eye exam if age>40), Urine Cotinine (term plans only), PSA (male only), Tumour markers (AFP/CEA/CA125/CA19-9/CA15-3), Thyroid function tests",
+          "36-40": "MER, MSU, FBS, HbA1c, Lipid profile, KFT, LFT, CBC, HBsAg, Anti HCV, HIV-I&II, Chest X-Ray, Urine Microalbumin, USG whole abdomen, Stress ECHO, TMT, PFT, Fundoscopy (eye exam if age>40), Urine Cotinine (term plans only), PSA (male only), Tumour markers (AFP/CEA/CA125/CA19-9/CA15-3), Thyroid function tests",
+          "41-50": "MER, MSU, FBS, HbA1c, Lipid profile, KFT, LFT, CBC, HBsAg, Anti HCV, HIV-I&II, Chest X-Ray, Urine Microalbumin, USG whole abdomen, Stress ECHO, TMT, PFT, Fundoscopy (eye exam if age>40), Urine Cotinine (term plans only), PSA (male only), Tumour markers (AFP/CEA/CA125/CA19-9/CA15-3), Thyroid function tests",
+          "51-55": "MER, MSU, FBS, HbA1c, Lipid profile, KFT, LFT, CBC, HBsAg, Anti HCV, HIV-I&II, Chest X-Ray, Urine Microalbumin, USG whole abdomen, Stress ECHO, TMT, PFT, Fundoscopy (eye exam if age>40), Urine Cotinine (term plans only), PSA (male only), Tumour markers (AFP/CEA/CA125/CA19-9/CA15-3), Thyroid function tests",
+          "Above 55": "MER, MSU, FBS, HbA1c, Lipid profile, KFT, LFT, CBC, HBsAg, Anti HCV, HIV-I&II, Chest X-Ray, Urine Microalbumin, USG whole abdomen, Stress ECHO, TMT, PFT, Fundoscopy (eye exam if age>40), Urine Cotinine (term plans only), PSA (male only), Tumour markers (AFP/CEA/CA125/CA19-9/CA15-3), Thyroid function tests"
+        }
+      }
+    ],
+    "medical_validity_months": 3
+  },
+
+  "salaried_extended_cover_gate": {
+    "_source": "Undewriring Guidelines for Smart Shield Plus V02.docx — Financial Underwriting (Salaried class only) row",
+    "tier1": {
+      "max_sa_inr": 10000000,
+      "min_declared_income_inr": 500000,
+      "fallback_max_sa_inr": 5000000,
+      "basis": "Employment ID card, Government/Semi-Government/PSU/reputed concerns"
+    },
+    "tier2": {
+      "max_sa_inr": 20000000,
+      "conditions": {
+        "drc_category_in": ["Preferred", "Standard"],
+        "max_age": 55,
+        "min_qualification": "Graduate",
+        "min_declared_income_inr": 500000
+      }
+    },
+    "govt_psu_derived_income_multiple": 1.2
+  },
+
+  "drc_income_floor_gate": {
+    "_source": "Undewriring Guidelines for Smart Shield Plus V02.docx — Dynamic Risk Calculator (DRC) row",
+    "high_risk_min_verified_income_inr": 1000000,
+    "high_risk_requires_physical_verification": true
+  },
+
+  "piwc_gate": {
+    "_source": "Undewriring Guidelines for Smart Shield Plus V02.docx — PIWC row",
+    "rule_text": "Insta-PIWC would be mandatory. Exemption allowed for Keyman, Employer Employee & Defense categories. For combo products and physical proposals, there is no provision for Insta PIWC. Hence, Video MER would be insisted (in addition to the medical as per medical grid).",
+    "exempt_categories": ["Keyman", "Employer Employee", "Defense", "Defence"],
+    "no_insta_piwc_channels": ["combo", "physical"],
+    "fallback_when_no_insta_piwc": "Video MER (VMER) mandatory in addition to the medical grid"
+  },
+
+  "special_categories": {
+    "_source": "Undewriring Guidelines for Smart Shield Plus V02.docx",
+    "disallowed": ["Retired", "Female Agriculturist", "Thumb Impression", "Illiterate", "OCI", "PIO"],
+    "student": {"min_age": 18, "max_age": 25, "max_sa_inr": 10000000, "facultative_above_sa_inr": 5000000, "level_cover_only": true},
+    "agriculturist": {"male_only": true, "min_age": 21, "max_age": 50, "max_sa_inr": 5000000, "min_qualification": "Graduate", "level_cover_only": true},
+    "housewife": {"min_age": 21, "max_age": 50, "max_sa_inr": 5000000, "max_pct_of_husband_cover": 50, "min_qualification": "Graduate", "level_cover_only": true},
+    "nri": {"allowed": true, "oci_pio_allowed": false, "must_be_sourced_in_india": true}
+  },
+
+  "better_half_benefit_gate": {
+    "_source": "Undewriring Guidelines for Smart Shield Plus V02.docx — Additional Considerations row",
+    "max_sa_inr": 2500000,
+    "max_entry_age_beneficiary": 55,
+    "max_age_gap_years": 10,
+    "min_qualification_beneficiary": "Graduate",
+    "not_applicable_for": ["Negative location", "High Risk DRC", "MWP", "Substandard declared"]
+  },
+
+  "surrogate_income": {
+    "_source": "Protection Plans and Surrogate Income guidelines.docx — §13 Surrogates Underwriting Consideration (TROP and Term column)",
+    "applicable_to_term": ["credit_score", "liquid_assets", "employee_id_card"],
+    "not_applicable_to_term": ["savings_bank_statement", "credit_card_statement", "vahan_car_idv"],
+    "header_conditions": {
+      "max_financial_sa_inr": 20000000,
+      "max_age": 55,
+      "applicable_profiles": ["Salaried", "Business", "Self Employed"],
+      "not_applicable_profiles": ["Retired", "Housewife", "Student"],
+      "drc_category_in": ["Preferred", "Standard"],
+      "indian_national_resident_in_india_only": true
+    },
+    "credit_score": {
+      "min_cibil_score": 650,
+      "min_income_band_inr": 500000,
+      "loan_details_mandatory": true,
+      "rule_text": "Lower range of CIBIL income estimator must be ≥ declared income in proposal form (min income ₹5L)."
+    },
+    "liquid_assets": {
+      "estimated_income_pct_of_investment": 5,
+      "estimated_cover_multiple_of_investment": 1.0
+    },
+    "employee_id_card": {
+      "qualification": "Graduate and above",
+      "full_time_permanent_only": true,
+      "govt_semi_govt_psu_derived_income_multiple": 1.2,
+      "reputed_listed_companies_derived_income_multiple": 1.0
+    }
+  },
+
+  "cibil_gate": {
+    "_source": "Explanation on IIB and CIBIL Score rules.msg — 'A. Financial eligibility basis CIBIL Score'",
+    "max_sa_inr": 20000000,
+    "min_cibil_score": 650,
+    "min_income_band_inr": 500000,
+    "loan_details_mandatory": true,
+    "rule_text": "Max SA: INR 2 crores, CIBIL 650 and above with Lower income band INR 5 lakhs. Lower range of CIBIL income estimator is equal to or higher than declared income in proposal form (minimum income INR 5 lakhs). Loan details mandatory."
+  },
+
+  "iib_gate": {
+    "_source": "Explanation on IIB and CIBIL Score rules.msg — 'B. IIB SA'",
+    "bands": [
+      {
+        "sbi_life_total_sa_max_inr": 1000000,
+        "label": "Total SA of all SBI Life policies up to ₹10 Lacs",
+        "combined_iib_plus_sbi_max_inr": 5000000,
+        "disallow_sbi_uw_decision_in": ["Postponed", "Declined", "Rated Up"],
+        "disallow_sbi_cancellation_sub_status_in": ["PIPV"],
+        "disallow_iib_proposal_status_in": ["Postponed", "Declined", "Medical Non-Standard"]
+      },
+      {
+        "sbi_life_total_sa_min_inr": 1000001,
+        "sbi_life_total_sa_max_inr": 3000000,
+        "label": "Total SA of all SBI Life policies above ₹10 Lacs and up to ₹30 Lacs",
+        "combined_iib_plus_sbi_max_inr": 5000000,
+        "disallow_sbi_uw_decision_in": ["Pending for Underwriting", "Postponed", "Declined", "Rated Up"],
+        "disallow_sbi_cancellation_sub_status_in": ["PIPV"],
+        "disallow_iib_proposal_status_in": ["Pending for Underwriting", "Postponed", "Declined", "Medical Non-Standard"]
+      }
+    ],
+    "above_30l_note": "Not specified in source email — refer for manual UW rather than auto-decision.",
+    "other_company_disclosure_note": "Seek details from customer if existing policies with other companies fall under decline/postponed/medically-nonstandard."
+  }
+}

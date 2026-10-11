@@ -1,0 +1,1822 @@
+{
+  "ca096734b587406ceb9a4b021bb526a9": {
+    "address": "Healthians Diagnostic Centre, Surat",
+    "lat": 21.17024,
+    "lon": 72.831061
+  },
+  "1f4c06f037cf0d47b37d767f8d387f86": {
+    "address": "Valsad, Gujarat",
+    "lat": 20.599235,
+    "lon": 72.934245
+  },
+  "3b6f49f2e66187986366a9d59ebe8177": {
+    "address": "Healfirst Multispeciality Pvt. Ltd., Ahmedabad",
+    "lat": 23.022505,
+    "lon": 72.571362
+  },
+  "b82d4dd303547cfca5c3d3826542fed0": {
+    "address": "Mumbai, Maharashtra",
+    "lat": 18.958235,
+    "lon": 72.831951
+  },
+  "d7507f4b1d66f0ed5ab5b723124633f8": {
+    "address": "Healthians, Mumbai",
+    "lat": 19.104676,
+    "lon": 72.870953
+  },
+  "16d117d4ef2d51efc0cd8f5fd4a15752": {
+    "address": "Malappuram, Kerala, India",
+    "lat": 11.050976,
+    "lon": 76.071097
+  },
+  "fcc3fa5e496e39c1f01818ff4a56526b": {
+    "address": "Doqtors Diagnostic Centre, Perinthalmanna",
+    "lat": 10.974593,
+    "lon": 76.233059
+  },
+  "431b40f8849977285cf2e04bfc874632": {
+    "address": "Flat No I-1803, Brigade Metropolis, Block I, Mahadevpura, Near Garudacharpalya Metro Stn, Bengaluru, Karnataka 560048",
+    "lat": 12.990814,
+    "lon": 77.702848
+  },
+  "083eee05bc782bfc81bda374fc01d8bb": {
+    "address": "MDIndia Health Insurance TPA Private Limited",
+    "lat": null,
+    "lon": null
+  },
+  "1adb184a4a7955a34063258d48b0b14a": {
+    "address": "S/O: Rajiv Jain, H.No 181, Adarsh Nagar, Jalandhar - I, Jalandhar, Punjab - 144002",
+    "lat": 31.328784,
+    "lon": 75.563989
+  },
+  "af6051c25d3aad1ae8b21fe4832fffbc": {
+    "address": "Life Care Labs, Jalandhar",
+    "lat": 31.216104,
+    "lon": 75.514568
+  },
+  "f7c2a385c3c5c5561078bd95a4318e14": {
+    "address": "NO 981 Aditri Nilaya, 1st Main Road, 1st Block, GnanaBharathi Stage2, Valagerahalli, DuvasaPalya, Kengeri Satellite Town, R V College Post, Near Shree Abhaya Hastha Balamuri Ganapathi, Bengaluru, Karnataka - 560059",
+    "lat": 12.924684,
+    "lon": 77.485304
+  },
+  "9aa8c9aa327377bb73fa11a9b999e37b": {
+    "address": "Bengaluru",
+    "lat": 12.962896,
+    "lon": 77.57754
+  },
+  "43b44f8d6642d6e6fc169abef7ecab06": {
+    "address": "301, A Block Basera Impresions Plus, Landmark: Reliance Smart, Pati, Bhubaneswar, Orissa, India - 751024",
+    "lat": 20.349951,
+    "lon": 85.824786
+  },
+  "95f9eb2202c9fb3a9adea5db0ad8187c": {
+    "address": "Radiant Clinic, Bhubaneswar",
+    "lat": 20.287321,
+    "lon": 85.809122
+  },
+  "7d37729e6998627ab1edb023367e4fca": {
+    "address": "S/o Bharat Agarwal, 5/102, Billochpura, Mathura Road, Agra, Agra, Uttar Pradesh, 282002",
+    "lat": 27.197049,
+    "lon": 77.99182
+  },
+  "59c80748f493ceecd0d76b57ebe2de2e": {
+    "address": "Agra",
+    "lat": 27.17667,
+    "lon": 78.008074
+  },
+  "f619b80034d6eb1d81449418aee8f489": {
+    "address": "Assam Mercantile Corpn., Borpara Main Road, Near Sahid Bedi, Bongaigaon, Assam, India - 783380",
+    "lat": 26.466624,
+    "lon": 90.561042
+  },
+  "aae44c15ac218091933407d61db0fda9": {
+    "address": "Guwahati",
+    "lat": 26.115792,
+    "lon": 91.708593
+  },
+  "a5e60d8460e0a38ea54e4ba8414293d0": {
+    "address": "Flat No 403, Ashoka Township, Gangasthan, Nizamabad, Telangana - 503001",
+    "lat": 18.685539,
+    "lon": 78.121368
+  },
+  "fba89de77613eb373b2def63df3b9f80": {
+    "address": "Nizamabad",
+    "lat": 18.672505,
+    "lon": 78.094087
+  },
+  "d7d4863512a7eee54f131352f88a2b83": {
+    "address": "Clock Tower, Sadar Bazar, Kekri, Rajasthan, India - 305404",
+    "lat": 25.97495,
+    "lon": 75.154822
+  },
+  "60c7d514e20cc1bfe2d9a931e6c3e30b": {
+    "address": "Bangalore",
+    "lat": 12.962896,
+    "lon": 77.57754
+  },
+  "decf1f31c2421006dd42bca085069f8a": {
+    "address": "7-6-48, Kapuwada, Landmark: Thousand Pillar, Hanamkonda, Telangana, India - 506001",
+    "lat": 18.001503,
+    "lon": 79.576963
+  },
+  "65bff2938936fd6fa961dbe0416050bc": {
+    "address": "Hanamkonda",
+    "lat": 18.007234,
+    "lon": 79.558392
+  },
+  "6055297ff02e1328cc04ef8e83e8b38d": {
+    "address": "S/O: Om Prakash Jaiswal, Nital Basti Kanakpur, Thakurganj Kishanganj, Bihar",
+    "lat": 26.433936,
+    "lon": 88.126272
+  },
+  "bb2c9af27e3a07e49b2dcea99ca3e6fc": {
+    "address": "PRAJEETA TORTOISE (Pailan, Kolkata), Kolkata",
+    "lat": 22.429262,
+    "lon": 88.306921
+  },
+  "1ca2f55d232df81f1be327250057e35f": {
+    "address": "C/O: Satish Sharma, FR-02, Block-12B, Fourth Floor, Naina Appartments, Katha, Baddi Sitalpur 204, PO: Baddi, DIST: Solan, Himachal Pradesh",
+    "lat": 28.653964,
+    "lon": 77.183204
+  },
+  "f676669ad48cd33784238d3a19309c69": {
+    "address": "Nalagarh (medical examination centre implied by GPS-tagged live photo and stamp: New India Insurance TPA Services, Chandigarh), Nalagarh",
+    "lat": 30.733315,
+    "lon": 76.779418
+  },
+  "a0087270b947fa23d7050320f140dca4": {
+    "address": "House number 9207, G1 Tower SBP City of dreams, Rupnagar, Punjab, India - 140307",
+    "lat": 30.720154,
+    "lon": 76.657515
+  },
+  "9629273d60a329b57fe81a8d1471b4ee": {
+    "address": "Healthinga Insurance TPA Services, Chandigarh, Mohali",
+    "lat": 30.704649,
+    "lon": 76.717873
+  },
+  "46372d1bfe171c817c072a7839ba9e8a": {
+    "address": "House number 9207, G1 Tower SBP City of dreams, Rupnagar, Punjab, India, 140307",
+    "lat": 30.720154,
+    "lon": 76.657515
+  },
+  "9776680ff9dda2053eb0b677b52ece0b": {
+    "address": "H NO.N.L-203, MOHALLA MOHINDRU, Jalandhar - I, Punjab, India - 144008",
+    "lat": 31.362305,
+    "lon": 75.594738
+  },
+  "2f8a68697912a20c7c00c966a0814ac7": {
+    "address": "Pratham India Insurance TPA Services (Chandigarh), Chandigarh",
+    "lat": 30.733315,
+    "lon": 76.779418
+  },
+  "bdd705dc41c7a3ad6a7271f9cdfad61e": {
+    "address": "RAV Enclave, Flat No 201, Plot No 239, 240, 241, Sai Vaibhav Layout, Chitrapuri Colony, Near Lanco Hills, Khajaguda, Hyderabad, Telangana",
+    "lat": 17.416091,
+    "lon": 78.374103
+  },
+  "0af638c0306176326535d94b1d488cf6": {
+    "address": "Unity Care Diagnostic Center, Manikonda, Hyderabad",
+    "lat": 17.399987,
+    "lon": 78.383415
+  },
+  "d483ca7db43205d07fef8eb88a4d1136": {
+    "address": "13-14/a Brahmanapalle (a.g), Wyra, Khammam, Telangana, India - 507165",
+    "lat": 17.175038,
+    "lon": 80.374216
+  },
+  "1ddb8ed8de93890ed3291a5fb7b19d4f": {
+    "address": "Khammam",
+    "lat": 17.247253,
+    "lon": 80.151445
+  },
+  "06b1b2440366011658ecc8326cdb1d72": {
+    "address": "1-84 Darsi, East Venkata Puram, Near Venkateswara Temple, Ongole, Andhra Pradesh - 523247",
+    "lat": 15.776155,
+    "lon": 79.686341
+  },
+  "2664380ffdfad35798a2404a39c62f30": {
+    "address": "Vidya Diagnostic Centre, Hyderabad",
+    "lat": 17.42971,
+    "lon": 78.456735
+  },
+  "342ae401524bf4a3982c7f4b924a9c5e": {
+    "address": "old public park near B.P.C.L., Landmark: a-1 umed club road, Jodhpur, Rajasthan, India - 342001",
+    "lat": 26.28812,
+    "lon": 73.033434
+  },
+  "509746236e422315083f1191243190a4": {
+    "address": "Jodhpur",
+    "lat": 26.238947,
+    "lon": 73.024309
+  },
+  "47554016ee492b8ffa18b5ceb258df50": {
+    "address": "106B, Second Floor, Society Metro Town, Peer Muchalla, Opposite Royal Mansion, Dhakauli, Punjab, India - 140603",
+    "lat": 30.654704,
+    "lon": 76.856028
+  },
+  "bf78c47e68fa1380eca3b74bbf080a7d": {
+    "address": "Health India Insurance Tax Services (Chandigarh), Chandigarh",
+    "lat": 30.733315,
+    "lon": 76.779418
+  },
+  "72ee2032d604dc7c60e5bccfe8cad00b": {
+    "address": "A605, Skylark Zenith Apartment Hosa Road, Landmark: Bassapura Village Road, Bengaluru, Karnataka, India, 560100",
+    "lat": 12.86482,
+    "lon": 77.651029
+  },
+  "3d0a676e1b32496aeedce1717efbb4e1": {
+    "address": "BNPTPA (Bangalore TPA - stamp visible on Medical Photo Identification), Bengaluru",
+    "lat": 12.962896,
+    "lon": 77.57754
+  },
+  "54b750765afbd1670f552600cf3df1c2": {
+    "address": "S-211 Greater Kailash-2, Greater Kailash, Delhi, India - 110048",
+    "lat": 28.540047,
+    "lon": 77.240174
+  },
+  "461143991d18633ffef57075118254f6": {
+    "address": "Shivalik Enclave diagnostic centre (GPS-tagged: 37/38 Shivalik Enclave, Block B, Shivalik Colony, Malviya Nagar), New Delhi",
+    "lat": 28.535309,
+    "lon": 77.207918
+  },
+  "17e18121935fd27706ffc382d3a00d27": {
+    "address": "Sonouli Chowk, Sonouli Chowk, Landmark: Police Camp, Hansdah, Bihar, India - 854326",
+    "lat": 25.798888,
+    "lon": 87.537113
+  },
+  "fe567cbe52f911ec23ba3f7e38b85e23": {
+    "address": "True Life Central Hospital, Purnia",
+    "lat": 25.77749,
+    "lon": 87.495054
+  },
+  "031981d8e6f0e5bce2921b217ed735d3": {
+    "address": "H NO- M I G 1/606 HUDCO AMDI NAGAR, WARD NO 56 BHILAI WEST, DURG, CHHATTISGARH - 490009",
+    "lat": 21.188518,
+    "lon": 81.308792
+  },
+  "30dbbf0a408e10146b91e9c523e7bb4c": {
+    "address": "2-54 Kondapur Village, Ghatkesar, Telangana, India - 501301",
+    "lat": 17.46021,
+    "lon": 78.702094
+  },
+  "f43e6110f6d50ccbb093b5d31a2086d0": {
+    "address": "LUCID Medical Diagnostics, Hyderabad",
+    "lat": 17.406498,
+    "lon": 78.477244
+  },
+  "8eadef063621f6ba0054c6d70cdba211": {
+    "address": "Flat No 404, Sai Harsha Arcade, Defense Colony, Bairamal Guda, Bairamal Guda, Landmark: Opp to Defense Colony Park, Karmanghat, Telangana, India - 500079",
+    "lat": 17.338427,
+    "lon": 78.538545
+  },
+  "6c7e120df929c77ba790d2a76878e388": {
+    "address": "Hyderabad",
+    "lat": 17.406498,
+    "lon": 78.477244
+  },
+  "a110e2871a41022113a74b6857e8d8ee": {
+    "address": "S/O: Bairaram Manjhu, Ward N-13, Himmatsar, Himatsar, Bikaner, Nokha, Rajasthan, 334802",
+    "lat": 27.635484,
+    "lon": 73.622714
+  },
+  "49d6a3c3aed296ee5a6337f89ecfac86": {
+    "address": "Lifewell Diagnostic, Jaipur",
+    "lat": 26.87306,
+    "lon": 75.778748
+  },
+  "aa462f911790b85fd1e90dd6bd00a5a4": {
+    "address": "GOVIND MAHAJAN 1 VALLABH NAGAR MANG, 1 VALLABH NAGAR MANGRUL ROAD, 1 VALLABH NAGAR, KHARGONE, MADHYA PRADESH, 451001",
+    "lat": 21.837494,
+    "lon": 75.61514
+  },
+  "4a7a7d1386ee3497504750f755e7c705": {
+    "address": "Khargone",
+    "lat": 21.825746,
+    "lon": 75.618406
+  },
+  "f196953cd534d4ee1ac9718c445ef17c": {
+    "address": "B-1203, Vini Tower CHS LTD, Off Chincholi Bunder Road, Near Infant Jesus School, Malad West Dely, Mumbai, Maharashtra 400064",
+    "lat": 19.175152,
+    "lon": 72.847443
+  },
+  "a0da0c41cd19734517ef66facb980499": {
+    "address": "Healthindia Insurance TPA Services Pvt. Ltd., Mumbai",
+    "lat": 18.958235,
+    "lon": 72.831951
+  },
+  "8a5af580145e00132bb1385b123df1a8": {
+    "address": "8789 KILPECK CT, HENRICO, VIRGINIA, United States, 23294",
+    "lat": 37.630592,
+    "lon": -77.559584
+  },
+  "066dd768628ca7613178015b2ee9dcfe": {
+    "address": "CallHealth Services Pvt. Ltd., USA (location not specified beyond 'USA')",
+    "lat": 38.794595,
+    "lon": -106.534838
+  },
+  "7c77f2079dd4702309cd5fe9a20ce718": {
+    "address": "G01 Azeezara Apartment, Rajiv Gandhi Nagar, HSR Layout, Landmark: New Aswad Hospital, Bengaluru, Karnataka, India - 560068",
+    "lat": 12.907757,
+    "lon": 77.629941
+  },
+  "ff960eab81f509ec633446ef3de4f14a": {
+    "address": "Shahistha Manzil TPA (inferred from geotag watermark on live photo), Bengaluru",
+    "lat": 12.907782,
+    "lon": 77.630478
+  },
+  "50bd6ccaeaf04203daf3fe663f25a6f8": {
+    "address": "Plot No 578, Near R I Office, At Ramachandrapur Bazar, Landmark: R I Office Jatani, City: KHORDA, State: ORISSA, Country: India, Pin code: 752050",
+    "lat": 20.159554,
+    "lon": 85.705112
+  },
+  "fe884d7524119c8f91f0902d73aa1164": {
+    "address": "TMT (Trade Meal Test) / GE Accuri — centre visible in medical photo geotag; exact centre name not fully legible from image, Muzaffarpur",
+    "lat": 26.119661,
+    "lon": 85.390982
+  },
+  "3a7abbd181178a9c64f825fcbd746397": {
+    "address": "House no. 283, ward 5, Kamla Colony, near Lions Bhawan, Shamli, Uttar Pradesh, India - 247776",
+    "lat": 29.442888,
+    "lon": 77.311262
+  },
+  "8bc549622f0b2ce5f8de7757cea7d78d": {
+    "address": "Kurukshetra",
+    "lat": 29.969512,
+    "lon": 76.878282
+  },
+  "5f1d788bd5a80919b4d39c3bd0e08419": {
+    "address": "31, T1, Sanjeevi Residencies, 18th Cross Road, Sector 7, HSR Layout, Near Max Fashion, Bengaluru, Karnataka - 560102",
+    "lat": 12.911825,
+    "lon": 77.637238
+  },
+  "5601b6428255390be5dbf7cdd05aa70f": {
+    "address": "KH-4/3/401, Celebration CHS LTD, Sector 16/17, Kharghar, Raigarh, Maharashtra - 410210",
+    "lat": 19.041912,
+    "lon": 73.082585
+  },
+  "4375251640b3955577d098dc7ba6007e": {
+    "address": "Office No 3, Shri Ramkrishna CHS Gate, Sector 40, Nerul, Opposite To Grand Central Mall, Seawoods West, Navi Mumbai",
+    "lat": 19.021016,
+    "lon": 73.017347
+  },
+  "96fdeba4cc589c5dd11bff2b0a9e0532": {
+    "address": "4/49 Gautam Gali New Vishwas Nagar, Vishwas Nagar, Delhi, India - 110032",
+    "lat": 28.670687,
+    "lon": 77.299825
+  },
+  "647555fc538cbda48fec236ed3a898d1": {
+    "address": "AMINO DIAGNOSTICS, New Delhi",
+    "lat": 28.705289,
+    "lon": 77.13257
+  },
+  "3cd948ec026c691073b0494cdb7cf39e": {
+    "address": "Villa No 09 Chaithanya Rakuen, Swami Vivekananda Road, Whitefield, Near Hope Farm Junction, Whitefield, Karnataka, India - 560066",
+    "lat": 12.982208,
+    "lon": 77.750329
+  },
+  "361225a0eee007b2e9c1225f1631d2f2": {
+    "address": "Medha Diagnostics, Bengaluru",
+    "lat": 12.968414,
+    "lon": 77.65088
+  },
+  "8173342bc8f5d7f8046a237b2d852862": {
+    "address": "H No. 6-76, Jakranpally, Kaligote, Nizamabad, Andhra Pradesh - 503175",
+    "lat": 18.685392,
+    "lon": 78.327683
+  },
+  "85d421165b4efc47971dfa68a92fff79": {
+    "address": "LDS (partial — visible on glass door in live photo; GPS-tagged location: 426, Hyderabad Rd, Pragathi Nagar, Nizamabad, Telangana 503003), Nizamabad",
+    "lat": 18.672883,
+    "lon": 78.106776
+  },
+  "097dd4412e42941ec76c296971074e17": {
+    "address": "S/O Devendra Mishra, L-46, 3rd Floor, Kirti Nagar, Ramesh Nagar, West Delhi, Delhi - 110015",
+    "lat": 28.65576,
+    "lon": 77.157994
+  },
+  "93bcca53cbfe733d96d4a95149184916": {
+    "address": "MediBuddy, Guwahati",
+    "lat": 26.151654,
+    "lon": 91.800205
+  },
+  "c077617761b627d512b569c930d2d954": {
+    "address": "301, Third Floor, 1961 East Pocket, Sector 23, Near Usha Stud Farm, Gurgaon, Haryana, India - 122017",
+    "lat": 28.50895,
+    "lon": 77.059215
+  },
+  "9bd4225e5c02cbdcffd64bb4a8a9f11f": {
+    "address": "Wellstar & Diagnostic Centre Sector 56 Gurugram, Gurugram",
+    "lat": 28.427953,
+    "lon": 77.094745
+  },
+  "75b368f81c520dcedbfb813a9ea93eb9": {
+    "address": "Room No 1, Gopalji Walji Chawl, Tata Power House, Devipada, Landmark: Trimurti, Borivali East, Maharashtra, India - 400066",
+    "lat": 19.223914,
+    "lon": 72.866236
+  },
+  "7cbc9745228dff2eab366c59f5764ef6": {
+    "address": "Healthlia Insurance TPA Services Pvt Ltd, Mumbai",
+    "lat": 18.958235,
+    "lon": 72.831951
+  },
+  "2c471c69e0629ba9363205d3ea442ce3": {
+    "address": "H. No. D - 20/11, Gali No. 7, Vijay Colony, Near Sharda Kuan, Ghonda, Delhi - 110053",
+    "lat": 28.684881,
+    "lon": 77.267034
+  },
+  "33b7506eb2da26af4792238367a86365": {
+    "address": "Fifty One Plus Lab, Noida",
+    "lat": 28.578681,
+    "lon": 77.371231
+  },
+  "b6355dfdadcf62ed5385776dfc9c0f91": {
+    "address": "Waagneer Biro Bridge Gulf Llc, Al Quoz, Dubai, United Arab Emirates - 00000",
+    "lat": 25.133679,
+    "lon": 55.241817
+  },
+  "e095d1aeb10bf1fcee1567c2a36874b1": {
+    "address": "Adam Medical Centre, Dubai (Oud Metha)",
+    "lat": 25.244772,
+    "lon": 55.31528
+  },
+  "8c914445a04dd992c21d4aa2aff1f4b6": {
+    "address": "S/O: Ghewar Chandji, #189, Market Road, Opp Food World, Gandhi Bazar, Bangalore South, Bangalore, Karnataka - 560004",
+    "lat": 12.944895,
+    "lon": 77.572708
+  },
+  "62ebddf4e19aef1b1fb727a42d105978": {
+    "address": "Prima Diagnostics, Bengaluru",
+    "lat": 12.962896,
+    "lon": 77.57754
+  },
+  "11ad3b6382682ce9196b0dad22b02625": {
+    "address": "Flat 603, Building Number 1, 6th Cross, Prithvi Layout, Pattandur Agrahara ECC Rd, Bengaluru, Karnataka - 560066",
+    "lat": 12.977592,
+    "lon": 77.743346
+  },
+  "86de969669385d01d151595e0dafe5ef": {
+    "address": "S O-Ramavath Gopal Naik 1-264, ramachandr a-nagr ramachandr, ANANTAPUR, TELANGANA, INDIA - 515001",
+    "lat": 14.694136,
+    "lon": 77.599192
+  },
+  "fe9068ac12cdaefdc57421783d2338b6": {
+    "address": "India TPA (Bangalore TPA stamp visible on medical photo identification), Bengaluru",
+    "lat": 12.962896,
+    "lon": 77.57754
+  },
+  "57a285d3f3ec7980ea5d4ad1f2fee652": {
+    "address": "India TPA Bangalore (TPA stamp visible on Medical Photo Identification; GPS location: N6035, Electronic City Phase I, Electronic City, Bengaluru, Karnataka 560100), Bengaluru",
+    "lat": 12.835025,
+    "lon": 77.662733
+  },
+  "5545223c5edcaf6a5942d2983f2311aa": {
+    "address": "C3/c4, 886-e, Heera Appt., Ward No.6, Mehrauli, Delhi - 110030",
+    "lat": 28.515917,
+    "lon": 77.177202
+  },
+  "168af07aabd958d3b634578babcadfd4": {
+    "address": "Gurugram TPA (medical conducted at 37, Shivalik Enclave, Block B, Shivalik Colony, Malviya Nagar, New Delhi 110017), New Delhi",
+    "lat": 28.530828,
+    "lon": 77.204984
+  },
+  "20b4572153afc2ecf082ef4516e3a635": {
+    "address": "A11/503, Happy Valley Complex, Ghodbunder Road, Manpada, Near Tikujini Wadi, Thane, Maharashtra - 400610",
+    "lat": 19.237051,
+    "lon": 72.971373
+  },
+  "13cf7d0798ae1be86580ae10a05aa286": {
+    "address": "Healthindia Insurance TPA Services Pvt Ltd, Mumbai",
+    "lat": 18.958235,
+    "lon": 72.831951
+  },
+  "b79f7d7c77e3eab2f1c8278ffd124271": {
+    "address": "E1201, ORCHID PICADILLY, THANISANDRA MAIN ROAD, THIRUMENAHALLI, OPP. KARNATAKA COLLEGE, Yelahanka, Bengaluru, Karnataka, 560064",
+    "lat": 13.082566,
+    "lon": 77.63698
+  },
+  "863f309d36fd47aa7ff1d7cf01abe2c6": {
+    "address": "MediBuddy (Tower D, 4th Floor, IBC Knowledge Park, 4/1, Bannerghatta Main Rd, Bengaluru), Bengaluru",
+    "lat": 12.930465,
+    "lon": 77.603317
+  },
+  "ea862ea8466520f1e169fe91752521d3": {
+    "address": "S/O Lalit Mohan Goyal, House No 144-145, New Mandi, E Block, Sirsa, Sirsa, Haryana - 125055",
+    "lat": 29.545536,
+    "lon": 75.021685
+  },
+  "3e033f926300687bbcbc9ab130f62280": {
+    "address": "New India Insurance Services (Chandigarh stamp visible on medical photo ID), Jind",
+    "lat": 30.733315,
+    "lon": 76.779418
+  },
+  "c9c853123eeca3dffde35a7505f2fe48": {
+    "address": "Flat 603, Building Number 1, 6th Cross, Prithvi Layout, Landmark: Pattandur Agrahara ECC Rd, Bengaluru, Karnataka - 560066",
+    "lat": 12.971463,
+    "lon": 77.755022
+  },
+  "776ef6bbff0906032a2338880cc93cc2": {
+    "address": "PLOT NO. DB 76, BLOCK DB, STREET NO. 290, ACTION AREA 1D, NEW TOWN, KOLKATA, West Bengal, 700156",
+    "lat": 22.571191,
+    "lon": 88.466584
+  },
+  "313cd3c79a8f85d4f09c71cb4fa3cf66": {
+    "address": "Kolkata",
+    "lat": 22.574354,
+    "lon": 88.362873
+  },
+  "7228ea76de60b07cd44ccb3d6aadd85a": {
+    "address": "PLOT NO. DB 76, BLOCK DB, STREET NO. 290, ACTION AREA 1D, NEW TOWN, KOLKATA, West Bengal - 700156",
+    "lat": 22.571191,
+    "lon": 88.466584
+  },
+  "996b52fc3f60db12451fe3ed34ae597d": {
+    "address": "no-1 binny road poes garden, Gopalapuram, Gopalapuram, Chennai, Tamil Nadu, India - 600086",
+    "lat": 13.044052,
+    "lon": 80.254388
+  },
+  "fc921ff2056b054a970e12d49d323ad9": {
+    "address": "Great India Insurance TPA Services - Chennai, Chennai",
+    "lat": 13.084301,
+    "lon": 80.270462
+  },
+  "ee9a20ec1d4405bb0c63035e5c39870f": {
+    "address": "21 Prameswar Park, Puna Simada, Varachha, Landmark: Shyam Dham, Surat City, Gujarat, India - 395006",
+    "lat": 21.220771,
+    "lon": 72.892157
+  },
+  "61a01487d8be446140a1c1b7c7196202": {
+    "address": "We Care Speciality Hospital, Surat",
+    "lat": 21.175465,
+    "lon": 72.811343
+  },
+  "ea0e7618da7cd8dbb4406bc86947e4fd": {
+    "address": "Pareek Sadan, N S Road, Opp Fatasil Glass Factory, Fatasil Bharalumukh, Bharalumukh, Guwahati, Kamrup Metro, Assam 781009",
+    "lat": 26.167923,
+    "lon": 91.739297
+  },
+  "ab39e963bd3bc0d1e56adbab24d63dba": {
+    "address": "World Hospital Diagnostic, Guwahati, Guwahati",
+    "lat": 26.115792,
+    "lon": 91.708593
+  },
+  "e00de85aa72cf08aba9698bd8ee87196": {
+    "address": "74 B, II ND R M, Sector-2, Rajendra Nagar, Sahibabad, Uttar Pradesh, India - 201005",
+    "lat": 28.681356,
+    "lon": 77.359876
+  },
+  "d271d422c1f9866cb8730928e2218d34": {
+    "address": "Bajaj Hindusthan Insurance TPA Services, Lucknow, Lucknow",
+    "lat": 26.801403,
+    "lon": 80.909324
+  },
+  "f951122016393c4af19ac00184009acd": {
+    "address": "NEW DOOR NO 1/328A, SOUTH STREET, Karaiyavetti, Tamil Nadu, India - 621715",
+    "lat": 10.961752,
+    "lon": 79.04996
+  },
+  "bd1146f95c1a83fa22a0b7bdd5677eb0": {
+    "address": "813/149, Aniketana, Sapthagiri Layout, Dhanojipalya, Nelamangal, Near Mookambika Temple, Bengaluru, Karnataka, India",
+    "lat": 13.097301,
+    "lon": 77.38564
+  },
+  "1f8c62a86c9ce311c99947418e15a3ac": {
+    "address": "Davanagere Diagnostics, Davanagere",
+    "lat": 14.461187,
+    "lon": 75.916438
+  },
+  "2e04cd1872c76137b461ac2e6fdd36e2": {
+    "address": "NO 32 NORTH KATTUKOTTAIGAL, Kalappanayakkenpatti, Tamil Nadu, India - 637404",
+    "lat": 11.335304,
+    "lon": 78.266351
+  },
+  "0ab80ca30c5cd18a0e7b547f040952a1": {
+    "address": "Medi India Insurance Tax Services, Chennai",
+    "lat": 13.084301,
+    "lon": 80.270462
+  },
+  "5317e89d34470fe654caa584e8431e23": {
+    "address": "S/O ROOP KUMAR SINGHANIA 220A NASKAR PARA ROAD GHUSURI HAORA (M CORP), HOWRAH, WEST BENGAL",
+    "lat": 22.611885,
+    "lon": 88.352607
+  },
+  "0a98203bf30151d4acb1786484f50966": {
+    "address": "Gurugram",
+    "lat": 28.459497,
+    "lon": 77.026638
+  },
+  "629eeb3a503e9cafa7371cc094e21830": {
+    "address": "PLOT NO 119 FIRST FLOOR CRYSTAL 4 AL WASEL BUILDING AL QUOZ 4, NEAR CREDENCE HS, DUBAI, DUBAI, United Arab Emirates, Pincode: 0000",
+    "lat": 25.153552,
+    "lon": 55.248807
+  },
+  "3c40d285e6b2ff6f01a46cf80d9b56f0": {
+    "address": "Dubai",
+    "lat": 25.204849,
+    "lon": 55.270783
+  },
+  "fe54a7bef5aaa059f7b46d315e9e558a": {
+    "address": "MANOJ KUMAR JHA QTR NO 1291 SECTOR 12 F POST OFFICE SECTOR 12 SECTOR NEAR POLICE LINE, BOKARO, JHARKHAND, INDIA",
+    "lat": 23.639246,
+    "lon": 86.146647
+  },
+  "58b3a8bfc7d91b660bfa3b6fff56d7e8": {
+    "address": "Bokaro Steel City",
+    "lat": 23.669296,
+    "lon": 86.151112
+  },
+  "acb2426ab23523e24fed8302d60adc79": {
+    "address": "3285, Sector 19 D, Chandigarh, Chandigarh, India - 160019",
+    "lat": 30.728279,
+    "lon": 76.788696
+  },
+  "cb878f6d5330a87089683e376bee4b14": {
+    "address": "We Care Path Lab, Chandigarh",
+    "lat": 30.75432,
+    "lon": 76.787557
+  },
+  "0788172c154f59029410a0f8260bab4d": {
+    "address": "4804, 48th Floor, One Avighana Park Tower, Mahadeo Palav Marg, Curry Road, Parel, Mumbai, Maharashtra, India - 400012",
+    "lat": 18.994486,
+    "lon": 72.83445
+  },
+  "e70ea5cd87229f4a760d4042c0551cb6": {
+    "address": "S/O: Pardeep Kumar, Suraj Niwas, Main Road, Markal Colony, Patiala, Patiala, Punjab, 147001",
+    "lat": 30.359075,
+    "lon": 76.398348
+  },
+  "e9cdd6ef6b50f0a477dbb4cac0f37220": {
+    "address": "B-3/218, Gopal Gali, Bahadurpur Chowk, Hoshiarpur, Punjab, India - 146001",
+    "lat": 31.537079,
+    "lon": 75.927453
+  },
+  "6c09319e9cd378beaae829210d1a8c1d": {
+    "address": "S/O: Kamal Kant Goyal, 103-A, Krishna Nagar Teen Dukan Behind Beed Ke Balaji, Sector 1 Vidyadhar Nagar, Dehar Ke Balaji, Jaipur, Rajasthan - 302039",
+    "lat": 26.956975,
+    "lon": 75.772541
+  },
+  "edd752712eb0e2089797413723463531": {
+    "address": "Jaipur",
+    "lat": 26.912434,
+    "lon": 75.787271
+  },
+  "b7fee9896d92dfb8d39d76b85f0154e9": {
+    "address": "HOUSE NO 289 TULASI NILAYA 13TH MAIN JNANAGANGA NAGAR JNANABHARATHI 2ND STAGE, BANGALORE, KARNATAKA, INDIA",
+    "lat": 13.001261,
+    "lon": 77.541394
+  },
+  "bb10a7c27546e3d9593b476ad927c81e": {
+    "address": "Pride World City Rd, Charholi Budruk, Landmark: Near Ajeenkya Dy Patil Univers, Pune, Maharashtra, India - 412105",
+    "lat": 18.621736,
+    "lon": 73.911932
+  },
+  "8720d10d87b8303ee179bb2bb57d82a7": {
+    "address": "Egsan Diagnostic Center, Pimpri Chinchwad",
+    "lat": 18.626313,
+    "lon": 73.805498
+  },
+  "4af32a1f89e8af0685c30092f3adf893": {
+    "address": "S/O Saravanan, 21/41, Bajanai Kovil Street, Tindivanam, PO: Tindivanam, Dist: Villupuram, Tamil Nadu",
+    "lat": 12.237924,
+    "lon": 79.652267
+  },
+  "cfe45a33d75ab203ef36d16608a70501": {
+    "address": "HealthIndia Insurance TPA Services Pvt. Ltd. (VMER conducted via video), Chennai",
+    "lat": 13.084301,
+    "lon": 80.270462
+  },
+  "3b7a3c9e4e079a021c9f84b489901fc4": {
+    "address": "701 Newhams Yard, 153 Tower Bridge Road, London, UK, SE13LW",
+    "lat": 51.499037,
+    "lon": -0.079279
+  },
+  "62ad0279f81a7564853479822dc41ea2": {
+    "address": "1-2-270/45/a1/1, Front Block, 2nd Floor, M.G. Road, Beside Laxmi Vilas Bank, Suryapet, Telangana, India - 508213",
+    "lat": 17.146731,
+    "lon": 79.62214
+  },
+  "04624c02942b89e521a5779a2d8acb40": {
+    "address": "Healthians Labs, Gurugram",
+    "lat": 28.587379,
+    "lon": 77.040753
+  },
+  "93922b051fbd32382aeea52b4734c0a0": {
+    "address": "Shiv Daya Building, Raut Wadi, Akola, Maharashtra, India - 444001",
+    "lat": 20.71276,
+    "lon": 77.017087
+  },
+  "1c33498789a8eb0251677f044b748846": {
+    "address": "HealthIndia Insurance TPA Services Pvt. Ltd. (VMER conducted via video call by Dr. Kalyani Chorge, Reg No: 70542), Akola",
+    "lat": 20.700216,
+    "lon": 77.008168
+  },
+  "8be27608f8178dc0c4ca35e80786aa4f": {
+    "address": "BUILDING NO Q03 FLAT NO 311 FRANCE CLUSTER DUBAI INTERNATIONAL CITY, DUBAI, UNITED ARAB EMIRATES",
+    "lat": 25.160207,
+    "lon": 55.400621
+  },
+  "eaeb046e69c0a5bf4b4a56c43dd86a47": {
+    "address": "GETWELL MEDICAL CENTER, Dubai",
+    "lat": 25.256281,
+    "lon": 55.300545
+  },
+  "8e539682dac6e6165d82c3db1a229968": {
+    "address": "Madhavinilayam, Penthouse, 4th Floor, TNGOS Colony, Gachibowli, Hyderabad, Telangana - 500046",
+    "lat": 17.441651,
+    "lon": 78.32885
+  },
+  "eb9cbd32a5798dfb152bddc468a878d7": {
+    "address": "C-1, Satellite Apartment, Near Kameshwar School, Jodhpur Cross Road, Satellite, Ahmedabad, Gujarat, India - 380015",
+    "lat": 23.029409,
+    "lon": 72.526722
+  },
+  "a03f90d6bf86c2d18b128df3a8285522": {
+    "address": "Vidal Health TPA (Ahmedabad), Ahmedabad",
+    "lat": 23.052414,
+    "lon": 72.548563
+  },
+  "62b5c0bb5a39e3de5c32f7228eda301f": {
+    "address": "E-602, Iscon Platinium, S.P Ring Road, Bopal, Ahmedabad City, Ahmedabad, Gujarat - 380058",
+    "lat": 23.030888,
+    "lon": 72.476344
+  },
+  "cf3e46bcb566b7b9e9261c5fc770d089": {
+    "address": "Arogyam Health Care, Ahmedabad",
+    "lat": 23.022505,
+    "lon": 72.571362
+  },
+  "35e6f63effe2f9990d439f84bd36d25c": {
+    "address": "H.No: 2-135/P-2, Sri Viswamitra 4 Koheda, Near to Lakshya school, Rangareddy district, Hyderabad, Telangana, India - 501511",
+    "lat": 17.282389,
+    "lon": 78.635956
+  },
+  "0b00c9de105f2c89adf063ceca8288a7": {
+    "address": "TATA AIA LIFE - Common (TPA Hyderabad), Hyderabad",
+    "lat": 17.406498,
+    "lon": 78.477244
+  },
+  "e2fd41d19dfa24e537befecd886c2778": {
+    "address": "FLAT NO. C-404 KAUSHALYA ESTATE, NEAR MAURYALOK COMPLEX BANDAR BAGICHA PATNA G.P.O. PATNA, PATNA, BIHAR, INDIA - 800001",
+    "lat": 25.60956,
+    "lon": 85.136394
+  },
+  "28c0f82e20c5f08e5dfa3032a13d1875": {
+    "address": "Gaya",
+    "lat": 24.791396,
+    "lon": 85.000234
+  },
+  "4b57599e7f1dd83a97c22a625a51a25d": {
+    "address": "Tower 3 Flat 1016 Sector Chi 5 Purvanchal Royal City, Near Pari Chowk, Greater Noida, Uttar Pradesh, India - 201310",
+    "lat": 28.430205,
+    "lon": 77.506782
+  },
+  "00d049a24f35a18ce317ae1770fc5dd9": {
+    "address": "Candid Diagnostic Center, Greater Noida",
+    "lat": 28.46055,
+    "lon": 77.532505
+  },
+  "ee9cb004bdf73572e57c9751a18502d2": {
+    "address": "NO 3, F2, VB FLATS, 6TH CROSS STREET, PERUMAL NAGAR, Nanmangalam, Tamil Nadu, India - 600117",
+    "lat": 12.970294,
+    "lon": 80.193512
+  },
+  "b8ad22cb4a371eece9d6225deddc655e": {
+    "address": "Healthinga Insurance TPA Services - Chennai, Chennai",
+    "lat": 13.084301,
+    "lon": 80.270462
+  },
+  "8ff015e0915c92f7751c27bd5d65fd40": {
+    "address": "B 501, IFFCO Township, Paul Pothen Nagar, Iffco Census Village, Aonla, Bareilly, Uttar Pradesh - 243403",
+    "lat": 28.215957,
+    "lon": 79.24661
+  },
+  "6add9dde833ee74467c040ddfe25e8bb": {
+    "address": "S/O R. MUTHUSAMY, G BLOCK FLAT NO 702, TAISHA AIS HOUSING COMPLEX, WEST NADESAN NAGAR, VIRUGAMBAKKAM, PO: VIRUGAMBAKKAM, DIST: CHENNAI, TAMIL NADU",
+    "lat": 13.056259,
+    "lon": 80.187905
+  },
+  "2edee51a2c255a6242dbc80d673785d9": {
+    "address": "East Hinduja Insurance Tax Services, Chennai",
+    "lat": 13.084301,
+    "lon": 80.270462
+  },
+  "252f746a9070351c0c85677e65e70a5a": {
+    "address": "2nd Floor, Matrukrupa, Plot 11 Elements Layout, Kaikonrahalli, Sarjapur Road, Bengaluru, Karnataka, India - 560035",
+    "lat": 12.913767,
+    "lon": 77.676714
+  },
+  "d1faca80c1ed66b8ca57ef1002fada6f": {
+    "address": "H No 6-26-15, Canal Katta, Nizamabad, Andhra Pradesh, India - 503001",
+    "lat": 18.683978,
+    "lon": 78.098521
+  },
+  "9c3426eea0d54e59b9749a33ae26d1d2": {
+    "address": "456 Ward No 19 Sindhi Colony, Deshlahara Nagar, Durg, Chhattisgarh, India - 491001",
+    "lat": 21.192844,
+    "lon": 81.288357
+  },
+  "b44e164d4d0cd07b5bcb9bb04ef6b016": {
+    "address": "Hi Tek Superspeciality Hospital Pvt. Ltd., Bhilai",
+    "lat": 21.193848,
+    "lon": 81.350942
+  },
+  "50ad77159e6e1630bf13a28ee236af12": {
+    "address": "3F3, Jaya Palazzo, Jubilee Enclave, Hyderabad, Telangana, India - 500081",
+    "lat": 17.455416,
+    "lon": 78.373531
+  },
+  "2e8180ba3a4ff7ab5f184b28a2a95f3f": {
+    "address": "Healthians Labs, Hyderabad",
+    "lat": 17.396896,
+    "lon": 78.471598
+  },
+  "aa0a32ec78f30ef67da695f591408439": {
+    "address": "A 1-301 Shivam Residency, Shanti Nagar Ring Road No. 02, Bilaspur (M. Corp), Chhattisgarh - 495001",
+    "lat": 22.047681,
+    "lon": 82.184591
+  },
+  "a8ecf1a3cb34a2a29db2c31c513bc25d": {
+    "address": "3rd Floor Kamla Complex Bilaspur Road Near Nehru Chowk Civil Lines, Bilaspur",
+    "lat": 22.087333,
+    "lon": 82.145807
+  },
+  "26ca9319a2dad30db744d34076b6f053": {
+    "address": "Flat 203, 318 A Shreenathpuram, Near Shivalik Publik School, Engineering College Kota, Rajasthan, India - 324010",
+    "lat": 25.131058,
+    "lon": 75.825384
+  },
+  "44b8ae55878687691a491bf7681d5b37": {
+    "address": "Dr. Abdul Rahman Pathan (Examiner's Residence), Kota",
+    "lat": 25.213816,
+    "lon": 75.864753
+  },
+  "4e47a4e7a4b7ab1dceaa65d7e8f10610": {
+    "address": "S/O Radhe Shyam Kanu, Gandhi Nagar Collector Resident Road Gandhi Nagar, Ward No. 15, Rayagada(K), Kalyanasingpur, Rayagada, Odisha 765001",
+    "lat": 19.161398,
+    "lon": 83.408357
+  },
+  "614b5509e8e1bff639bab31b9fe39ae3": {
+    "address": "Rayagada",
+    "lat": 19.171494,
+    "lon": 83.411676
+  },
+  "659ba2e1d13c7f319bc1602aba13314b": {
+    "address": "106 Westbourne House Avenue Road, Torquay, Devon, United Kingdom, TQ25LQ",
+    "lat": 50.470621,
+    "lon": -3.544605
+  },
+  "1244586ac49fb48405c20d101f987ee1": {
+    "address": "Examinee's Residence (Dr. Luke Koupparis, GP), Torquay, Devon, United Kingdom",
+    "lat": 50.461921,
+    "lon": -3.525315
+  },
+  "4094bb21c6228a6cfb935839bc2c24e3": {
+    "address": "Flat-1501, Paritosh Society, Balewadi, Landmark: Ashtvinayak Temple, Pune, Maharashtra, India - 411045",
+    "lat": 18.581685,
+    "lon": 73.765317
+  },
+  "96e313f4bf4eba9f5bac2888db646e6b": {
+    "address": "Diagno Diagnostic Centre, Pune",
+    "lat": 18.524609,
+    "lon": 73.878624
+  },
+  "f89b81ade198b34ec8f56b4c1d1160c0": {
+    "address": "Flat - 1501, Paritosh Society, Balewadi, Pune, Maharashtra, India - 411045",
+    "lat": 18.581685,
+    "lon": 73.765317
+  },
+  "8433aa8a23ebab3c15d6444c876e7c2c": {
+    "address": "Diagnostic Centre (seal visible on Short MER — name partially legible; examiner Dr. Amit Sinkar, Reg No. 2002/03/1566), Pune",
+    "lat": 18.524678,
+    "lon": 73.842528
+  },
+  "c402ab4b4ba395dfb6fba218873e9b43": {
+    "address": "Apt No 102, 35291 Drakeshire Ln, Farmington, Michigan, United States, 48335",
+    "lat": 42.466246,
+    "lon": -83.394437
+  },
+  "b6e33b8aac3823c8ac9ccb635eeb2dbb": {
+    "address": "Exam One, Troy, MI",
+    "lat": 42.564628,
+    "lon": -83.170225
+  },
+  "391aa444485d468c007f7e325734065c": {
+    "address": "Flat no. 501, Sierra Vista, Lane no. 5, Veerbhadra Nagar, Baner, Near Yuthika, Baner, Maharashtra, India - 411045",
+    "lat": 18.561264,
+    "lon": 73.773526
+  },
+  "7c8964d1af5aeb38cce28635a5ef0e3a": {
+    "address": "OM Diagnostics, Pune",
+    "lat": 18.612141,
+    "lon": 73.765965
+  },
+  "439ba5e43c1ac9cac02f85d1c0d4bd35": {
+    "address": "D1802, Godrej 24 Maan Road, Hinjewadi Phase 1, Next to Streets of Europe, Pune, Maharashtra - 411057",
+    "lat": 18.584239,
+    "lon": 73.730052
+  },
+  "2c28f899f799f99f9f3286c2638a72ec": {
+    "address": "Tatva Pathology Labs, Pune",
+    "lat": 18.556985,
+    "lon": 73.932704
+  },
+  "68e0d2e7ae22a1e81c48b81e331ce243": {
+    "address": "L-602, Anand ILYF, Opp Diwali Elegance, S P Ring Road, Nr Vai, Ahmedabad, Gujarat - 382470",
+    "lat": 23.136044,
+    "lon": 72.561335
+  },
+  "f4b220534bdadf439d00143c6ffa7207": {
+    "address": "Niva Dignocare Pathology, Ahmedabad",
+    "lat": 23.114915,
+    "lon": 72.583853
+  },
+  "5aefdea881f315f0b7669c5c0115b5b3": {
+    "address": "Bunglow No. 57, Shivalik Lakeview, Via Bopal - Ghuma Road, Opp. Manipur Lake, Manipur, Manipur, Ahmedabad, Gujarat, 382115",
+    "lat": 23.034273,
+    "lon": 72.424732
+  },
+  "2a89be0a124cef80770b4133b3c08d2f": {
+    "address": "Bharuch",
+    "lat": 21.705136,
+    "lon": 72.995875
+  },
+  "2e3d40c7b9b053eccc8a8055d9a26cbd": {
+    "address": "209 Royal Furniture Building, 18 Al Husam Street, Madinat Zayad, Al Danah, Abu Dhabi, United Arab Emirates 22215",
+    "lat": 24.476825,
+    "lon": 54.365268
+  },
+  "33acc51235f8b4b2dedc5bc1503e1afc": {
+    "address": "Al Ameen Medical Centre LLC, Abu Dhabi",
+    "lat": 24.491832,
+    "lon": 54.367924
+  },
+  "feea9f3da5fa1767f3a90f83e0f79de1": {
+    "address": "c/o: Ramphal Gupta, C-4, 144-145, 3rd Floor, Mount Abu School, Sector - 6, Rohini, Delhi - 110085",
+    "lat": 28.714454,
+    "lon": 77.112189
+  },
+  "ea77cd9087feba7fd8155b0001be4cf5": {
+    "address": "TATA TPA Jaipur (medicals conducted at Vidhyadhar Nagar Enclave 2, Vidyadhar Nagar, Jaipur), Jaipur",
+    "lat": 26.960259,
+    "lon": 75.791958
+  },
+  "9b45490072a8c575ef163e4a6fa0b574": {
+    "address": "c/o Arjun Singh, House No 202/14, Durga Colony, S.B.I Taruwala, Paonta Sahib, Taruwala (114), Sirmaur, Himachal Pradesh - 173025",
+    "lat": 30.453227,
+    "lon": 77.610419
+  },
+  "bb2a35a0d490b0767609e0207729145d": {
+    "address": "Shri Sai Cardiac & Critical Care Centre, Paonta Sahib",
+    "lat": 30.443313,
+    "lon": 77.607687
+  },
+  "46b94193cd21a60cd8194d673d9a65e4": {
+    "address": "9-2-164, Kalvakolanu Street, Amalapuram, East Godavari, Andhra Pradesh - 533201",
+    "lat": 16.584695,
+    "lon": 82.011176
+  },
+  "6a163158a5e299feccbdbf42f04d3743": {
+    "address": "D.no.3-2-119/4, College Rd, Opp. More Super Bazar, Amalapuram (GPS-tagged medical photo location), Amalapuram",
+    "lat": 16.567797,
+    "lon": 81.997782
+  },
+  "e8463cf3cc69fef0c8702bf72db82e68": {
+    "address": "114/5, Jacubpura, Gurgaon, Haryana - 122001",
+    "lat": 28.4624,
+    "lon": 77.02752
+  },
+  "23fa5be00e3118338d94fccc7598d8d7": {
+    "address": "Microbe Diagnostic Laboratories Pvt Ltd / AI Healthcare (Authentic & Insightful Health Care Pvt Ltd), Gurugram",
+    "lat": 28.459497,
+    "lon": 77.026638
+  },
+  "491af76a10d6f69fe85c898a8fee5adc": {
+    "address": "No 1 Guru Anand Avenue, Behind MCS Conventional Hall, Near MCS Conventional Hall, N Nagenahalli, K Narayanapura, PO: Kothanur, District: Bengaluru, State: Karnataka",
+    "lat": 13.057882,
+    "lon": 77.642977
+  },
+  "d2b58eb568a6030ce106bbd5a93171c9": {
+    "address": "Prolife Diagnostics, Bangalore",
+    "lat": 13.020687,
+    "lon": 77.652634
+  },
+  "5ff7199d4669a1c09e71af84ddee3a2e": {
+    "address": "International City Classic Apartment, Bldg No CBD 32, Flat No 1008, 621 Al Warsan, Dubai, UAE 54563",
+    "lat": 25.147962,
+    "lon": 55.388885
+  },
+  "5bc4bdaf826196185bca8b447aa28ace": {
+    "address": "Getwell Medical Center, Dubai (Bur Dubai)",
+    "lat": 25.256281,
+    "lon": 55.300545
+  },
+  "aa7a2becd1f69612168570d3c64e98fd": {
+    "address": "24/4 Subba Naidu Street, Near Jain Temple, Choolai, Chennai, Tamil Nadu - 600112",
+    "lat": 13.100488,
+    "lon": 80.26474
+  },
+  "c5b4046a9bc04c7f947d0b8fbd2739cb": {
+    "address": "ward number 10, ward number 10, gram gaurihar, Landmark: teh.gaurihar, City: Gaurihar, State: Madhya Pradesh, Country: India, Pin code: 471515",
+    "lat": 25.269223,
+    "lon": 80.194481
+  },
+  "4c58556bbb664b16ce435591e40b3fc4": {
+    "address": "Bhopal TPA (medical centre at 33, Satai-chhatarpur Rd, Radio Colony, Chhatarpur, Madhya Pradesh 471001), Chhatarpur",
+    "lat": 24.898726,
+    "lon": 79.59246
+  },
+  "c0694ff0fc8f7e3fd3178f244dc75d1c": {
+    "address": "Do Naharia, Balwant Colony, Malli Bamori, Haldwani, Nainital, Uttarakhand, India - 263139",
+    "lat": 29.235415,
+    "lon": 79.523107
+  },
+  "7a60ce4e5a0a6738edf002158e07f790": {
+    "address": "HRM Medical, Haldwani",
+    "lat": 29.218264,
+    "lon": 79.512977
+  },
+  "323478a997d08184e6d0073db373cd5c": {
+    "address": "Room No LXX-25, Safed Pool, Pipe Line, Andheri Kurla Road, Near Bachoo Garage, Mumbai, Maharashtra - 400072",
+    "lat": 19.112223,
+    "lon": 72.867322
+  },
+  "5325604605d5539c8aa5710df03ac5ab": {
+    "address": "3797, Onkar Niwas, Gurukul Society, near Pretam Prakash Nagar, Shirur, Pune, Maharashtra - 412210",
+    "lat": 18.816507,
+    "lon": 74.369015
+  },
+  "aea818d2b7e3d7af64e05100fe580d4e": {
+    "address": "Vighamarta Diagnostic Center, Pune",
+    "lat": 18.474338,
+    "lon": 73.885252
+  },
+  "3c5e270716f0b910df30b2541af4b967": {
+    "address": "378/9 Millat Nagar, K D A Colony, Naubasta Kanpur Nagar, Kanpur, Uttar Pradesh 208021, India",
+    "lat": 26.386138,
+    "lon": 80.305844
+  },
+  "506f20226c3ef5f949b8ecd13c35cfda": {
+    "address": "New Delhi",
+    "lat": 28.61393,
+    "lon": 77.208828
+  },
+  "40478c1dbd8333c2c39c462803d6297e": {
+    "address": "219 Rail Vihar, Sector 15, Part 2, Gurgaon, Haryana 122001, India",
+    "lat": 28.456377,
+    "lon": 77.041032
+  },
+  "e1230b7dfcdc15373f481e443afb6c84": {
+    "address": "Health India (referred by; lab report header shows 'Referred By: HEALTH INDIA'), Gurugram",
+    "lat": 28.406862,
+    "lon": 76.885506
+  },
+  "2a9f9ca46291848ab36f7a5313574db1": {
+    "address": "215, Maharaja Enclave, 1st Cross, Jai Bheema Nagar, Sheshadripuram, Opposite Sheshadripuram Law College, Bengaluru, Karnataka 560021",
+    "lat": 12.991285,
+    "lon": 77.574817
+  },
+  "0969b123b166d52775ef512a80709bb8": {
+    "address": "Yashaswi Diagnostics, Bangalore",
+    "lat": 12.984503,
+    "lon": 77.551103
+  },
+  "c9bf549df25e1bced4d8cb352dbda46b": {
+    "address": "S/O AVNEESH KUMAR, GANDHI NAGAR TIRWA, KANNAUJ, UTTAR PRADESH, INDIA - 209732",
+    "lat": 26.951677,
+    "lon": 79.782285
+  },
+  "4842d0ab16447af597e2a7904fc91cc9": {
+    "address": "123/1 Old Chandapura Village And Post Hosur Main Road, Anekal Taluk, Behind R K Dhaba, Chandapura, Karnataka, India",
+    "lat": 12.801078,
+    "lon": 77.713697
+  },
+  "a0bf45003e69ec76079db32f571ed34c": {
+    "address": "1/64 Cowper Street, Footscray, VIC 3011, Australia",
+    "lat": -37.80337,
+    "lon": 144.903172
+  },
+  "76a49e70b1c693d0d58a5dc17b32e1ed": {
+    "address": "MDIndia Health Insurance TPA Private Limited, Hyderabad",
+    "lat": 17.429288,
+    "lon": 78.454548
+  },
+  "230b64b8cfb2bf37c468ce0b9d9f9fc8": {
+    "address": "No 78/4/1 A3 Murthy Residency 1st Block 4th Main Rd Hbcs Layout Nagawara, Bengaluru, Karnataka, India - 560045",
+    "lat": 13.039089,
+    "lon": 77.618408
+  },
+  "fd7024d4791d77f0daad409f8ff49a8e": {
+    "address": "Prolife Diagnostics, Bengaluru",
+    "lat": 13.020687,
+    "lon": 77.652634
+  },
+  "f1923686c9d5a87f879843e7f0963c3d": {
+    "address": "Sanguine Diagnostics / Sanguine Medical Private Limited, Kolkata",
+    "lat": 22.612091,
+    "lon": 88.429408
+  },
+  "b2eb97d3fce9a5eddb8ce17779951c1b": {
+    "address": "H.No.-33-A Krishan Kunj, Laxmi Nagar, Near Lovely Public School, Shakar Pur Baramad, Delhi - 110092",
+    "lat": 28.640893,
+    "lon": 77.271866
+  },
+  "2e1fcf5d3b634e78b406bacb51b6c76f": {
+    "address": "Dr Lal PathLabs Ltd, New Delhi",
+    "lat": 28.52207,
+    "lon": 77.181493
+  },
+  "0263815ff90f66589e1c3428731c223c": {
+    "address": "no-1 binny road poes garden, Gopalapuram, Chennai, Tamil Nadu 600086, India",
+    "lat": 13.045248,
+    "lon": 80.254714
+  },
+  "99f853b1d403a09086b92f55f3881296": {
+    "address": "21, Prameswar Park, Puna Simada, Varachha, Landmark: Shyam Dham, Surat City, Gujarat, India - 395006",
+    "lat": 21.220771,
+    "lon": 72.892157
+  },
+  "278a07c0178cb09e32e83dcc2d494d4f": {
+    "address": "We Care Specialty Hospital, Surat",
+    "lat": 21.175465,
+    "lon": 72.811343
+  },
+  "e06fe60d7efdd1767b33bf4de82d63f2": {
+    "address": "60 Chapel Wood, Cardiff, NA, CF239EF, United Kingdom",
+    "lat": 51.511752,
+    "lon": -3.152172
+  },
+  "efc34ce8304eba6bd3c9dd77e1f7ba03": {
+    "address": "GP AND ME LTD, Cardiff",
+    "lat": 51.483707,
+    "lon": -3.168096
+  },
+  "c1a3b778d71567492e99568098b6317a": {
+    "address": "ISA World Diagnostic, Guwahati, Guwahati",
+    "lat": 26.115792,
+    "lon": 91.708593
+  },
+  "021477542602d0d05e10609413fc30d8": {
+    "address": "103, 5th Cross, Vinayaka Layout, Near Solar Factory Road, Bengaluru, Karnataka, India - 560036",
+    "lat": 13.035703,
+    "lon": 77.690706
+  },
+  "8d131d3e60c2bce84ae064e5994d3971": {
+    "address": "9-21/1/2/A Ashok Nagar Boduppal Uppal Near Pochamma Temple, Hyderabad, Telangana, India - 500039",
+    "lat": 17.410677,
+    "lon": 78.588152
+  },
+  "d69f8c0971fba5625c8f8b7ae9c9e4ee": {
+    "address": "Ayush Diagnostics Center, Chaitanyapuri, Hyderabad",
+    "lat": 17.368577,
+    "lon": 78.53079
+  },
+  "fefd860668ab315fbce88f1214d319df": {
+    "address": "319, Stella Villa, Maichael Dias Marg, Green Gardan Hotel, Sagode Wadi, Merces, Vasai West, Vasai, Thane, Maharashtra - 401201",
+    "lat": 19.358414,
+    "lon": 72.794681
+  },
+  "d0c9a2a3b105d6e586e54dea5b4a4f28": {
+    "address": "Aayushman & Marine Medical Centre, Vasai",
+    "lat": 19.38153,
+    "lon": 72.831647
+  },
+  "18fe37bd11c53877a272176cdb05911d": {
+    "address": "5, Royal Red, University Tiraha, Pachpedi, Civil Line, Landmark: Shiv Mandir, Jabalpur, Madhya Pradesh, India - 482001",
+    "lat": 23.146332,
+    "lon": 79.920669
+  },
+  "cef181a12a6643148022cbeeec0e0fae": {
+    "address": "Hope ICU Hospital Jabalpur MP, Jabalpur",
+    "lat": 23.16727,
+    "lon": 79.925477
+  },
+  "143dfa0d5c3a8558f7a34ad365aa6971": {
+    "address": "NEW DOOR NO 1/328A SOUTH STREET, Karaiyavetti, Tamil Nadu, India - 621715",
+    "lat": 10.961752,
+    "lon": 79.04996
+  },
+  "5af8438ff0fd32bdd86045419b92ebd0": {
+    "address": "Prat Himda Insurance TPA Services - Chennai, Ariyalur",
+    "lat": 13.180314,
+    "lon": 80.229343
+  },
+  "a45d8efd66c66611b76ae5b167e05df7": {
+    "address": "A-102 Saransh Green Flats, Vasna, Near Ashirwad Flats, Paldi, Ahmedabad City, Gujarat - 380007",
+    "lat": 23.000331,
+    "lon": 72.543934
+  },
+  "7fcadb16ccd69be95ce5439ec641dc9e": {
+    "address": "Shreeyanta Healthcare & Diagnostics Pvt. Ltd. / ES Healthcare Centre, Ahmedabad",
+    "lat": 23.023066,
+    "lon": 72.549502
+  },
+  "d6879e731e109bd4fa388ad9b6123286": {
+    "address": "Avani Oxford, Block 4, Flat 5N, 136 Jessore Road, Bangur Avenue, North 24 Parganas, West Bengal, India - 700055",
+    "lat": 22.621146,
+    "lon": 88.400049
+  },
+  "c1de970e5523e039765b1c40b63bb3c1": {
+    "address": "Health Hub Clinic, Kolkata",
+    "lat": 22.515728,
+    "lon": 88.388285
+  },
+  "6e7bf49c8d5fa7e61c0eda0623bb3431": {
+    "address": "Flat No 2, Komal Block, Astha Sai City, Dimna Road, Landmark: Mango, Jamshedpur, Jharkhand, India - 831012",
+    "lat": 22.826177,
+    "lon": 86.223496
+  },
+  "6637bffac9c3e528cd298733108e377e": {
+    "address": "Clinova Path Labs Pvt. Ltd. / MediBuddy / Promiso Health Pvt. Ltd., Bengaluru",
+    "lat": 12.962896,
+    "lon": 77.57754
+  },
+  "be243fdbf8233eed3679d2a63650b5d6": {
+    "address": "9/107, S-4, Premanjali Appartment, Rajender Nagar, Sector-3, Sahibabad, Uttar Pradesh, India - 201005",
+    "lat": 28.684738,
+    "lon": 77.368049
+  },
+  "5e165607b8699c8fd370cc55afb529fa": {
+    "address": "TATA 1MG OKHLA, New Delhi",
+    "lat": 28.528371,
+    "lon": 77.278015
+  },
+  "78fd99badf4ef2eb74ffd9ed4cf0a9a4": {
+    "address": "Room No D3, Police Officers Mes Chimpu, Itanagar, Arunachal Pradesh, India - 791111",
+    "lat": 27.066451,
+    "lon": 93.606538
+  },
+  "9ccc6f9dc72dc29b023dd397ea0b4ad5": {
+    "address": "Vista Laboratory, Guwahati",
+    "lat": 26.115792,
+    "lon": 91.708593
+  },
+  "ad69e1dc27620fb6c9f1c802e7bcccbf": {
+    "address": "Plot no 67 Road no 4 SLN Phase3, Near Medplus Patel Guda, Hyderabad, Telangana, India - 502319",
+    "lat": 17.533662,
+    "lon": 78.281112
+  },
+  "e29c600a0b032d9a9e845073a50b94e6": {
+    "address": "TATA 1MG HYDERABAD, Secunderabad / Hyderabad",
+    "lat": 17.444409,
+    "lon": 78.480343
+  },
+  "c7cd762a9e60019948579e8b04c78bca": {
+    "address": "NO 32, NORTH KATTUKOTTAIGAL, Kalappanayakkenpatti, Tamil Nadu, India - 637404",
+    "lat": 11.335304,
+    "lon": 78.266351
+  },
+  "2ea045faa019765becb8af7aeae49569": {
+    "address": "Geeth Ragunath Hospital / Lifeline Laboratories (A unit of Geeth Ragunath Hospital), Attur, Salem District",
+    "lat": 11.595429,
+    "lon": 78.595822
+  },
+  "a906623a602ae035449522efdc82c546": {
+    "address": "8-13-72/C/9, Raghavendra Nagar Co-Operative Housing Society, Shivrampally, Opp SVPNPA, Rajendranagar, Telangana, India - 500052",
+    "lat": 17.330587,
+    "lon": 78.436519
+  },
+  "1e2c91cd682ba2aebcc97f9a8e19326b": {
+    "address": "04178 BLOCK 51 TAMPINES LANE, SINGAPORE, SINGAPORE 528460",
+    "lat": 1.344036,
+    "lon": 103.948235
+  },
+  "7ca60f3e4b2d8e7de1139f2ae4e2fdb4": {
+    "address": "TrueCare Clinic (Eastpoint Mall) / Eurofins Clinical Diagnostics Pte Ltd, Singapore",
+    "lat": 1.342728,
+    "lon": 103.953011
+  },
+  "fdba515ae28e2e60e10e7f881d1247fd": {
+    "address": "H No. 324, Sunview Enclave, Ayali Kalan, Ludhiana, Punjab - 142027, India",
+    "lat": 30.894278,
+    "lon": 75.750972
+  },
+  "972cb7d11de008fc1078862a13f3cbf8": {
+    "address": "SK Medical Centre & Medical Diagnostic Laboratory, Ludhiana",
+    "lat": 30.900965,
+    "lon": 75.857276
+  },
+  "87438c741ceb17d1bb6adc90b99084b9": {
+    "address": "S/O ROOP KUMAR SINGHANIA 220A NASKAR PARA ROAD GHUSURI HAORA (M CORP), HOWRAH, WEST BENGAL, INDIA",
+    "lat": 22.611885,
+    "lon": 88.352607
+  },
+  "f1206aaa4015aa85965afcca37d333c8": {
+    "address": "Prime Diagnostics, Gurugram",
+    "lat": 28.478213,
+    "lon": 77.015783
+  },
+  "5847055b76ec6d4b6a1f2ad539e81aef": {
+    "address": "PLOT NO 119 FIRST FLOOR CRYSTAL 4 AL WASEL BUILDING AL QUOZ 4, NEAR CREDENCE HS, DUBAI, United Arab Emirates 0000",
+    "lat": 25.153552,
+    "lon": 55.248807
+  },
+  "9c3ba9817c952c680da31b6f4cb7cc90": {
+    "address": "Oud Metha Medical Centre (near Oud Metha Metro Station), Dubai",
+    "lat": 25.239126,
+    "lon": 55.312967
+  },
+  "e8268d16bab079d612f29f22c3ade2c5": {
+    "address": "Digital Janch Ghar Dhanbad, Bokaro Steel City",
+    "lat": 23.795653,
+    "lon": 86.430386
+  },
+  "a20d5b4452e12c0b5099c76e6f2daae3": {
+    "address": "FLAT NO. 2103, 21ST FLOOR, CREST BUILDING NEAR GANESH TEMPLE, SVP NAGAR, FOUR BUNGALOW, MUMBAI, MAHARASHTRA - 400053",
+    "lat": 19.13789,
+    "lon": 72.821268
+  },
+  "493dc757edc03827877e1a7c682d7d9a": {
+    "address": "AV Pathology Services, Vashi, Navi Mumbai",
+    "lat": 19.073483,
+    "lon": 73.0022
+  },
+  "089f687361dc660d0f8c70bdbf48bbf1": {
+    "address": "4804, 48th Floor, One Avighana Park Tower, Mahadeo Palav Marg, Curry Road, Parel, Mumbai, Maharashtra, India",
+    "lat": 18.994486,
+    "lon": 72.83445
+  },
+  "37b1e4e19a69cf56f74e5a840bffbad0": {
+    "address": "Healthia Insurance TPA Services Pvt Ltd, Mumbai",
+    "lat": 19.082032,
+    "lon": 72.89566
+  },
+  "532f4f899315d59bc738dc1046bb2449": {
+    "address": "S/O: Kalva Sudhakar, H.No 3-4-376/10, Basant Colony, Barkat Pura, Himayathnagar, Sin Kachiguda, Hyderabad, Andhra Pradesh - 500027",
+    "lat": 17.393697,
+    "lon": 78.491971
+  },
+  "c7d0cff2ed7346315d0db6cd43f805cf": {
+    "address": "Health Care Diagnostic Centre, Hyderabad",
+    "lat": 17.32433,
+    "lon": 78.489313
+  },
+  "cb21a2eb8b65114bc4f718ab901c7982": {
+    "address": "Pathocon Diagnostics, Bengaluru",
+    "lat": 13.006621,
+    "lon": 77.54891
+  },
+  "bce4160e80acd7266e8690c8cef9f25f": {
+    "address": "1002, Prathamesh Harmony, A Wing, Gautam Buddha Marg, Malad West, Landmark: Orlem, Mumbai, Maharashtra, India - 400064",
+    "lat": 19.196517,
+    "lon": 72.836706
+  },
+  "70ede688a4ff6f69af05559c94e5d156": {
+    "address": "Mumbai",
+    "lat": 18.958235,
+    "lon": 72.831951
+  },
+  "fc9536f3f7a77f993b1c736a9079b4a2": {
+    "address": "C/O Sharad S Kamath, Flat H 504 Mantri Alpyne, Dr Vishnuvardhan Road, Banashankari 5th Stage, Subramanyapura, Bengaluru, Karnataka, 560061",
+    "lat": 12.90312,
+    "lon": 77.517495
+  },
+  "f8ead42f1cc9094ce5f3b11757eee5e3": {
+    "address": "TATA 1MG BANGALORE, Bengaluru",
+    "lat": 12.938603,
+    "lon": 77.625601
+  },
+  "73a3a2f7b43a7de66bb53c32455f425d": {
+    "address": "8 Build Street, Armstrong Creek, Geelong, Victoria, Australia 3217",
+    "lat": -38.226396,
+    "lon": 144.372323
+  },
+  "0c68276d561f731d5f9dee1fa872248a": {
+    "address": "Melbourne Pathology / Prestige Paramedical Group, Melbourne, Australia",
+    "lat": -37.813628,
+    "lon": 144.963058
+  },
+  "c87e915440e30fb7317d04c8178f4c56": {
+    "address": "Flat No 401, 4th Floor, Kshitij Apartment, NB Patil Marg, Ghatla Road, Mumbai, Maharashtra 400071",
+    "lat": 19.213664,
+    "lon": 72.846957
+  },
+  "ada5f5449c9bbd5a22d223f6c2642118": {
+    "address": "TATA 1MG MUMBAI, Mumbai",
+    "lat": 19.110447,
+    "lon": 72.887073
+  },
+  "000e0465631cea3f5fc7d345de890100": {
+    "address": "Unit 6, Floor 3, Building 75, Street 930, Zone 22, Near Indian Family Restaurant, Qatar",
+    "lat": 25.286123,
+    "lon": 51.511066
+  },
+  "caef4442e388659d3ecee01ce82ebda7": {
+    "address": "Anmol Medicare Limited / Aster Medical Centre, Doha, Qatar",
+    "lat": 25.285447,
+    "lon": 51.53104
+  },
+  "da2679b92791e43f896938cebf9b0530": {
+    "address": "S/O: Saravanan, 21/41, Bajanai Kovil Street, Tindivanam, PO: Tindivanam, Dist: Villupuram, Tamil Nadu",
+    "lat": 12.237924,
+    "lon": 79.652267
+  },
+  "f818d984f3dee784888fa7ef51853c4b": {
+    "address": "HealthIndia Insurance TPA Services Pvt. Ltd., Chennai",
+    "lat": 13.045073,
+    "lon": 80.247803
+  },
+  "9f00e15fb9a92f87a8ef4f25efeca23f": {
+    "address": "Plot 90 Gali No. 3 Sector 2 Sainik Enclave Mohan Garden, Knowledge Point, Delhi, Delhi - 110059",
+    "lat": 28.619833,
+    "lon": 77.042965
+  },
+  "dee255f8aaff8af9812a23db5bc8c088": {
+    "address": "Thyrocare Technologies Limited, Gurgaon",
+    "lat": 28.459497,
+    "lon": 77.026638
+  },
+  "680754b7368d4a16c577db7e4f9043fa": {
+    "address": "701 Newhams Yard, 153 Tower Bridge Road, London, UK, SE1 3LW",
+    "lat": 51.499037,
+    "lon": -0.079279
+  },
+  "b23da7cd4ae41f0ed416ab1176bbefcd": {
+    "address": "ACARE DIAGNOSTICS, Gurugram",
+    "lat": 28.459497,
+    "lon": 77.026638
+  },
+  "6e95fd388169e95eed1eee103643e582": {
+    "address": "Flat No 915, 9th Floor, VRR Fortuna Apartment, Doddakannelli, Bengaluru, Karnataka, India - 560035",
+    "lat": 12.905108,
+    "lon": 77.702826
+  },
+  "64865eb230cad7b5622d46e2045db2e4": {
+    "address": "CU-14, Pitam Pura, North West Delhi, Delhi, 110034",
+    "lat": 28.715795,
+    "lon": 77.143112
+  },
+  "f64f40dda20512e52b23f93abb0fe7f1": {
+    "address": "1-2-270/45/a1/1, Front Block, 2nd Floor, M.G. Road, Suryapet, Beside Laxmi Vilas Bank, Suryapet, Telangana, India - 508213",
+    "lat": 17.146731,
+    "lon": 79.62214
+  },
+  "5591950417306d2cf6a701ff237ed27d": {
+    "address": "Life Care Diagnostic Centre, Akola",
+    "lat": 20.705921,
+    "lon": 77.011541
+  },
+  "878493aee24975ea4c2cc2b9361be824": {
+    "address": "Healthians Labs (A Unit of Expedient Healthcare Marketing Pvt. Ltd.), Hyderabad",
+    "lat": 17.396896,
+    "lon": 78.471598
+  },
+  "cc16bf12d8343037e732500a8bad3089": {
+    "address": "Flat No. 12, Sankalp Appartment, Near Raghuveer Puri Police Station, Koil, Aligarh, Uttar Pradesh, India - 202001",
+    "lat": 27.927933,
+    "lon": 78.089
+  },
+  "0014946f23a60342e637535571b39b95": {
+    "address": "Shree Diagnostic Center, Aligarh",
+    "lat": 27.888561,
+    "lon": 78.080355
+  },
+  "c8186deb91638e8e5fcbbc78050bcd0e": {
+    "address": "C-1, Satellite Apartment, Near Kameshwar School, Jodhpur Cross Road, Satellite, Ahmedabad, Gujarat, India, 380015",
+    "lat": 23.029409,
+    "lon": 72.526722
+  },
+  "82e341b894db4cfb59c130c7a68e8e50": {
+    "address": "HealthIndia Insurance TPA Services Pvt. Ltd., Ahmedabad",
+    "lat": 23.022505,
+    "lon": 72.571362
+  },
+  "1499c1691c464586eea11c1f9edd2d5a": {
+    "address": "1102A CHEMBUR RATNADEEP CHS, BUILDING 125 TILAKNAGAR, MUMBAI, MAHARASHTRA, INDIA, PIN: 400089",
+    "lat": 19.067423,
+    "lon": 72.89553
+  },
+  "70f9ea4d1c4428b144f32f00e27f470c": {
+    "address": "NH Medical Services, Ghatkopar (E), Mumbai",
+    "lat": 19.083869,
+    "lon": 72.907376
+  },
+  "79272f8c8af6a45456cc73a9d9787d7a": {
+    "address": "HIndia TPA Diagnostic Centre, Hyderabad, Hyderabad",
+    "lat": 17.406498,
+    "lon": 78.477244
+  },
+  "ddf49c4c29dcf6af7d4a06fb85b835fd": {
+    "address": "2-41/17/2/A, 302, 3rd Floor, 4th Cross, Prashanth Colony, Kothaguda, Near PNB Bank, Hyderabad, Andhra Pradesh, India - 500084",
+    "lat": 17.47878,
+    "lon": 78.368641
+  },
+  "4e728c569d725b2e45e0111d7d97cfe4": {
+    "address": "TATA 1MG HYDERABAD, Secunderabad, Hyderabad",
+    "lat": 17.444409,
+    "lon": 78.480343
+  },
+  "6ca05ed332deb8de799a49f31bbbf8a0": {
+    "address": "CDC Life (implied from Medical Photo ID background banner visible at D-3, Block D, Swarn Nagari, Sector 31, Greater Noida), Greater Noida",
+    "lat": 28.459547,
+    "lon": 77.533988
+  },
+  "c003cd226dcd8f1360348112e7a34a04": {
+    "address": "Flat No. C-404 Kaushalya Estate, Near Mauryalok Complex, Bandar Bagicha, Patna G.P.O., Patna, Bihar - 800001",
+    "lat": 25.60956,
+    "lon": 85.136394
+  },
+  "8c14540875ab43ed94866cafbbe4b454": {
+    "address": "Shree Patho Lab, Gaya",
+    "lat": 24.799385,
+    "lon": 85.008803
+  },
+  "bb2f5dcea37c3d851754a5abc3b0e53c": {
+    "address": "B 501, IFFCO Township, Paul Pothen Nagar, Aonla, Iffco Census Village, Bareilly, Uttar Pradesh, India - 243403",
+    "lat": 28.215957,
+    "lon": 79.24661
+  },
+  "70081118209d70c1aee6a0d3fb1cf24a": {
+    "address": "S/O R.MUTHUSAMY, G BLOCK FLAT NO 702, TAISHA AIS HOUSING COMPLEX, WEST NADESAN NAGAR, VIRUGAMBAKKAM, PO: VIRUGAMBAKKAM, DIST: CHENNAI, TAMIL NADU",
+    "lat": 13.056259,
+    "lon": 80.187905
+  },
+  "28309b1ed48ded992c43c295cf22e865": {
+    "address": "BEAT INDIA INSURANCE TAX SERVICES (CHENNAI), Chennai",
+    "lat": 13.084301,
+    "lon": 80.270462
+  },
+  "e3a9ebc871594355ee52dd95d297ef47": {
+    "address": "WELLSPRING HEALTH CARE, Bengaluru",
+    "lat": 12.858534,
+    "lon": 77.646273
+  },
+  "e1304506d4de242f7003a1c92c7d529a": {
+    "address": "H No 6-26-15, Canal Katta, Nizamabad, Andhra Pradesh, India",
+    "lat": 18.683978,
+    "lon": 78.098521
+  },
+  "fdd973cb2f5f7fb84790998a6c89586e": {
+    "address": "3F3, Jaya Palazzo, Jubilee Enclave, Hyderabad, Telangana - 500081",
+    "lat": 17.455416,
+    "lon": 78.373531
+  },
+  "813d4e90fa8faf1c43a0409097f3e354": {
+    "address": "456, Ward No 19, Sindhi Colony, Deshlahara Nagar, Durg, Chhattisgarh, India - 491001",
+    "lat": 21.192844,
+    "lon": 81.288357
+  },
+  "4c115583114d3581c56e0f9f0012bf86": {
+    "address": "H NO 60 / 61, CS.NO 9086 / B, AHMAD COMPLEX, JODBHAWAVI PETH, Solapur North, Maharashtra, India",
+    "lat": 17.675334,
+    "lon": 75.911082
+  },
+  "c1708e50c3f4206d21d4c7c2361fc03d": {
+    "address": "Solapur",
+    "lat": 17.670074,
+    "lon": 75.901047
+  },
+  "7d71ef2d655654d7be4a3008c2d46272": {
+    "address": "A 1-301 Shivam Residency, Shanti Nagar Ring Road No. 02, Bilaspur (M. Corp), Chhattisgarh, India - 495001",
+    "lat": 22.047681,
+    "lon": 82.184591
+  },
+  "ee89c335683e0920b55ada90e325de8d": {
+    "address": "Vatsal Diagnostic Centre, Bilaspur",
+    "lat": 22.079655,
+    "lon": 82.140915
+  },
+  "642714d001554a82f421d3b6a77d5f96": {
+    "address": "Flat 203, 318 A Shreenathpuram, Near Shivalik Publik School, Engineering College Kota, Rajasthan, India 324010",
+    "lat": 25.131058,
+    "lon": 75.825384
+  },
+  "514c290c0f14ea314d88815503b74ca1": {
+    "address": "Dr. Abdul Rahman Pathan (MBBS MD) — Examinee's Residence; also City Heart & Critical Care Centre (Kota) and Ethos Hospital (Kota) for personal ECG/Echo, Kota",
+    "lat": 25.123566,
+    "lon": 75.813053
+  },
+  "d36d51a23f8acd59220bbead561f1e66": {
+    "address": "S/O Radhe Shyam Kanu, Gandhi Nagar Collector Resident Road Gandhi Nagar, Ward No. 15, Rayagada(K), Kalyanasingpur, Rayagada, Orissa - 765001",
+    "lat": 19.161398,
+    "lon": 83.408357
+  },
+  "20453011b5fdbfdb47eb233884ed6242": {
+    "address": "Rama Krishna Nagar Medical Centre (GPS-tagged location: 5c75+rfr, Main Rd, Near Konark Sweet Shop, Rama Krishna Nagar, Rayagada), Rayagada",
+    "lat": 19.892069,
+    "lon": 86.091184
+  },
+  "af6bb0b0411c715407344c363577ec87": {
+    "address": "Diagnostic Centre (seal visible on Short MER — Dr. Amit Sinkar, Reg No. 2002/03/1566), Pune",
+    "lat": 18.524678,
+    "lon": 73.842528
+  },
+  "b87a5a2d7b23e0e4003e3a39c033a2c5": {
+    "address": "Flat - 1501, Paritosh Society, Balewadi, Landmark: Ashtvinayak Temple, Pune, Maharashtra, India - 411045",
+    "lat": 18.581685,
+    "lon": 73.765317
+  },
+  "64376ae714d6e83565656b3ec076d117": {
+    "address": "20-20-1L, KVR Royal, SF-1, M S N Colony, Ward No 20, Vizianagaram, Andhra Pradesh, India - 535002",
+    "lat": 18.102669,
+    "lon": 83.415917
+  },
+  "a5055ca6f22c1aa8acc770ec5627fc11": {
+    "address": "Vijayanagaram",
+    "lat": 18.106658,
+    "lon": 83.395551
+  },
+  "98dce94ced3153852f2b7121af2783f1": {
+    "address": "Apt No 102, 35291 Drakeshire Ln, Farmington, Michigan, United States, Pin code: 48335",
+    "lat": 42.464344,
+    "lon": -83.405644
+  },
+  "2de617c9cdf0210ba42871b3df79c3b0": {
+    "address": "Exam One, Troy, Michigan",
+    "lat": 42.564628,
+    "lon": -83.170225
+  },
+  "5b9b6732bc5e23fb82643238e565cc43": {
+    "address": "Tatva Labs, Pune",
+    "lat": 18.621519,
+    "lon": 73.873663
+  },
+  "06f61d4c1d2755eb4838220cf5f1b8e4": {
+    "address": "L-602, Anand ILYF, Opp Diwali Elegance, S P Ring Road, Nr Vaishnodevi, Ahmedabad, Gujarat - 382470",
+    "lat": 23.136044,
+    "lon": 72.561335
+  },
+  "065817dc4bde6cd84888b88c9be90b1e": {
+    "address": "Bunglow No. 57, Shivalik Lakeview, Via Bopal - Ghuma Road, Opp. Manipur Lake, Manipur, Gujarat - 382115",
+    "lat": 23.034273,
+    "lon": 72.424732
+  },
+  "d876dc415b75d664f50ba63c8270f868": {
+    "address": "Adarsh Heart & Superspeciality Hospital Panchbatti / Preet Laboratory, Bharuch",
+    "lat": 21.69935,
+    "lon": 72.985455
+  },
+  "bb4c7351b4d7b034fc4db078ff4a8708": {
+    "address": "IndIndia TPA (Jaipur centre), Jaipur",
+    "lat": 26.839621,
+    "lon": 75.794739
+  },
+  "60c4467c781c32998c975fce7b9d6985": {
+    "address": "9-2-164, Kalvakolanu Street, Amalapuram, Amalapuram, East Godavari, Andhra Pradesh, India - 533201",
+    "lat": 16.584695,
+    "lon": 82.011176
+  },
+  "b6ddbaa59378e2f863b7f182ec9481e9": {
+    "address": "D.no.3-2-119/4, College Rd, Opp. More Super Bazar, Amalapuram (unlabelled diagnostic centre - location from GPS geotag on medical photo), Amalapuram",
+    "lat": 16.567797,
+    "lon": 81.997782
+  },
+  "8aafaee8ec417376d6818457ae14a160": {
+    "address": "Microbe Diagnostic Laboratories Pvt Ltd, Gurugram",
+    "lat": 28.430175,
+    "lon": 77.045566
+  },
+  "1df8d78e371d91318d94700359db0cea": {
+    "address": "Heart Hinda Insurance Life Services, Chennai",
+    "lat": 13.084301,
+    "lon": 80.270462
+  },
+  "15034187999a802aa1dc915b4eff0143": {
+    "address": "No 1 Guru Anand Avenue, Behind MCS Conventional Hall, Near MCS Conventional Hall, N Nagenahalli K Narayanapura, PO: Kothanur, District: Bengaluru, State: Karnataka",
+    "lat": 13.057882,
+    "lon": 77.642977
+  },
+  "9c69d888bf83ffbfdaaa611beb7a624f": {
+    "address": "International City Classic Apartment Bldg No CBD 32 Flat No 1008, Landmark: 621 Al Warsan, Dubai, UAE, Pincode: 54563",
+    "lat": 25.147962,
+    "lon": 55.388885
+  },
+  "6f452c62d827d483804a3262415e2819": {
+    "address": "Getwell Medical Center, Bur Dubai",
+    "lat": 25.256281,
+    "lon": 55.300545
+  },
+  "fc055e83a3b0e727c818993ea1007e51": {
+    "address": "Bhopal TPA (medical photo stamped Bhopal; GPS location shows 33, Satai-chhatarpur Rd, Radio Colony, Chhatarpur, Madhya Pradesh 471001), Chhatarpur",
+    "lat": 24.898726,
+    "lon": 79.59246
+  },
+  "083b8f4c16372a96a39866d30b816f61": {
+    "address": "94, 3rd Cross Road, 3rd Main Road, Rifco Shantinekthan Layout, Medahalli, Near SJES College, Bengaluru, Karnataka 560049, India",
+    "lat": 13.015717,
+    "lon": 77.66488
+  },
+  "b6730f3572b94362a1d56c45b9c56f43": {
+    "address": "AH DIAGNOSTIC CENTRE, Bengaluru",
+    "lat": 13.004348,
+    "lon": 77.715018
+  },
+  "110de07800d9eee7f3222e5bfeedba97": {
+    "address": "B-61, 1st Floor, South Extension II, South Ext Market, Delhi, Delhi - 110049",
+    "lat": 28.566603,
+    "lon": 77.220133
+  },
+  "810a659c10cc9c9dcc02c89c06a2a5a0": {
+    "address": "Meditech Diagnostic, New Delhi",
+    "lat": 28.524727,
+    "lon": 77.154642
+  },
+  "facb9d489d8bad42d0668c136ea5261e": {
+    "address": "HRM Medical (HRM Diagnostics), Haldwani",
+    "lat": 29.228488,
+    "lon": 79.529975
+  },
+  "498e8751026ac987a78a4bdf4ccf30fa": {
+    "address": "106, AL KHATIB BUILDING, KUWAIT STREET AL RAFFA, DUBAI, UNITED ARAB EMIRATES",
+    "lat": 25.251915,
+    "lon": 55.286978
+  },
+  "ac7991859d32a22a9c19f5e7df2bc388": {
+    "address": "VILLA 30 TUDOR KEN OPP HANUMAN TEMPLE OSMAN NAGAR RAMACHANDRAPURAM SANGAREDDY, HYDERABAD, TELANGANA - 502032",
+    "lat": 17.440411,
+    "lon": 78.275894
+  },
+  "2f8d10fa9aca2c3cf59e15ac1fdd638f": {
+    "address": "3797, Onkar Niwas, Gurukul Society, near Pretam Prakash Nagar, Shirur, Pune, Maharashtra 412210, India",
+    "lat": 18.816507,
+    "lon": 74.369015
+  },
+  "fb309497738d0406fc28a9f1f6d4e76a": {
+    "address": "378/9 Millat Nagar, K D A Colony, Naubasta Kanpur Nagar, Kanpur, Uttar Pradesh, 208021, India",
+    "lat": 26.386138,
+    "lon": 80.305844
+  },
+  "1d425ff074e81e8a876551dfc6dfd909": {
+    "address": "215, Maharaja Enclave, 1st Cross, Jai Bheema Nagar, Sheshadripuram, Opposite Sheshadripuram Law College, Bengaluru, Karnataka - 560021",
+    "lat": 12.991285,
+    "lon": 77.574817
+  },
+  "2e4264228d857bf489d1874d93471e78": {
+    "address": "219 Rail Vihar, Sector 15, Part 2, Gurgaon, Haryana, India - 122001",
+    "lat": 28.456377,
+    "lon": 77.041032
+  },
+  "f9b4702e09a114e0f7acc2cec5e8b171": {
+    "address": "Health India (referred by; lab report header shows referral as 'HEALTH INDIA'), Gurugram",
+    "lat": 28.406862,
+    "lon": 76.885506
+  },
+  "76ad0253455b165293c7f6ab971b19d9": {
+    "address": "401-402, A-Wing, Kaustubh Park, Mandpeshwar, S.V. Road, Next To Bhagvati Hospital, Borivali West, Mumbai, Maharashtra - 400103",
+    "lat": 19.240767,
+    "lon": 72.854818
+  },
+  "2c44666a98de080030d8d826cac466e3": {
+    "address": "123/1 Old Chandapura Village And Post Hosur Main Road, Anekal Taluk, Behind R K Dhaba, Chandapura, Karnataka, India - 560099",
+    "lat": 12.801078,
+    "lon": 77.713697
+  },
+  "8b5ce8b3ccca6ace547b24b9a4fa817b": {
+    "address": "WEL Spring Health Care, Bengaluru",
+    "lat": 12.962896,
+    "lon": 77.57754
+  },
+  "cf1173daea440d86c1027e45dedf673a": {
+    "address": "C/O: Varadala Ram Chander, Plot No 164 Villa, Nilgiri Estates, Near Srinidhi Engineering College, Rampally, Keesara, Medchal-Malkajgiri, Telangana - 501301",
+    "lat": 17.462248,
+    "lon": 78.65654
+  },
+  "3dbfdea9e80dbff555de3687d6f59c0f": {
+    "address": "S/O Komal Singh, Village Karbhana, Dandupura, Agra, Uttar Pradesh - 282006",
+    "lat": 27.175677,
+    "lon": 78.072237
+  },
+  "7fe571ffa98ce53d937390faae39978e": {
+    "address": "S/O, Komal Singh, Village Karbhana, Dandupura, Agra, Uttar Pradesh - 282006, India",
+    "lat": 27.175677,
+    "lon": 78.072237
+  },
+  "b50c75794a3f8acaeffcfbe3404875a4": {
+    "address": "Village PST Jojawar, Dist Pali, Tehsil Marwar Junction, PALI, RAJASTHAN, India, 306022",
+    "lat": 25.529238,
+    "lon": 73.740431
+  },
+  "9b7d376d51a8dd76fc9bee45aed8f644": {
+    "address": "Marwad Laboratory (Marwad Labortri), Jojawar, Dist. Pali, Rajasthan",
+    "lat": 25.530931,
+    "lon": 73.738796
+  },
+  "c62834145ceb0e60d972bb0b6da360cc": {
+    "address": "39-34-160, Ambedkar Colony, Near R&B, KSR Green Valley, Marripalem Post, Visakhapatnam, Andhra Pradesh, India, 530018",
+    "lat": 17.74962,
+    "lon": 83.246188
+  },
+  "98f5504ff4b2ecdf84f0fe86160441f0": {
+    "address": "C/O Madhab Ghosh, LAHDOIGARH HALOWATING, Bangali Gaon, PO: Madhavnagar, Dist: Sibsagar, Assam, 785681",
+    "lat": 26.786014,
+    "lon": 94.589529
+  },
+  "c816dd564cfb2867c919fbf81556d3aa": {
+    "address": "Sivasagar",
+    "lat": 26.989087,
+    "lon": 94.639424
+  },
+  "9055c1163ddfdc1898beb5ab53cbf0fe": {
+    "address": "C/O, BIBHUTI NIVAS, NEOGI COLONY, CUTTACK G.P.O., MANGALA BAGH, CUTTACK - 753001, ODISHA, India",
+    "lat": 20.47003,
+    "lon": 85.887557
+  },
+  "a364cffb0bc743c5595333a52a1eacc4": {
+    "address": "Cuttack",
+    "lat": 20.462521,
+    "lon": 85.882989
+  },
+  "f1c2843e186ffab7089525498de49442": {
+    "address": "C/O, BIBHUTI NIVAS, NEOGI COLONY CUTTACK G.P.O., MANGALA BAGH, CUTTACK-CUTTACK, 753001, ODISHA, India",
+    "lat": 20.47003,
+    "lon": 85.887557
+  }
+}

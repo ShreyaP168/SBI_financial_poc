@@ -1,0 +1,4 @@
+{
+  "_comment": "Case-specific bureau evidence belongs outside the package. Configure SBI_BUREAU_DATA_JSON or use the workspace reference file.",
+  "cases": {}
+}

@@ -1,0 +1,40 @@
+name: Underwriting checks
+on:
+  pull_request:
+    paths: ["src/**", "tests/**", "pyproject.toml", "requirements.txt", "Dockerfile", "compose*.yaml", ".github/workflows/underwriting.yml"]
+  push:
+    paths: ["src/**", "tests/**", "pyproject.toml", "requirements.txt", "Dockerfile", "compose*.yaml", ".github/workflows/underwriting.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m ruff check src tests/test_service_architecture.py tests/test_delivery.py tests/test_secret_loading.py tests/test_hardening.py tests/support
+      - run: python -m ruff format --check src/underwriting_platform tests/test_service_architecture.py tests/test_delivery.py tests/test_secret_loading.py tests/test_hardening.py tests/support
+      - run: python -m pytest -q
+      - run: python -m build
+
+  services:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: docker build -t underwriting-platform:local .
+      - shell: pwsh
+        run: ./tests/compose_smoke.ps1

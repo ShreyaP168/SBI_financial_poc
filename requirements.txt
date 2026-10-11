@@ -1,0 +1,29 @@
+# v9 IDP — pinned dependency surface (frozen at v9.0, 2026-04-27).
+# Bump versions intentionally and re-pin after re-running the 15-case batch.
+
+anthropic==0.86.0
+pdfplumber==0.11.9
+pymupdf==1.27.2.2
+pillow==11.3.0
+reportlab==4.4.10
+python-dotenv==1.2.2
+openpyxl==3.1.5
+
+# Dual-vendor medical pass — Gemini-backed second read on MER vitals
+# and lab data. Required when GEMINI_API_KEY is set; otherwise the
+# orchestrator no-ops the dual-vendor + vital-re-OCR steps.
+google-genai==0.2.0
+
+# Identity verification — Google Maps geocoding for diagnostic-centre
+# distance from applicant pin. Required when GOOGLE_MAPS_API_KEY is set;
+# otherwise the engine emits DC_DISTANCE_NOT_DETERMINED instead.
+googlemaps==4.10.0
+
+psycopg==3.3.3
+psycopg-binary==3.3.3
+
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+requests==2.32.3
+httpx==0.28.1
+pydantic==2.12.5

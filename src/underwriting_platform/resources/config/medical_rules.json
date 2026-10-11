@@ -1,0 +1,337 @@
+{
+  "MedicalUnderwritingGuidelines": {
+    "client": "tata_aia",
+    "version": "V5_Feb26",
+    "source_document": "Term Underwriting Guidelines for UW V5 - Feb26 1.pdf",
+
+    "TEST_DEFINITIONS": {
+      "description": "Tata AIA uses explicit test lists per grid cell, not M-codes. Below are the test abbreviations used in the medical grid.",
+      "test_abbreviations": {
+        "MER": "Medical Examination Report — standard physical examination by doctor",
+        "MSU": "Mid-Stream Urine — routine urine analysis",
+        "BPB": "Basic Pathology Battery (Non-Fasting) — includes RBS, HIV, Cholesterol, Triglycerides, Serum Creatinine, HDL, S Bilirubin, HBsAg, SGOT, SGPT, Alk Phosphates, Gamma GT, Albumin, BUN",
+        "BPB-F": "Basic Pathology Battery (Fasting) — includes FBS, HIV, Cholesterol, Triglycerides, Serum Creatinine, HDL, S Bilirubin, HBsAg, SGOT, SGPT, Alk Phosphates, Gamma GT, Albumin, BUN",
+        "CBC": "Complete Blood Count",
+        "ECG": "Electrocardiogram — resting 12-lead ECG",
+        "TMT": "Treadmill Test — exercise stress test",
+        "HBA1C": "Glycated Hemoglobin — diabetes marker",
+        "PSA": "Prostate-Specific Antigen — male cancer screening (applicable for males >55 years irrespective of SA; for cover >25Cr part of tumor markers irrespective of age)",
+        "Anti HCV": "Anti-Hepatitis C Virus antibody test",
+        "PFT": "Pulmonary Function Test",
+        "USG abdomen": "Ultrasonography of abdomen",
+        "2D echo": "2D Echocardiography",
+        "Stress Echo": "Stress Echocardiography (with tracings)",
+        "Chest X-Ray": "Chest X-Ray PA view",
+        "Urine Microalbumin": "Urine microalbumin test for kidney function",
+        "Urine Cotinine": "Urine cotinine test — required only for declared Non-Smoker applicants or those abstained from smoking for 24 months",
+        "Fundoscopy": "Eye examination — only for age >50 or diabetic applicants",
+        "Thyroid function tests": "T3, T4, TSH",
+        "Tumor markers Male": "AFP, CEA, CA 125, CA 19-9, PSA",
+        "Tumor markers Female": "AFP, CEA, CA 125, CA 19-9, CA 15-3"
+      },
+      "BPB_components": [
+        "RBS", "HIV", "Cholesterol", "Triglycerides", "Serum Creatinine",
+        "HDL", "S Bilirubin", "HBsAg", "SGOT", "SGPT",
+        "Alkaline Phosphatase", "Gamma GT", "Albumin", "BUN"
+      ],
+      "BPB_F_components": [
+        "FBS", "HIV", "Cholesterol", "Triglycerides", "Serum Creatinine",
+        "HDL", "S Bilirubin", "HBsAg", "SGOT", "SGPT",
+        "Alkaline Phosphatase", "Gamma GT", "Albumin", "BUN"
+      ]
+    },
+
+    "MEDICAL_GRID": {
+      "description": "Medical grid for Term Plans (Annexure 4). Single grid — no channel-level split. Uses MSAR (Medical Sum At Risk) and age bands.",
+      "age_bands": ["18-35", "36-45", "46-55", "Above 55"],
+      "requirements": [
+        {
+          "msar_range": "Up to 5000000",
+          "msar_lower": 0,
+          "msar_upper": 5000000,
+          "tests_by_age": {
+            "18-35": "MER, MSU, BPB, CBC, HBA1C",
+            "36-45": "MER, MSU, BPB, ECG, CBC, HBA1C",
+            "46-55": "MER, MSU, BPB, TMT, CBC, HBA1C",
+            "Above 55": "MER, MSU, BPB-F, TMT, CBC, HBA1C, PSA"
+          }
+        },
+        {
+          "msar_range": "5000001 to 19999999",
+          "msar_lower": 5000001,
+          "msar_upper": 19999999,
+          "tests_by_age": {
+            "18-35": "MER, MSU, BPB, ECG, CBC, HBA1C",
+            "36-45": "MER, MSU, BPB, ECG, CBC, HBA1C",
+            "46-55": "MER, MSU, BPB, TMT, CBC, HBA1C",
+            "Above 55": "MER, MSU, BPB-F, TMT, CBC, HBA1C, PSA"
+          }
+        },
+        {
+          "msar_range": "20000000 to 30000000",
+          "msar_lower": 20000000,
+          "msar_upper": 30000000,
+          "tests_by_age": {
+            "18-35": "MER, MSU, BPB, ECG, CBC, HBA1C",
+            "36-45": "MER, MSU, BPB, ECG, CBC, HBA1C",
+            "46-55": "MER, MSU, BPB, TMT, CBC, HBA1C",
+            "Above 55": "MER, MSU, BPB-F, TMT, CBC, HBA1C, PSA"
+          }
+        },
+        {
+          "msar_range": "30000001 to 100000000",
+          "msar_lower": 30000001,
+          "msar_upper": 100000000,
+          "tests_by_age": {
+            "18-35": "MER, MSU, BPB, ECG, CBC, HBA1C",
+            "36-45": "MER, MSU, BPB, TMT, CBC, HBA1C",
+            "46-55": "MER, MSU, BPB, TMT, CBC, HBA1C",
+            "Above 55": "MER, MSU, BPB-F, TMT, CBC, HBA1C, PSA"
+          }
+        },
+        {
+          "msar_range": "100000001 to 150000000",
+          "msar_lower": 100000001,
+          "msar_upper": 150000000,
+          "tests_by_age": {
+            "18-35": "MER, MSU, BPB-F, ECG, CBC, HBA1C",
+            "36-45": "MER, MSU, BPB-F, TMT, CBC, HBA1C",
+            "46-55": "MER, MSU, BPB-F, TMT, CBC, HBA1C",
+            "Above 55": "MER, MSU, BPB-F, TMT, CBC, HBA1C, PSA"
+          }
+        },
+        {
+          "msar_range": "150000001 to 250000000",
+          "msar_lower": 150000001,
+          "msar_upper": 250000000,
+          "tests_by_age": {
+            "18-35": "MER, MSU, BPB-F, TMT, CBC, HBA1C, Chest X-Ray, Anti HCV, Urine Microalbumin, USG abdomen, 2D echo, PSA",
+            "36-45": "MER, MSU, BPB-F, TMT, CBC, HBA1C, Chest X-Ray, Anti HCV, Urine Microalbumin, USG abdomen, 2D echo, PSA",
+            "46-55": "MER, MSU, BPB-F, TMT, CBC, HBA1C, Chest X-Ray, Anti HCV, Urine Microalbumin, USG abdomen, 2D echo, PSA",
+            "Above 55": "MER, MSU, BPB-F, TMT, CBC, HBA1C, Chest X-Ray, Anti HCV, Urine Microalbumin, USG abdomen, 2D echo, PSA"
+          }
+        },
+        {
+          "msar_range": "Above 250000000",
+          "msar_lower": 250000001,
+          "msar_upper": 999999999999,
+          "tests_by_age": {
+            "18-35": "MER, MSU, BPB-F, Resting 2D echo with Stress Echo, CBC, HBA1C, Chest X-Ray, Anti HCV, Urine Microalbumin, USG abdomen, PFT, Thyroid function tests, Tumor markers",
+            "36-45": "MER, MSU, BPB-F, Resting 2D echo with Stress Echo, CBC, HBA1C, Chest X-Ray, Anti HCV, Urine Microalbumin, USG abdomen, PFT, Thyroid function tests, Tumor markers",
+            "46-55": "MER, MSU, BPB-F, Resting 2D echo with Stress Echo, CBC, HBA1C, Chest X-Ray, Anti HCV, Urine Microalbumin, USG abdomen, PFT, Fundoscopy, Thyroid function tests, Tumor markers",
+            "Above 55": "MER, MSU, BPB-F, Resting 2D echo with Stress Echo, CBC, HBA1C, Chest X-Ray, Anti HCV, Urine Microalbumin, USG abdomen, PFT, Fundoscopy, Thyroid function tests, Tumor markers"
+          }
+        }
+      ],
+      "special_rules": [
+        "Urine cotinine is required only for declared Non-Smoker applicants or those who have abstained from smoking for 24 months.",
+        "PSA applicable for all male lives aged above 55 irrespective of sum assured.",
+        "For cover >25Cr, PSA will be part of Tumor Marker test irrespective of age.",
+        "Live photo must be clicked at time of medicals for all cases.",
+        "Fundoscopy applicable only for age >50 or diabetic applicants."
+      ]
+    },
+
+    "VMER_GRID_RI": {
+      "description": "Video MER eligibility grid for Residential Indian — all channels, graduate and above, white-collar salaried only (off-roll/consultants not eligible)",
+      "mandatory_vmer_scenarios": [
+        "Business insurance — irrespective of TSAR",
+        "Age above 60 years — irrespective of TSAR",
+        "Transgender — irrespective of TSAR"
+      ],
+      "policy_bazaar_special": {
+        "upto_2.25cr": "VPSC + TELE considered as VMER",
+        "above_2.25cr": "VMER required if eligible under grid, else Physical Medicals + VPSC"
+      },
+      "salaried_grid": [
+        {
+          "age": "18-35",
+          "income_5L": "50L-99.9L",
+          "income_7.5L": "Up to 99.9L",
+          "income_7.5L_self_employed": "Up to 99.9L",
+          "income_10L": "Up to 1.5Cr",
+          "income_20L": "Up to 3Cr"
+        },
+        {
+          "age": "36-40",
+          "income_5L": "Mandatory medicals",
+          "income_7.5L": "Mandatory medicals",
+          "income_7.5L_self_employed": "Mandatory medicals",
+          "income_10L": "Up to 99.9L",
+          "income_20L": "Up to 1.5Cr",
+          "income_35L": "Up to 2Cr"
+        },
+        {
+          "age": "41-45",
+          "income_10L": "Mandatory medicals",
+          "income_20L": "Up to 1.5Cr",
+          "income_35L": "Up to 2Cr"
+        },
+        {
+          "age": "46-50",
+          "income_20L": "Mandatory medicals",
+          "income_35L": "Up to 1.99Cr"
+        },
+        {
+          "age": ">51",
+          "all": "Mandatory Medicals"
+        }
+      ]
+    },
+
+    "GUIDELINES_AGE_61_65": {
+      "pre_login_approval": "Mandatory for any sum assured",
+      "max_sa": "As per Per Life Capacity table",
+      "evaluation": "Purely based on case merits"
+    },
+
+    "TRANSGENDER_GUIDELINES": {
+      "mandatory_documents": [
+        "Copy of District Magistrate certificate of identity as transgender",
+        "Copy of certificate from Medical Superintendent or Chief Medical Officer"
+      ],
+      "within_nml": "VMER + MER + BPB required",
+      "above_nml": "VMER + Grid medicals as per Male life + HIV (if not in grid)"
+    },
+
+    "VMER_GRID_NRI": {
+      "description": "Video MER eligibility grid for NRI / PIO / OCI — all standard countries. Education: Graduate and above.",
+      "grid": [
+        {
+          "age": "18-40",
+          "income_10L": "Up to 1Cr",
+          "income_15L": "Up to 2.25Cr",
+          "income_25L": "Up to 5Cr",
+          "income_50L_gcc_singapore_malaysia": "N/A",
+          "income_75L_us_canada_uk_aus_nz": "N/A"
+        },
+        {
+          "age": "41-45",
+          "income_10L": "N/A",
+          "income_15L": "Up to 2.25Cr",
+          "income_25L": "Up to 2.25Cr",
+          "income_50L_gcc_singapore_malaysia": "Up to 3.5Cr",
+          "income_75L_us_canada_uk_aus_nz": "N/A"
+        },
+        {
+          "age": "46-50",
+          "income_10L": "N/A",
+          "income_15L": "N/A",
+          "income_25L": "Up to 1Cr",
+          "income_50L_gcc_singapore_malaysia": "N/A",
+          "income_75L_us_canada_uk_aus_nz": "N/A"
+        },
+        {
+          "age": "Above 50",
+          "all": "Mandatory medicals + Standard Financials"
+        }
+      ],
+      "gcc_countries": ["Saudi Arabia", "Kuwait", "UAE", "Qatar", "Bahrain", "Oman"],
+      "notes": [
+        "If adverse disclosures noted in VMER then physical Medicals will be called.",
+        "For FATF countries, Financials required as per AML risk grid.",
+        "Standard financial UW done for all NRI cases (Bank Statement/Salary slips/Tax Returns).",
+        "Grid applicable only for standard countries (Standard residential risk as per RI manual)."
+      ]
+    },
+
+    "VMER_TATA_GROUP_EMPLOYEE": {
+      "description": "VMER limits for Tata Group Employee — salaried / self-employed earning profile",
+      "residential_status": "Indian",
+      "min_education": "Graduate and above",
+      "grid": [
+        { "age": "18-30", "income_10L": "Up to 1.99Cr", "income_20L": "Up to 3Cr", "income_35L": "N/A" },
+        { "age": "31-40", "income_10L": "Up to 1Cr", "income_20L": "Up to 1.99Cr", "income_35L": "N/A" },
+        { "age": "41-45", "income_10L": "Up to 1.5Cr", "income_20L": "Up to 1.5Cr", "income_35L": "Up to 2Cr" },
+        { "age": "46-50", "income_10L": "Mandatory medicals", "income_20L": "Mandatory medicals", "income_35L": "Up to 1.99Cr" }
+      ]
+    },
+
+    "VMER_CHANNEL_SPECIFIC": {
+      "ind_money": {
+        "description": "VMER limits for IND Money channel — salaried/self-employed, Indian, Graduate+, min income salaried >=6L",
+        "grid": [
+          { "age": "18-35", "vmer_limit": "50L to 1Cr" }
+        ]
+      },
+      "american_express": {
+        "description": "VMER limits based on American Express card type",
+        "grid": [
+          { "card_type": "Centurion & Platinum Charge Card", "age_18_40": "5Cr", "age_41_45": "3.5Cr", "age_46_50": "3Cr" },
+          { "card_type": "Platinum Reserve / Travel and Gold cards", "age_18_40": "4Cr", "age_41_45": "3Cr", "age_46_50": "3Cr" },
+          { "card_type": "Other Cards", "age_18_40": "3Cr", "age_41_45": "3Cr", "age_46_50": "3Cr" }
+        ]
+      },
+      "phone_pe": {
+        "description": "VMER limits for PhonePe channel",
+        "criteria": "Affluence Score >= 75 and Financial waiver Yes",
+        "profiles": "Self-employed & salaried",
+        "education": "Graduate and above",
+        "max_age": 45,
+        "max_msar": "1Cr"
+      }
+    },
+
+    "MEDICAL_REPORT_VALIDITY": {
+      "physical_msar_upto_25cr": { "standard": "1 year", "substandard": "6 months" },
+      "physical_msar_above_25cr": { "standard": "3 months", "substandard": "No validity" },
+      "tele_vmer_upto_2cr": { "standard": "90 days", "substandard": "No validity" }
+    },
+
+    "REPLACEMENT_COVER": {
+      "description": "Replacement cover for existing insurance with other companies",
+      "conditions": [
+        "Existing cover must be disclosed upfront with status (in force, surrendered, lapsed, under process).",
+        "Replacement only from/after date of policy anniversary or premium due date.",
+        "Affidavit on plain paper for replacement up to 10Cr, on 100 stamp paper for above 10Cr."
+      ],
+      "pos_term": {
+        "guidelines": "As per current Term Plan SRS Guidelines",
+        "type": "Fully underwritten plan",
+        "max_death_benefit": "No restriction",
+        "risk_aggregation": "With existing Term plans",
+        "ntu": "4 working days after receipt of all documents if decision pending",
+        "max_maturity_age": 65,
+        "uw_approach": "Same as Term — counteroffer for health adversity"
+      }
+    },
+
+    "BUSINESS_INSURANCE": {
+      "description": "Business Insurance — Keyperson / Keyman, Partnership, Employer-Employee, HUF",
+      "allowed_plans": "Term plan under Keyperson/Keyman Insurance, Partnership Insurance, Employer-Employee Schemes, HUF Cover on Karta",
+      "keyman_partnership_cover": "Only Basic Death Cover (Life Option). Riders not allowed except TTI.",
+      "employer_employee_huf": "Only Non-ROP option. LSPO & Top Up not available.",
+      "vmer": "Mandatory for Business Insurance",
+      "keyman_cover": {
+        "financial_assessment": "Lower of: a) Avg Directors remuneration/Salary x 10, OR b) Avg Gross profit x 3 x shareholding, OR c) Avg Net profit after tax + 30% Avg Depreciation x 5 x shareholding minus existing Keyperson cover",
+        "max_tenure": "65 years (cap INR 100Cr). Extended to 75 for family-owned companies with affidavit.",
+        "max_entry_age": 55,
+        "loss_rule": "If company incurred losses in latest year or last two years, no KMI cover"
+      },
+      "partnership_cover": {
+        "financial_assessment": "Lower of: a) Avg Gross profit x 3 x shareholding, OR b) Avg Net profit after tax + 30% Avg Depreciation x 5 x shareholding minus existing partnership cover",
+        "requirements": ["Latest partnership deed", "Audited business financials (BS, P&L) for last 3 years"],
+        "all_partners_must_be_insured": true,
+        "nomination_not_allowed": true
+      },
+      "employer_employee": {
+        "financial_assessment": "Latest 2 years salary income from standard income proof x age income multiple. If stakeholder in proposing firm, can add: Avg 3yr Net profit after tax x shareholding.",
+        "assignment_mandatory": true
+      }
+    },
+
+    "LSPO_BENEFIT": {
+      "description": "Life Stage Plus Option — allows SA increase at life events",
+      "max_entry_age": 50,
+      "not_available_for": ["Housewife", "Agriculture", "Business Insurance"],
+      "self_proposed_only": true,
+      "notes": [
+        "Cannot exercise post Terminal Illness benefit execution.",
+        "Base plan SAR/DB considered as sum at risk for the policy.",
+        "Additional SA for LSPO not calculated at underwriting stage.",
+        "UW of LSPO done when customer exercises the benefit.",
+        "If exercised at reinstatement, subject to underwriting."
+      ]
+    }
+  }
+}

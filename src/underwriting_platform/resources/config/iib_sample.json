@@ -1,0 +1,6 @@
+{
+  "_comment": "IIB (Insurance Information Bureau) sample data file — POPULATE WHEN FEED LANDS. This is the empty stub that the loader (engine/iib.py) reads. Per the project-iib-history-gap memory note, TALIC's pipeline currently has no IIB feed; this slot is reserved so the day the feed arrives, populating policies[] is the only change needed.\n\nSchema: see engine/iib.py module docstring.\n\nMatch key: PAN (case-insensitive, unique cross-insurer). Multi-policy applicants emit multiple entries with the same PAN.",
+  "_source":  "stub — replace with real IIB export once feed is wired",
+  "_updated": "2026-05-18",
+  "policies": []
+}
