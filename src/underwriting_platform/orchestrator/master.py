@@ -1,16 +1,8 @@
-"""
-orchestrator/master.py — the master orchestrator.
+"""Local document survey, configured extraction, reference joins and audit output.
 
-Phases:
-  1. Survey — one LLM call: classify PDFs + identify which agents need each
-  2. Plan   — (Phase 0: implicit; agents get docs based on survey relevance)
-  3. Dispatch — fan out to domain agents in parallel
-  4. Reconcile — (Phase 0: simple deterministic merge; LLM reconciler in Phase 5)
-  5. Emit   — canonical case JSON + extraction report
-
-Phase 0 implementation runs only IdentityAgent. Other agents will plug in as
-they're built. The orchestrator does NOT decide which agents exist — it dispatches
-whatever is registered in `_AGENT_REGISTRY` and the survey says is relevant.
+Native text and local OCR drive content classification/routing. Domain mode uses
+domain extraction agents; experimental source-once partitions one owning reader.
+Carrier decisions remain in the deterministic engine. Unknown files are retained.
 """
 
 from __future__ import annotations
@@ -628,6 +620,15 @@ class MasterOrchestrator:
 
         # 4a. Deterministic merge — last writer wins per top-level block
         case_json = self._reconcile(case_id, agent_outputs)
+        case_json["_document_classification"] = {
+            "provider": survey.get("provider"),
+            "classifier_version": survey.get("classifier_version"),
+            "provider_tokens": 0,
+            "files": [
+                {"filename": row["filename"], "pages": row.get("pages", [])}
+                for row in survey.get("files", [])
+            ],
+        }
         case_json["_extraction_mode"] = mode
         case_json["field_sources"] = {
             key: [s for r in agent_outputs.values() for s in r.field_sources.get(key, [])]
@@ -1044,62 +1045,12 @@ class MasterOrchestrator:
         )
 
     async def _survey(self, documents: list[Document]) -> dict:
-        """Phase 0 survey: a single LLM call that classifies each PDF + lists agent relevance."""
-        from pathlib import Path as _Path
+        """Route native/local-OCR evidence without any model classification call."""
+        from underwriting_platform.ocr.classification import survey_documents
 
-        prompt_path = _Path(__file__).parent.parent / "agents" / "prompts" / "master_survey.txt"
-        system_prompt = prompt_path.read_text(encoding="utf-8")
-        from underwriting_platform.llm.pdf_utils import survey_preview
-
-        # Build a compact view: filename + first ~300 chars of text + first page image only.
-        blocks: list[dict] = [{"type": "text", "text": "Documents in this case folder:"}]
-        for doc in documents:
-            blocks.append({"type": "text", "text": f"\n--- {doc.filename} ---"})
-            text_snippet = (doc.text or "")[:1500]
-            if text_snippet:
-                blocks.append({"type": "text", "text": text_snippet})
-            if doc.images_b64:
-                blocks.append(
-                    {
-                        "type": "image",
-                        "source": {
-                            "type": "base64",
-                            "media_type": "image/jpeg",
-                            "data": survey_preview(doc.images_b64[0]),
-                        },
-                    }
-                )
-        try:
-            from underwriting_platform.llm.telemetry import request_stage
-
-            token = request_stage.set("survey")
-            try:
-                return await self.llm.extract_json(system_prompt, blocks, max_tokens=8000)
-            finally:
-                request_stage.reset(token)
-        except Exception as e:
-            from underwriting_platform.llm.budget import TokenBudgetExceeded
-
-            if isinstance(e, TokenBudgetExceeded):
-                raise
-            logger.error("Survey LLM call failed: %s", type(e).__name__)
-            # Fallback: assign each doc to all agents BUT use heuristic doc-name
-            # filtering inside the dispatch step so agents don't see 30+ irrelevant PDFs.
-            return {
-                "files": [
-                    {
-                        "filename": d.filename,
-                        "kind": "unknown",
-                        "relevance": list(_AGENT_REGISTRY.keys()),
-                    }
-                    for d in documents
-                ],
-                "applicant_signal": "unknown",
-                "missing_likely": [],
-                "agents_to_dispatch": list(_AGENT_REGISTRY.keys()),
-                "skip_agents": [],
-                "notes": f"survey-error fallback: {e}",
-            }
+        return survey_documents(
+            documents, [name for name in _AGENT_REGISTRY if name != "business_insurance"]
+        )
 
     # Heuristic filename hints used when the survey misses or over-includes.
     # These are NOT a classifier — they're a payload-cap tiebreaker.

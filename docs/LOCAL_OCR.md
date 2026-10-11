@@ -16,6 +16,8 @@ OCR_TIMEOUT_SECONDS=45
 ```
 
 The default is Tesseract. Docker installs Tesseract and its English language data.
+Both classification stages consume local text/OCR; see
+[local classification](LOCAL_CLASSIFICATION.md) for routing and review rules.
 SBI Bond's RapidOCR 1.4.4 requires Python 3.11/3.12; Python 3.13 supports the
 Tesseract path. Containers use Python 3.12 to support both providers.
 For RapidOCR on Python 3.11/3.12 install `pip install '.[local-ocr]'` and select

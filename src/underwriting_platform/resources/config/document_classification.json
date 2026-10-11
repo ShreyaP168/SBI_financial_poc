@@ -1,0 +1,29 @@
+{
+  "version": "local-classification-1.0",
+  "min_ocr_line_confidence": 0.65,
+  "rules": [
+    {"kind":"policy_illustration","all":["benefit illustration","(?:premium|sum assured)"],"agents":["identity","income","compliance"]},
+    {"kind":"proposal_form","priority":30,"all":["proposal\\s*(?:number|no\\.?)","(?:life\\s*(?:assured|insured)|proposer)"],"agents":["identity","income","compliance","medical","business_surrogate"]},
+    {"kind":"vmer","all":["(?:pre[- ]?issuance verification|(?:piwc|pivc)\\s*(?:transcript|report|details)|video medical)"],"agents":["identity","compliance","medical"]},
+    {"kind":"form_26as","all":["(?:form[- ]?26as|annual information statement|tax credit statement)"],"agents":["income"]},
+    {"kind":"proposal_form","all":["(?:proposal\\s*form|life\\s*insurance\\s*(?:application|proposal)|common\\s*application\\s*form)"],"agents":["identity","income","compliance","medical","business_surrogate"]},
+    {"kind":"itr","all":["(?:income tax return|indian income tax return|itr[- ]?[1-7])","(?:assessment year|acknowledg|gross total income|taxpayer)"],"agents":["identity","income"]},
+    {"kind":"form_16","all":["form[- ]?16(?:a|b)?","(?:tax deducted|certificate|income tax)"],"agents":["income"]},
+    {"kind":"salary_slip","all":["(?:salary slip|pay slip|payslip|pay statement)","(?:earnings|gross pay|net pay|employee)"],"agents":["income"]},
+    {"kind":"bank_statement","all":["(?:account statement|statement of account|bank statement)","(?:debit|credit|balance|transaction)"],"agents":["income","assets_liabilities"]},
+    {"kind":"cibil_report","all":["(?:cibil|credit information bureau)","(?:score|credit report)"],"agents":["assets_liabilities","income","compliance"]},
+    {"kind":"aml_disclosure","all":["(?:anti[- ]money laundering|aml declaration|aml disclosure|politically exposed person)"],"agents":["identity","compliance"]},
+    {"kind":"kyc_declaration","all":["(?:fatca|common reporting standard|crs declaration|beneficial ownership declaration)"],"agents":["identity","compliance"]},
+    {"kind":"mer","all":["(?:medical examination report|medical examiner.?s report)"],"agents":["medical","compliance"]},
+    {"kind":"lab_report","all":["(?:laboratory report|pathology report|haematology|hematology)","(?:reference range|result|test name|patient)"],"agents":["medical"]},
+    {"kind":"medical_report","all":["(?:electrocardiogram|ecg report|echocardiogram|discharge summary|hospital discharge)"],"agents":["medical"]},
+    {"kind":"partnership_deed","all":["partnership deed"],"agents":["business_surrogate","income"]},
+    {"kind":"board_resolution","all":["board resolution"],"agents":["business_surrogate"]},
+    {"kind":"corporate_doc","all":["(?:certificate of incorporation|gst registration certificate|memorandum of association)"],"agents":["business_surrogate","identity"]},
+    {"kind":"id_proof","label":"PAN_CARD","all":["income tax department","permanent account number","[a-z]{5}\\s*[0-9]{4}\\s*[a-z]"],"agents":["identity","compliance"]},
+    {"kind":"id_proof","label":"PASSPORT","all":["passport","republic of india"],"agents":["identity","compliance"]},
+    {"kind":"id_proof","label":"DRIVING_LICENSE","all":["driving licen[cs]e","(?:transport|licen[cs]e no|date of issue)"],"agents":["identity","compliance"]},
+    {"kind":"id_proof","label":"AADHAAR_FRONT","all":["(?:aadhaar|aadhar|government of india|unique identification authority)","[0-9]{4}\\s*[0-9]{4}\\s*[0-9]{4}","(?:date of birth|dob|year of birth)"],"agents":["identity","compliance"]},
+    {"kind":"id_proof","label":"AADHAAR_BACK","all":["(?:aadhaar|aadhar|unique identification authority)","[0-9]{4}\\s*[0-9]{4}\\s*[0-9]{4}","address"],"agents":["identity","compliance"]}
+  ]
+}

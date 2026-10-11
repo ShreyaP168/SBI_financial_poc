@@ -5,7 +5,7 @@ from __future__ import annotations
 from underwriting_platform.contracts.canonical import case_issues, decision_issues
 from underwriting_platform.domain.policy import GENERIC_GATES, SBI_GATES, is_sbi_case
 
-POLICY_VERSION = "delivery-3.0"
+POLICY_VERSION = "delivery-3.1"
 CORE_FIELDS = (
     "applicant.applicant_name",
     "applicant.age",
@@ -75,6 +75,8 @@ def assess_decision(case: dict, decision: dict) -> dict:
         approved_review = review.get("status") == "approved" and all(
             review.get(key) for key in ("reviewer_id", "reviewed_at", "reference")
         )
+        if (case.get("_identity_classifier") or {}).get("requires_review") and not approved_review:
+            issues.append("DOCUMENT_CLASSIFICATION_REVIEW_REQUIRED")
         if not approved_review and (
             match.get("match_result") != "match"
             or match.get("requires_manual_review")

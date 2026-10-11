@@ -1,44 +1,8 @@
-"""
-engine/identity_verification.py — post-extraction step that fills in
-deterministic identity-verification fields:
+"""Local OCR/content classification locates identity-document candidates.
 
-  0. **Content-based document classification** — client requirement:
-     "Identify documents by their actual content and document type, not
-     solely by exact filenames... Ensure Aadhaar cards and other relevant
-     identity documents are detected even when their filenames differ
-     from expected patterns." Every loose image file plus every
-     low-text-density PDF page (a text-sparse page is the signature of a
-     scanned photo/ID rather than a typed form) in the case folder is
-     sent to Gemini vision in ONE batched call and labelled
-     (AADHAAR_FRONT / AADHAAR_BACK / PAN_CARD / PASSPORT /
-     DRIVING_LICENSE / PERSON_PHOTO / SIGNATURE / FORM_OR_TEXT /
-     BLANK_OR_UNREADABLE / OTHER). Keyword filename matching (below)
-     still runs first as the fast path; content classification is
-     consulted whenever keyword matching comes up empty for a category,
-     and backfills compliance.kyc_evidence when it finds a real ID photo
-     the extraction agent's own pass missed entirely.
-  1. **DC distance** — geocode applicant residence + diagnostic-centre
-     address via Google Maps, compute Haversine km, populate
-     `anti_fraud_markers.dc_distance_km` + `dc_distance_band`.
-  2. **Live photo at medicals** — locate a "TPA photo identification" /
-     "live photo" / "geotag" file in the case folder and set
-     `applicant.live_photo_at_medicals` accordingly.
-  3. **Photo match** — when both a KYC photo (Aadhaar / PAN / passport)
-     and a live photo are on disk, run Gemini face-match and populate
-     `applicant.photo_matches_uid` + `applicant.photo_match` (full result
-     dict with confidence, reasoning, model, manual-review flag).
-
-File-discovery is deterministic (keyword pass) with one shared Gemini
-vision call for content classification, feeding both this module's own
-KYC backfill and the face-match steps below — not a separate call per
-file. Geocoding + face-match are the only other network calls.
-
-Failures degrade gracefully — geocoding miss → `Unknown` band, no live
-photo file → `live_photo_at_medicals = "No"`, GEMINI_API_KEY absent →
-photo match `skipped`, classification call failure → falls back to
-keyword-only matching exactly as before this feature existed. The
-engine flag stage emits the corresponding `DC_DISTANCE_NOT_DETERMINED` /
-`LIVE_PHOTO_MISSING` / `PHOTO_MATCH_*` flags from these field values.
+Classification never verifies KYC or upgrades compliance status. Google Gemini
+is used separately for photo matching; optional geocoding is unchanged. Unknown
+local labels retain filename discovery as a candidate-selection aid, not proof.
 """
 
 from __future__ import annotations
@@ -239,24 +203,6 @@ _CLASSIFY_IMG_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".tiff", ".tif"}
 _CLASSIFY_TEXT_DENSITY_MAX = 150  # chars; a PDF page below this is treated
 # as "likely a scanned photo/ID, not text"
 
-_CLASSIFY_PROMPT = """You are classifying document images for an Indian life-insurance KYC workflow.
-You will be shown several images, each preceded by its ID in the form "=== ID: <id> ===".
-
-For EACH image, output one label from this exact set:
-  AADHAAR_FRONT        - Aadhaar card front (face photo + 12-digit number + Govt of India emblem)
-  AADHAAR_BACK         - Aadhaar card back (address + QR code, no face)
-  PAN_CARD             - Income Tax PAN card
-  PASSPORT             - passport document
-  DRIVING_LICENSE      - driving license card
-  PERSON_PHOTO         - a standalone photo of a person's face/headshot, NOT on an ID card (e.g. passport-style photo submitted on its own, or a photo pasted into a form)
-  SIGNATURE            - signature specimen only
-  FORM_OR_TEXT         - a form, letter, declaration, financial statement, or other text-heavy page with no prominent face photo
-  BLANK_OR_UNREADABLE  - blank, solid-colour, fully corrupted/unreadable, or pure noise
-  OTHER                - anything else (logo only, QR code only, stamp, etc.)
-
-Respond with STRICT JSON ONLY: a JSON array of objects {"id": "<the id>", "label": "<ONE label from the set above>"}.
-No prose, no markdown fences, no explanation. One object per image, in the order shown."""
-
 
 def _gather_classification_candidates(case_dir: Path) -> list[tuple[str, bytes]]:
     """Every loose image file + every low-text-density PDF page in the
@@ -281,10 +227,13 @@ def _gather_classification_candidates(case_dir: Path) -> list[tuple[str, bytes]]
                 import fitz
 
                 with pdfplumber.open(str(p)) as pdf:
+                    from underwriting_platform.ocr.classification import classify_text
+
                     low_text_pages = [
                         i
                         for i, page in enumerate(pdf.pages)
                         if len((page.extract_text() or "").strip()) < _CLASSIFY_TEXT_DENSITY_MAX
+                        or classify_text(page.extract_text() or "")["kind"] == "id_proof"
                     ]
                 if low_text_pages:
                     doc = fitz.open(str(p))
@@ -339,104 +288,45 @@ def _gather_classification_candidates(case_dir: Path) -> list[tuple[str, bytes]]
     return candidates
 
 
-async def classify_case_documents(case_dir: Path) -> dict[str, tuple[str, bytes]]:
-    """Returns {id: (label, image_bytes)} for every candidate in the case
-    folder — one batched Gemini vision call, not one per file. Empty dict
-    (not an exception) on any failure — GEMINI_API_KEY absent, API error,
-    unparseable response — so callers fall back to keyword matching
-    exactly as if this feature didn't run."""
-    import os
+async def classify_case_documents(
+    case_dir: Path, classification=None
+) -> dict[str, tuple[str, bytes]]:
+    """Local OCR/content rules only. Labels locate candidates, never verify KYC."""
+    import io
+    from PIL import Image
+    from underwriting_platform.ocr import read_page
+    from underwriting_platform.ocr.classification import classify_text
 
-    api_key = (os.environ.get("GEMINI_API_KEY") or "").strip()
-    if not api_key:
-        return {}
-    candidates = _gather_classification_candidates(case_dir)
-    if not candidates:
-        return {}
-    try:
-        from google import genai
-        from google.genai import types as genai_types
-
-        parts: list = [
-            _CLASSIFY_PROMPT
-            + f"\nReturn exactly {len(candidates)} rows; include every supplied ID exactly once."
-        ]
-        for id_str, img_bytes in candidates:
-            parts.append(f"=== ID: {id_str} ===")
-            parts.append(genai_types.Part.from_bytes(data=img_bytes, mime_type="image/jpeg"))
-
-        from underwriting_platform.llm.gemini_budget import generate
-
-        client = genai.Client(api_key=api_key)
-        response = await generate(
-            client,
-            model=os.getenv("GEMINI_DOCUMENT_CLASSIFIER_MODEL", "gemini-2.5-flash"),
-            contents=parts,
-            max_output_tokens=8192,
-            json_output=True,
-            json_schema={
-                "type": "ARRAY",
-                "items": {
-                    "type": "OBJECT",
-                    "properties": {
-                        "id": {"type": "STRING"},
-                        "label": {
-                            "type": "STRING",
-                            "enum": [
-                                "AADHAAR_FRONT",
-                                "AADHAAR_BACK",
-                                "PAN_CARD",
-                                "PASSPORT",
-                                "DRIVING_LICENSE",
-                                "PERSON_PHOTO",
-                                "SIGNATURE",
-                                "FORM_OR_TEXT",
-                                "BLANK_OR_UNREADABLE",
-                                "OTHER",
-                            ],
-                        },
-                    },
-                    "required": ["id", "label"],
-                },
-            },
-        )
-        raw = response.text or ""
-    except Exception as e:
-        logger.warning("[doc_classify] Gemini batch classification failed: %s", e)
-        raise RuntimeError("Identity document classification dependency failed") from e
-
-    text = (raw or "").strip()
-    if text.startswith("```"):
-        text = text.split("\n", 1)[-1]
-        if text.endswith("```"):
-            text = text[:-3]
-        if text.lower().startswith("json"):
-            text = text[4:].lstrip("\n")
-    try:
-        parsed = json.loads(text)
-    except Exception as e:
-        logger.warning("[doc_classify] could not parse classification response: %s", e)
-        raise ValueError("Identity document classification response invalid") from e
-
-    bytes_by_id = dict(candidates)
-    if not isinstance(parsed, list):
-        raise ValueError("Identity classification must return a complete array")
-    result: dict[str, tuple[str, bytes]] = {}
-    for row in parsed if isinstance(parsed, list) else []:
-        try:
-            id_str, label = row["id"], row["label"]
-        except (TypeError, KeyError):
-            raise ValueError("Malformed identity classification row")
-        if id_str in bytes_by_id:
-            result[id_str] = (label, bytes_by_id[id_str])
-    if len(result) != len(bytes_by_id):
-        raise ValueError("Identity classification omitted required documents")
-    logger.info(
-        "[doc_classify] classified %d/%d candidates in %s",
-        len(result),
-        len(candidates),
-        case_dir.name,
-    )
+    prepared = {}
+    for row in (classification or {}).get("files", []):
+        for page in row.get("pages", []):
+            key = (
+                f"{row['filename']}#p{page['page']}"
+                if row["filename"].lower().endswith(".pdf")
+                else row["filename"]
+            )
+            prepared[key] = page["label"]
+    result = {}
+    for identifier, content in await asyncio.to_thread(_gather_classification_candidates, case_dir):
+        if identifier in prepared:
+            label = prepared[identifier]
+        else:
+            with Image.open(io.BytesIO(content)) as image:
+                evidence = await asyncio.to_thread(read_page, image.convert("RGB"), 1)
+            if evidence.get("status") == "failed":
+                raise RuntimeError("LOCAL_CLASSIFICATION_OCR_UNAVAILABLE")
+            text = "\n".join(
+                line["text"]
+                for line in evidence.get("lines", [])
+                if (
+                    line.get("mean_confidence")
+                    if line.get("mean_confidence") is not None
+                    else line.get("confidence", 0)
+                )
+                >= 0.65
+            )
+            label = classify_text(text)["label"]
+        result[identifier] = (label, content)
     return result
 
 
@@ -445,92 +335,6 @@ async def classify_case_documents(case_dir: Path) -> dict[str, tuple[str, bytes]
 # across these cases, PAN last (PAN is mandatory but not itself a
 # standalone OVD for address proof).
 _KYC_LABEL_PRIORITY = ("AADHAAR_FRONT", "PASSPORT", "DRIVING_LICENSE", "PAN_CARD", "AADHAAR_BACK")
-
-
-def _backfill_kyc_from_content_scan(
-    case_json: dict, doc_labels: dict[str, tuple[str, bytes]]
-) -> None:
-    """When content classification found a real ID photo that the
-    compliance agent's own extraction pass missed, correct
-    compliance.kyc_evidence / kyc_status to match reality instead of
-    leaving a stale "Partial — no OVD" status that the actual documents
-    contradict. Only ever upgrades (False -> True); never removes a
-    True the agent already set, and never touches CKYC/address-proof
-    fields this scan has no opinion on."""
-    if not doc_labels:
-        return
-    compliance = case_json.setdefault("compliance", {})
-    kyc_evidence = compliance.setdefault("kyc_evidence", {})
-    found_labels = {label for label, _ in doc_labels.values()}
-
-    _FIELD_FOR_LABEL = {
-        "AADHAAR_FRONT": "aadhaar_present",
-        "AADHAAR_BACK": "aadhaar_present",
-        "PAN_CARD": "pan_present",
-        "PASSPORT": "passport_present",
-        "DRIVING_LICENSE": "driving_licence",
-    }
-    upgraded = []
-    for label, field in _FIELD_FOR_LABEL.items():
-        if label in found_labels and not kyc_evidence.get(field):
-            kyc_evidence[field] = True
-            upgraded.append(label)
-
-    if upgraded:
-        best_id = next((id_ for id_, (label, _) in doc_labels.items() if label in upgraded), None)
-        note = (kyc_evidence.get("_note") or "").strip()
-        addendum = (
-            f"Content-based scan found a legible {', '.join(sorted(set(upgraded)))} "
-            f"(file: {best_id}) that filename-based matching missed — "
-            f"kyc_evidence corrected to match the actual document set."
-        )
-        kyc_evidence["_note"] = (note + " " + addendum).strip() if note else addendum
-        logger.info(
-            "[id_verify] KYC backfill from content scan: upgraded %s via %s", upgraded, best_id
-        )
-
-    # Re-derive kyc_status from the full, CURRENT set of evidence
-    # sub-fields — run unconditionally, not just when this scan itself
-    # found something new, so a case already fully complete from the
-    # original extraction (nothing for this scan to "upgrade") still gets
-    # its stale "Partial" status corrected. Only flips to "Verified" if
-    # EVERY piece this product requires is present (any photo ID + PAN +
-    # address proof), not just whatever this scan touched. A real
-    # remaining gap (e.g. CKYC still blank) is a separate issue this
-    # function has no opinion on and correctly leaves alone —
-    # engine.gating.check_kyc still reports "Partial" for that reason.
-    photo_id_present = any(
-        kyc_evidence.get(k) for k in ("aadhaar_present", "passport_present", "driving_licence")
-    )
-    all_present = (
-        photo_id_present
-        and kyc_evidence.get("pan_present")
-        and kyc_evidence.get("address_proof_present")
-    )
-    if all_present and compliance.get("kyc_status") != "Verified":
-        compliance["kyc_status"] = "Verified"
-        logger.info(
-            "[id_verify] KYC status recomputed to Verified (photo ID + PAN + address proof all present)"
-        )
-
-    # applicant.photo_present is a separate field from kyc_evidence above
-    # (extraction-agent-set, "is there a photo of the applicant anywhere
-    # in the document set" — independent of whether that photo could be
-    # matched against anything). The agent's own _survey() dispatch step
-    # can miss a standalone photo filed under a generic name the same way
-    # it misses KYC documents. Only ever upgrades Unknown/falsy -> Yes.
-    applicant = case_json.setdefault("applicant", {})
-    if not applicant.get("photo_present") or applicant.get("photo_present") == "Unknown":
-        person_photo_ids = [label for label, _ in doc_labels.values() if label == "PERSON_PHOTO"]
-        if found_labels & {"AADHAAR_FRONT", "PASSPORT", "DRIVING_LICENSE", "PERSON_PHOTO"}:
-            applicant["photo_present"] = "Yes"
-            logger.info(
-                "[id_verify] photo_present backfilled to Yes from content scan (%d person/ID-photo hit(s))",
-                len(person_photo_ids) or 1,
-            )
-
-
-# ── Public entry point ───────────────────────────────────────────
 
 
 async def run_identity_verification(case_json: dict, case_dir: Path) -> dict:
@@ -546,8 +350,24 @@ async def run_identity_verification(case_json: dict, case_dir: Path) -> dict:
     # fallback file discovery — not a separate Gemini call per step.
     doc_labels: dict[str, tuple[str, bytes]] = {}
     try:
-        doc_labels = await classify_case_documents(case_dir)
-        _backfill_kyc_from_content_scan(case_json, doc_labels)
+        classification = case_json.get("_document_classification")
+        doc_labels = (
+            await classify_case_documents(case_dir, classification)
+            if classification
+            else await classify_case_documents(case_dir)
+        )
+        # Classification identifies candidate documents, not verified KYC facts.
+        case_json["_identity_classifier"] = {
+            "provider": "local_ocr_rules",
+            "provider_tokens": 0,
+            "labels": {key: value[0] for key, value in doc_labels.items()},
+            "requires_review": any(value[0] == "OTHER" for value in doc_labels.values())
+            or any(
+                page.get("requires_review")
+                for row in (classification or {}).get("files", [])
+                for page in row.get("pages", [])
+            ),
+        }
     except Exception as e:
         logger.warning("[id_verify] content document classification failed: %s", e)
         case_json.setdefault("processing_errors", []).append(

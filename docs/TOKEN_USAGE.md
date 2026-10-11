@@ -1,5 +1,11 @@
 # Extraction token controls
 
+Document survey and identity-document classification now use local OCR/content
+rules, with zero paid classification calls. Earlier Gemini-classification figures
+below describe historical runs. Azure structured extraction and Gemini photo
+matching still consume tokens. See [local classification](LOCAL_CLASSIFICATION.md)
+for measured offline coverage and review limitations; no paid rerun was performed.
+
 The shared case budget remains 200,000 tokens. Generation checks input-token
 estimates and reserves the per-call output cap before submitting a request.
 Budget exhaustion produces an incomplete diagnostic case, never issuance.

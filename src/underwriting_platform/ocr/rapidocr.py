@@ -1,1 +1,262 @@
-"""Lazy CPU RapidOCR adapters ported from CDP; see PROVENANCE.txt."""from __future__ import annotationsfrom dataclasses import dataclassfrom typing import Protocolfrom PIL import Image@dataclass(frozen=True)class TextLine:    text: str    x0: float    y0: float    x1: float    y1: float    confidence: floatclass TextExtractor(Protocol):    def extract(self, image: Image.Image) -> list[TextLine]:        """Full-page OCR, used for anchor-phrase verification."""        ...    def extract_region(        self, image: Image.Image, x0: int, y0: int, x1: int, y1: int    ) -> list[TextLine]:        """Regional OCR, used by standard_form_extraction on aligned pages."""        ...class ModelNotAvailableError(RuntimeError):    passclass RapidOCRTextExtractor:    """RapidOCR adapter restricted to explicitly supplied field regions."""    engine_name = "rapidocr"    model_name = "RapidOCR-ONNX"    def __init__(        self,        backend=None,        model_version: str = "rapidocr-onnxruntime",        *,        intra_op_num_threads: int | None = None,        inter_op_num_threads: int | None = None,    ) -> None:        self._engine = backend        self._regional_upscale = backend is None        self._initialization_count = 1 if backend is not None else 0        self._intra_op_num_threads = intra_op_num_threads        self._inter_op_num_threads = inter_op_num_threads        self.last_profile: dict[str, float] = {}        self.model_version = model_version    @property    def initialization_count(self) -> int:        return self._initialization_count    def _load(self):        if self._engine is None:            try:                from rapidocr_onnxruntime import RapidOCR            except ImportError as exc:                raise ModelNotAvailableError(                    "rapidocr-onnxruntime is not installed -- install underwriting-platform[local-ocr]"                ) from exc            kwargs = {}            if self._intra_op_num_threads is not None:                kwargs["intra_op_num_threads"] = self._intra_op_num_threads            if self._inter_op_num_threads is not None:                kwargs["inter_op_num_threads"] = self._inter_op_num_threads            self._engine = RapidOCR(**kwargs)            self._initialization_count += 1        return self._engine    def extract(self, image: Image.Image) -> list[TextLine]:        raise ValueError("RapidOCR primary is region-only for supported standard forms")    def extract_region(        self, image: Image.Image, x0: int, y0: int, x1: int, y1: int    ) -> list[TextLine]:        import time        import numpy as np        started = time.perf_counter()        crop = image.crop((x0, y0, x1, y1)).convert("RGB")        crop_ms = (time.perf_counter() - started) * 1000        started = time.perf_counter()        scale = 3 if self._regional_upscale and max(crop.size) < 900 else 1        working = (            crop            if scale == 1            else crop.resize((crop.width * scale, crop.height * scale), Image.Resampling.LANCZOS)        )        resize_ms = (time.perf_counter() - started) * 1000        started = time.perf_counter()        array = np.asarray(working)        array_ms = (time.perf_counter() - started) * 1000        started = time.perf_counter()        raw = self._load()(array)        engine_ms = (time.perf_counter() - started) * 1000        elapsed = raw[1] if isinstance(raw, tuple) and len(raw) > 1 else None        elapsed_parts = elapsed if isinstance(elapsed, (list, tuple)) else ()        started = time.perf_counter()        rows = raw[0] if isinstance(raw, tuple) else raw        lines: list[TextLine] = []        for row in rows or []:            if len(row) < 3:                continue            box, text, confidence = row[0], str(row[1]), float(row[2])            xs, ys = [point[0] for point in box], [point[1] for point in box]            lines.append(                TextLine(                    text,                    min(xs) / scale + x0,                    min(ys) / scale + y0,                    max(xs) / scale + x0,                    max(ys) / scale + y0,                    confidence,                )            )        self.last_profile = {            "image_crop_convert": crop_ms,            "resize_preprocessing": resize_ms,            "array_conversion": array_ms,            "rapidocr_engine_wall": engine_ms,            "detector": (elapsed_parts[0] * 1000 if len(elapsed_parts) > 0 else 0.0),            "classifier": (elapsed_parts[1] * 1000 if len(elapsed_parts) > 1 else 0.0),            "recognizer": (elapsed_parts[2] * 1000 if len(elapsed_parts) > 2 else 0.0),            "adapter_postprocessing": (time.perf_counter() - started) * 1000,        }        return linesclass RapidOCRFullPageTextExtractor(RapidOCRTextExtractor):    """RapidOCR detector/recognizer for unknown layouts only.    Known templates continue using ``RapidOCRTextExtractor`` region calls;    exposing full-page OCR as a separate type prevents accidental expansion    of the standard-form cost envelope.    """    engine_name = "rapidocr_full_page"    def __init__(        self,        backend=None,        model_version: str = "rapidocr-onnxruntime",        max_full_page_side: int = 2000,        *,        intra_op_num_threads: int | None = None,        inter_op_num_threads: int | None = None,    ) -> None:        super().__init__(            backend=backend,            model_version=model_version,            intra_op_num_threads=intra_op_num_threads,            inter_op_num_threads=inter_op_num_threads,        )        self._max_full_page_side = max_full_page_side    def extract(self, image: Image.Image) -> list[TextLine]:        import time        started = time.perf_counter()        longest = max(image.size)        scale = min(1.0, self._max_full_page_side / longest)        working = (            image            if scale == 1            else image.resize(                (round(image.width * scale), round(image.height * scale)),                Image.Resampling.LANCZOS,            )        )        full_page_resize_ms = (time.perf_counter() - started) * 1000        lines = super().extract_region(working, 0, 0, working.width, working.height)        self.last_profile["full_page_resize"] = full_page_resize_ms        if scale == 1:            return lines        return [            TextLine(                line.text,                line.x0 / scale,                line.y0 / scale,                line.x1 / scale,                line.y1 / scale,                line.confidence,            )            for line in lines        ]
+"""Lazy CPU RapidOCR adapters ported from CDP; see PROVENANCE.txt."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Protocol
+
+from PIL import Image
+
+
+@dataclass(frozen=True)
+class TextLine:
+    text: str
+
+    x0: float
+
+    y0: float
+
+    x1: float
+
+    y1: float
+
+    confidence: float
+    mean_confidence: float | None = None
+
+
+class TextExtractor(Protocol):
+    def extract(self, image: Image.Image) -> list[TextLine]:
+        """Full-page OCR, used for anchor-phrase verification."""
+
+        ...
+
+    def extract_region(
+        self, image: Image.Image, x0: int, y0: int, x1: int, y1: int
+    ) -> list[TextLine]:
+        """Regional OCR, used by standard_form_extraction on aligned pages."""
+
+        ...
+
+
+class ModelNotAvailableError(RuntimeError):
+    pass
+
+
+class RapidOCRTextExtractor:
+    """RapidOCR adapter restricted to explicitly supplied field regions."""
+
+    engine_name = "rapidocr"
+
+    model_name = "RapidOCR-ONNX"
+
+    def __init__(
+        self,
+        backend=None,
+        model_version: str = "rapidocr-onnxruntime",
+        *,
+        intra_op_num_threads: int | None = None,
+        inter_op_num_threads: int | None = None,
+    ) -> None:
+
+        self._engine = backend
+
+        self._regional_upscale = backend is None
+
+        self._initialization_count = 1 if backend is not None else 0
+
+        self._intra_op_num_threads = intra_op_num_threads
+
+        self._inter_op_num_threads = inter_op_num_threads
+
+        self.last_profile: dict[str, float] = {}
+
+        self.model_version = model_version
+
+    @property
+    def initialization_count(self) -> int:
+
+        return self._initialization_count
+
+    def _load(self):
+
+        if self._engine is None:
+            try:
+                from rapidocr_onnxruntime import RapidOCR
+
+            except ImportError as exc:
+                raise ModelNotAvailableError(
+                    "rapidocr-onnxruntime is not installed -- install underwriting-platform[local-ocr]"
+                ) from exc
+
+            kwargs = {}
+
+            if self._intra_op_num_threads is not None:
+                kwargs["intra_op_num_threads"] = self._intra_op_num_threads
+
+            if self._inter_op_num_threads is not None:
+                kwargs["inter_op_num_threads"] = self._inter_op_num_threads
+
+            self._engine = RapidOCR(**kwargs)
+
+            self._initialization_count += 1
+
+        return self._engine
+
+    def extract(self, image: Image.Image) -> list[TextLine]:
+
+        raise ValueError("RapidOCR primary is region-only for supported standard forms")
+
+    def extract_region(
+        self, image: Image.Image, x0: int, y0: int, x1: int, y1: int
+    ) -> list[TextLine]:
+
+        import time
+
+        import numpy as np
+
+        started = time.perf_counter()
+
+        crop = image.crop((x0, y0, x1, y1)).convert("RGB")
+
+        crop_ms = (time.perf_counter() - started) * 1000
+
+        started = time.perf_counter()
+
+        scale = 3 if self._regional_upscale and max(crop.size) < 900 else 1
+
+        working = (
+            crop
+            if scale == 1
+            else crop.resize((crop.width * scale, crop.height * scale), Image.Resampling.LANCZOS)
+        )
+
+        resize_ms = (time.perf_counter() - started) * 1000
+
+        started = time.perf_counter()
+
+        array = np.asarray(working)
+
+        array_ms = (time.perf_counter() - started) * 1000
+
+        started = time.perf_counter()
+
+        raw = self._load()(array)
+
+        engine_ms = (time.perf_counter() - started) * 1000
+
+        elapsed = raw[1] if isinstance(raw, tuple) and len(raw) > 1 else None
+
+        elapsed_parts = elapsed if isinstance(elapsed, (list, tuple)) else ()
+
+        started = time.perf_counter()
+
+        rows = raw[0] if isinstance(raw, tuple) else raw
+
+        lines: list[TextLine] = []
+
+        for row in rows or []:
+            if len(row) < 3:
+                continue
+
+            box, text, confidence = row[0], str(row[1]), float(row[2])
+
+            xs, ys = [point[0] for point in box], [point[1] for point in box]
+
+            lines.append(
+                TextLine(
+                    text,
+                    min(xs) / scale + x0,
+                    min(ys) / scale + y0,
+                    max(xs) / scale + x0,
+                    max(ys) / scale + y0,
+                    confidence,
+                )
+            )
+
+        self.last_profile = {
+            "image_crop_convert": crop_ms,
+            "resize_preprocessing": resize_ms,
+            "array_conversion": array_ms,
+            "rapidocr_engine_wall": engine_ms,
+            "detector": (elapsed_parts[0] * 1000 if len(elapsed_parts) > 0 else 0.0),
+            "classifier": (elapsed_parts[1] * 1000 if len(elapsed_parts) > 1 else 0.0),
+            "recognizer": (elapsed_parts[2] * 1000 if len(elapsed_parts) > 2 else 0.0),
+            "adapter_postprocessing": (time.perf_counter() - started) * 1000,
+        }
+
+        return lines
+
+
+class RapidOCRFullPageTextExtractor(RapidOCRTextExtractor):
+    """RapidOCR detector/recognizer for unknown layouts only.
+
+
+
+    Known templates continue using ``RapidOCRTextExtractor`` region calls;
+
+    exposing full-page OCR as a separate type prevents accidental expansion
+
+    of the standard-form cost envelope.
+
+    """
+
+    engine_name = "rapidocr_full_page"
+
+    def __init__(
+        self,
+        backend=None,
+        model_version: str = "rapidocr-onnxruntime",
+        max_full_page_side: int = 2000,
+        *,
+        intra_op_num_threads: int | None = None,
+        inter_op_num_threads: int | None = None,
+    ) -> None:
+
+        super().__init__(
+            backend=backend,
+            model_version=model_version,
+            intra_op_num_threads=intra_op_num_threads,
+            inter_op_num_threads=inter_op_num_threads,
+        )
+
+        self._max_full_page_side = max_full_page_side
+
+    def extract(self, image: Image.Image) -> list[TextLine]:
+
+        import time
+
+        started = time.perf_counter()
+
+        longest = max(image.size)
+
+        scale = min(1.0, self._max_full_page_side / longest)
+
+        working = (
+            image
+            if scale == 1
+            else image.resize(
+                (round(image.width * scale), round(image.height * scale)),
+                Image.Resampling.LANCZOS,
+            )
+        )
+
+        full_page_resize_ms = (time.perf_counter() - started) * 1000
+
+        lines = super().extract_region(working, 0, 0, working.width, working.height)
+
+        self.last_profile["full_page_resize"] = full_page_resize_ms
+
+        if scale == 1:
+            return lines
+
+        return [
+            TextLine(
+                line.text,
+                line.x0 / scale,
+                line.y0 / scale,
+                line.x1 / scale,
+                line.y1 / scale,
+                line.confidence,
+            )
+            for line in lines
+        ]

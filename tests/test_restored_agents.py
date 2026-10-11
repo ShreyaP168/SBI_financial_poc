@@ -26,7 +26,7 @@ def test_all_dispatch_prompts_and_configuration_packaged():
     root=Path(__file__).parents[1]/'src/underwriting_platform/agents'
     for cls in set(_AGENT_REGISTRY.values()):
         assert (root/'prompts'/cls.PROMPT_FILE).is_file()
-    assert (root/'prompts/master_survey.txt').is_file()
+    assert (root.parent/'resources/config/document_classification.json').is_file()
     assert (root/'prompts/reconciler.txt').is_file()
 
 @pytest.mark.asyncio

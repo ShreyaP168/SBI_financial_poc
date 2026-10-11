@@ -21,6 +21,9 @@ by the worker; deterministic incomplete cases retain review artifacts.
 
 Extraction collects sources, hashes full files, conservatively deduplicates copies,
 prepares native text and bounded vision pages, and surveys document relevance.
+Both classification stages use [local OCR/content rules](LOCAL_CLASSIFICATION.md)
+without paid classification calls. Unknown content remains explicit for review;
+document labels do not verify KYC. Extraction and photo matching remain separate.
 Scanned pages also pass through the [SBI Bond local OCR adapters](LOCAL_OCR.md)
 (Tesseract by default or optional RapidOCR/ONNX), retaining page/line confidence
 and geometry. OCR candidates are distinct from native text; vision is retained.

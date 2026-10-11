@@ -10,6 +10,9 @@ in `docs/history`; do not describe it as current behavior.
   Domain views of one reader are not independent autonomous reasoners.
 - LLMs extract facts; the deterministic engine applies carrier rules. Retain raw
   conflicting declarations and source provenance. Reconciler overrides are advisory.
+- Classification uses local native text/OCR and versioned content rules. Never
+  add a cloud fallback or treat a label as verified KYC. Unknown/mixed content
+  requires review and must remain in the routing plan.
 - Canonical contracts validate data; shared completion/delivery policy decides
   whether a decision can be released. QC PASS is not decision completeness.
 - Never bypass QC/completeness for downloads. Diagnostic HTTP routes are removed;

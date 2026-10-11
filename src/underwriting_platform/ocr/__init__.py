@@ -45,6 +45,8 @@ def read_page(image, page):
             lines = reader.extract(image)
         for line in lines:
             values = (line.x0, line.y0, line.x1, line.y1, line.confidence)
+            if line.mean_confidence is not None:
+                values += (line.mean_confidence,)
             if not all(math.isfinite(value) for value in values) or not (
                 0 <= line.confidence <= 1
                 and 0 <= line.x0 < line.x1 <= image.width + 1
