@@ -15,7 +15,9 @@ OCR_TIMEOUT_SECONDS=45
 # TESSERACT_CMD=C:\Program Files\Tesseract-OCR\tesseract.exe
 ```
 
-The default is Tesseract. Docker installs Tesseract and its English language data.
+The default is `auto`: installed RapidOCR first, then local Tesseract. Docker
+includes both providers and Tesseract English data. Optional Paddle structure
+models require separate provisioning; see [local-first extraction](LOCAL_FIRST_EXTRACTION.md).
 Both classification stages consume local text/OCR; see
 [local classification](LOCAL_CLASSIFICATION.md) for routing and review rules.
 SBI Bond's RapidOCR 1.4.4 requires Python 3.11/3.12; Python 3.13 supports the

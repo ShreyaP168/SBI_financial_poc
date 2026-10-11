@@ -1,6 +1,7 @@
 """Offline page OCR with bounded rendering and retained geometry/provenance."""
 
 import math
+import os
 import subprocess
 import time
 from dataclasses import asdict
@@ -15,6 +16,8 @@ _lock = Lock()
 
 @lru_cache(maxsize=4)
 def engine_version(provider, binary):
+    if provider == "paddle_structure":
+        return version("paddleocr")
     if provider == "rapidocr":
         return version("rapidocr-onnxruntime")
     result = subprocess.run([binary, "--version"], capture_output=True, timeout=10, check=True)
@@ -23,6 +26,10 @@ def engine_version(provider, binary):
 
 @lru_cache(maxsize=4)
 def extractor(provider, psm, language):
+    if provider == "paddle_structure":
+        from .paddle_structure import PaddleStructureExtractor
+
+        return PaddleStructureExtractor()
     if provider == "tesseract":
         from .tesseract import TesseractTextExtractor
 
@@ -34,6 +41,10 @@ def extractor(provider, psm, language):
 
 def read_page(image, page):
     provider = local_ocr.provider()
+    if provider == "auto":
+        import importlib.util
+
+        provider = "rapidocr" if importlib.util.find_spec("rapidocr_onnxruntime") else "tesseract"
     if provider == "off":
         return {"page": page, "status": "disabled", "lines": [], "text": ""}
     if image.width * image.height > 25_000_000:
@@ -42,7 +53,24 @@ def read_page(image, page):
     try:
         with _lock:
             reader = extractor(provider, local_ocr.get("OCR_PSM"), local_ocr.get("OCR_LANGUAGE"))
-            lines = reader.extract(image)
+            try:
+                lines = reader.extract(image)
+            except Exception:
+                if local_ocr.provider() != "auto" or provider != "rapidocr":
+                    raise
+                provider = "tesseract"
+                reader = extractor(
+                    provider, local_ocr.get("OCR_PSM"), local_ocr.get("OCR_LANGUAGE")
+                )
+                lines = reader.extract(image)
+            if (
+                local_ocr.provider() == "auto"
+                and os.getenv("UW_PADDLE_CONFIG")
+                and sum(any(c.isdigit() for c in line.text) for line in lines) >= 5
+            ):
+                reader = extractor("paddle_structure", 6, "eng")
+                lines = reader.extract(image)
+                provider = "paddle_structure"
         for line in lines:
             values = (line.x0, line.y0, line.x1, line.y1, line.confidence)
             if line.mean_confidence is not None:
@@ -66,6 +94,7 @@ def read_page(image, page):
             "confidence": min((line.confidence for line in lines), default=0),
             "elapsed_ms": round((time.perf_counter() - started) * 1000, 2),
             "provider_tokens": 0,
+            "tables": getattr(reader, "last_tables", []),
         }
     except Exception as error:
         # Never persist/log subprocess stderr or OCR content in error messages.

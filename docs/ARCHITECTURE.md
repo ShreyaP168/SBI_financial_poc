@@ -27,7 +27,9 @@ document labels do not verify KYC. Extraction and photo matching remain separate
 Scanned pages also pass through the [SBI Bond local OCR adapters](LOCAL_OCR.md)
 (Tesseract by default or optional RapidOCR/ONNX), retaining page/line confidence
 and geometry. OCR candidates are distinct from native text; vision is retained.
-`UW_EXTRACTION_MODE` defaults to `domain` for every client, including test doubles.
+`UW_EXTRACTION_MODE` defaults to [local-first extraction](LOCAL_FIRST_EXTRACTION.md)
+for every client, including test doubles. Shared local facts replace repeated
+cloud document reads; optional cloud fallback is bounded to unresolved evidence.
 Domain mode uses domain prompts and owned blocks; compliance can consume shared
 structured context. `source_once` is explicitly experimental: one reader owns each
 selected document and emits the applicable canonical domain blocks, which are

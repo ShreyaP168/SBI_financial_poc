@@ -204,7 +204,9 @@ async def _extract_and_process(
     except Exception:
         failed.append("EXTRACTION_FAILED")
         case = {"case_id": case_id, "processing_errors": [{"stage": "extraction"}]}
-    if not failed:
+    if not failed and not (
+        case.get("_extraction_mode") == "local_first" and case.get("processing_errors")
+    ):
         try:
             from underwriting_platform.engine.identity_verification import run_identity_verification
 

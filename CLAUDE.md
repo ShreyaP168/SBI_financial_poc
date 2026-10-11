@@ -5,7 +5,8 @@ in `docs/history`; do not describe it as current behavior.
 
 - Code is namespaced under `src/underwriting_platform`; keep application ports,
   domain policy, infrastructure adapters and HTTP services separate.
-- Extraction defaults to `domain` for all clients. Experimental `source_once`
+- Extraction defaults to `local_first` for all clients. Legacy `domain` is
+  explicitly selected for comparison. Experimental `source_once`
   requires explicit configuration and must retain domain interpretation rules.
   Domain views of one reader are not independent autonomous reasoners.
 - LLMs extract facts; the deterministic engine applies carrier rules. Retain raw

@@ -521,9 +521,52 @@ class MasterOrchestrator:
                     ),
                 )
 
-        mode = os.getenv("UW_EXTRACTION_MODE", "domain")
+        mode = os.getenv("UW_EXTRACTION_MODE", "local_first")
         source_owner = None
-        if mode == "source_once":
+        if mode == "local_first":
+            from underwriting_platform.extraction.coordinator import extract_local_first
+
+            owned, source_owner = await extract_local_first(self.llm, documents)
+            for name in {
+                "identity",
+                "income",
+                "compliance",
+                "medical",
+                "assets_liabilities",
+                "business_surrogate",
+            }:
+                keys = (
+                    ("applicant", "anti_fraud_markers")
+                    if name == "identity"
+                    else (
+                        ("business_insurance", "credit_protect", "surrogate")
+                        if name == "business_surrogate"
+                        else (_AGENT_REGISTRY[name].OUTPUT_BLOCK,)
+                    )
+                )
+                pending = [
+                    path
+                    for path in source_owner["unresolved"]
+                    if any(path.startswith(key + ".") for key in keys)
+                ]
+                agent_outputs[name] = AgentResult(
+                    block={key: owned.block.get(key, {}) for key in keys},
+                    field_sources={
+                        path: records
+                        for path, records in owned.field_sources.items()
+                        if any(path.startswith(key + ".") for key in keys)
+                    },
+                    source_findings=[
+                        f
+                        for f in owned.source_findings
+                        if any(f.get("field", "").startswith(key + ".") for key in keys)
+                    ],
+                    docs_consumed=owned.docs_consumed,
+                    confidence=owned.confidence,
+                    error="LOCAL_EVIDENCE_REVIEW_REQUIRED" if pending else None,
+                    retryable=False,
+                )
+        elif mode == "source_once":
             from underwriting_platform.agents.source_reader import SourceReader, source_batches
 
             domains = list(
@@ -759,7 +802,7 @@ class MasterOrchestrator:
                 )
                 bureau_rec["_iib_extraction_confidence"] = 1.0
                 live_iib_source = True
-            else:
+            elif mode != "local_first":
                 from underwriting_platform.agents import BureauAgent
 
                 bureau_agent = BureauAgent(self.llm)

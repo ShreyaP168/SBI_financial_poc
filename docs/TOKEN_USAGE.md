@@ -1,5 +1,12 @@
 # Extraction token controls
 
+The extraction default is now `local_first`: local parsers share extracted facts
+without six cloud domain reads. Optional cloud clarification is capped at one
+18,000-character request with 3,500 output tokens per invocation; it is off by
+default. Historical domain/source-once figures below are not current-strategy
+measurements. The offline local-first smoke used zero paid tokens, but the case
+remains incomplete. See [local-first extraction](LOCAL_FIRST_EXTRACTION.md).
+
 Document survey and identity-document classification now use local OCR/content
 rules, with zero paid classification calls. Earlier Gemini-classification figures
 below describe historical runs. Azure structured extraction and Gemini photo

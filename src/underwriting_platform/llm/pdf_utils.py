@@ -32,6 +32,7 @@ class Document:
     layout_vision_pages: set[int] | None = None
     ocr_pages: list[dict] = field(default_factory=list)
     image_page_numbers: list[int] = field(default_factory=list)
+    tables: list[dict] = field(default_factory=list)
 
     def to_anthropic_blocks(
         self, include_images: bool = True, text_max_chars: int = 200_000
@@ -142,12 +143,14 @@ def prepare_doc(
     ocr_pages: list[dict] = []
     image_page_numbers: list[int] = []
     uncovered_pages: list[int] = []
+    tables: list[dict] = []
 
     def ocr_image(image, number):
         from underwriting_platform.ocr import read_page
 
         result = read_page(image, number)
         ocr_pages.append(result)
+        tables.extend({"page": number, **table} for table in result.get("tables", []))
         return result.get("text") or ""
 
     if p.suffix.lower() == ".pdf":
@@ -162,6 +165,15 @@ def prepare_doc(
                 for i, pg in enumerate(pages_for_text):
                     try:
                         page_text = pg.extract_text() or ""
+                        for table in pg.find_tables():
+                            tables.append(
+                                {
+                                    "page": i + 1,
+                                    "rows": table.extract(),
+                                    "bbox": list(table.bbox),
+                                    "basis": "native_pdf",
+                                }
+                            )
                         if len(page_text.strip()) < 80:
                             if pg.width * pg.height * (150 / 72) ** 2 > 25_000_000:
                                 ocr_pages.append({"page": i + 1, "status": "render_limit"})
@@ -251,6 +263,7 @@ def prepare_doc(
         layout_vision_pages=layout_vision_pages,
         ocr_pages=ocr_pages,
         image_page_numbers=image_page_numbers,
+        tables=tables,
         extraction_error="UNCOVERED_SCANNED_PAGES" if uncovered_pages else None,
     )
 

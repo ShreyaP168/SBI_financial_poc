@@ -254,8 +254,17 @@ class KernelExtractor:
 
                 attach_budget(budget, CACHE_ROOT / "agent-stages", request.case_id)
                 try:
-                    await run_identity_verification(result.case_json, folder)
-                    result.case_json.setdefault("_processing_stages", {})["identity"] = "completed"
+                    if result.case_json.get(
+                        "_extraction_mode"
+                    ) == "local_first" and result.case_json.get("processing_errors"):
+                        result.case_json.setdefault("_processing_stages", {})["identity"] = (
+                            "not_started_incomplete_extraction"
+                        )
+                    else:
+                        await run_identity_verification(result.case_json, folder)
+                        result.case_json.setdefault("_processing_stages", {})["identity"] = (
+                            "completed"
+                        )
                 except Exception as exc:
                     from underwriting_platform.application.retry_policy import retryable_dependency
 

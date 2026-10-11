@@ -84,7 +84,17 @@ def survey_documents(documents, agents):
         kind = next(iter(kinds)) if len(kinds) == 1 else "unknown"
         review = any(page["requires_review"] for page in pages) or len(kinds) != 1
         relevance = (
-            list(agents)
+            list(
+                dict.fromkeys(
+                    ["identity", "income", "compliance", "medical"]
+                    + [
+                        agent
+                        for page in pages
+                        if page["kind"] != "unknown"
+                        for agent in page["relevance"]
+                    ]
+                )
+            )
             if review
             else list(dict.fromkeys(agent for page in pages for agent in page["relevance"]))
         )

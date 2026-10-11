@@ -74,6 +74,7 @@ def test_incomplete_pdf_never_claims_verified_income(tmp_path):
 
 @pytest.mark.asyncio
 async def test_reconciler_cannot_erase_declared_disallowed_trade(tmp_path,monkeypatch):
+    monkeypatch.setenv("UW_EXTRACTION_MODE", "domain")
     import underwriting_platform.orchestrator.master as master
     from underwriting_platform.orchestrator.reconciler import ReconciliationResult
     from underwriting_platform.llm import Document

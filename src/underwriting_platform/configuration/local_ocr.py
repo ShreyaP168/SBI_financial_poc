@@ -18,8 +18,8 @@ def get(key, default=None):
 
 
 def provider():
-    value = os.getenv("UW_LOCAL_OCR_PROVIDER", "tesseract")
-    if value not in {"off", "tesseract", "rapidocr"}:
+    value = os.getenv("UW_LOCAL_OCR_PROVIDER", "auto")
+    if value not in {"auto", "off", "tesseract", "rapidocr", "paddle_structure"}:
         raise ValueError("Unsupported local OCR provider")
     return value
 
@@ -30,11 +30,40 @@ def executable():
     return value or (str(windows) if windows.is_file() else None)
 
 
-def assets():
+def assets(selected=None):
     """Actual local model/executable inputs included in extraction revisions."""
-    if provider() == "off":
+    selected = selected or provider()
+    if selected == "auto":
+        return (
+            assets("rapidocr")
+            + assets("tesseract")
+            + (assets("paddle_structure") if os.getenv("UW_PADDLE_CONFIG") else [])
+        )
+    if selected == "off":
         return []
-    if provider() == "rapidocr":
+    if selected == "paddle_structure":
+        config = os.getenv("UW_PADDLE_CONFIG")
+        if not config:
+            return []
+        import yaml
+
+        path = Path(config)
+        result = [path]
+
+        def walk(value):
+            if isinstance(value, dict):
+                for key, child in value.items():
+                    if key == "model_dir" and child:
+                        result.extend(p for p in Path(child).rglob("*") if p.is_file())
+                    else:
+                        walk(child)
+            elif isinstance(value, list):
+                for child in value:
+                    walk(child)
+
+        walk(yaml.safe_load(path.read_text(encoding="utf8")))
+        return result
+    if selected == "rapidocr":
         import importlib.util
 
         spec = importlib.util.find_spec("rapidocr_onnxruntime")

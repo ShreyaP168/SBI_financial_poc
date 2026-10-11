@@ -88,6 +88,7 @@ async def test_compliance_rejects_fabricated_upstream_page():
 
 
 async def test_orchestrator_compliance_reuses_owner_outputs(tmp_path, monkeypatch):
+    monkeypatch.setenv("UW_EXTRACTION_MODE", "domain")
     import underwriting_platform.orchestrator.master as master
 
     documents = [

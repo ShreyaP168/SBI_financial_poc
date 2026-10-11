@@ -26,6 +26,9 @@ PROVIDER_SETTINGS = (
     "GEMINI_MEDICAL_MODEL",
     "UW_DUAL_VENDOR_MEDICAL",
     "UW_EXTRACTION_MODE",
+    "UW_TARGETED_LLM_FALLBACK",
+    "UW_TARGETED_VISION_FALLBACK",
+    "UW_PADDLE_CONFIG",
     "GEMINI_VITAL_REOCR_MODEL",
     "GEMINI_FAMILY_CHECKBOX_MODEL",
     "GEMINI_PHOTO_MATCH_MODEL",
@@ -93,7 +96,10 @@ def cache_revision(
     # Include implementation as well as prompts: parser changes invalidate old joins.
     roots = [
         config_root,
-        *(package / name for name in ("agents", "orchestrator", "llm", "configuration", "ocr")),
+        *(
+            package / name
+            for name in ("agents", "orchestrator", "llm", "configuration", "ocr", "extraction")
+        ),
     ]
     for root in roots:
         for source in sorted(root.rglob("*")):
