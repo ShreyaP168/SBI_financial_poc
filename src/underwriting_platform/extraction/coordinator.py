@@ -5,7 +5,7 @@ import os
 import re
 
 from underwriting_platform.agents.base import AgentResult
-from underwriting_platform.application.completion import CORE_FIELDS
+from underwriting_platform.application.completion import CONDITIONAL_EVIDENCE_FIELDS, CORE_FIELDS
 
 from .local_fields import PATTERNS, extract_local, normalize
 
@@ -14,7 +14,9 @@ async def extract_local_first(client, documents):
     block, sources, findings, windows = extract_local(documents)
     unresolved = [path for path in CORE_FIELDS if path not in sources]
     blocked = {finding.get("field") for finding in findings}
-    requested = [path for path in unresolved if path not in blocked]
+    # Employer/trade evidence is critical to occupation eligibility as well.
+    supported = (*CORE_FIELDS, *CONDITIONAL_EVIDENCE_FIELDS, "applicant.dob")
+    requested = [path for path in supported if path not in sources and path not in blocked]
     targeted_calls = 0
     fallback_error = None
     if requested and os.getenv("UW_TARGETED_LLM_FALLBACK", "false").lower() == "true":
@@ -80,7 +82,11 @@ async def extract_local_first(client, documents):
                     )
                 finally:
                     request_stage.reset(token)
-                for field in reply.get("fields", []):
+                if not isinstance(reply, dict) or not isinstance(reply.get("fields"), list):
+                    raise ValueError("Invalid targeted response shape")
+                for field in reply["fields"]:
+                    if not isinstance(field, dict):
+                        continue
                     path = field.get("path")
                     raw = field.get("raw_value")
                     if (
@@ -109,9 +115,11 @@ async def extract_local_first(client, documents):
                         ),
                         None,
                     )
-                    if (window is None and crop is None) or normalize(path, raw) != field.get(
-                        "value"
-                    ):
+                    try:
+                        normalized = normalize(path, raw)
+                    except (ValueError, TypeError, ArithmeticError):
+                        continue
+                    if (window is None and crop is None) or normalized != field.get("value"):
                         continue
                     owner, name = path.split(".", 1)
                     if path in sources:
@@ -144,7 +152,14 @@ async def extract_local_first(client, documents):
                             }
                         )
             except Exception as error:
-                fallback_error = getattr(error, "code", type(error).__name__)
+                # Never expose provider exception text or arbitrary error codes.
+                from underwriting_platform.llm.budget import TokenBudgetExceeded
+
+                fallback_error = (
+                    "TOKEN_BUDGET_EXCEEDED"
+                    if isinstance(error, TokenBudgetExceeded)
+                    else "TARGETED_PROCESSING_FAILED"
+                )
                 findings.append(
                     {
                         "field": "applicant.targeted_processing",
@@ -179,6 +194,8 @@ async def extract_local_first(client, documents):
         "targeted_calls": targeted_calls,
         "targeted_text_char_limit": 18000,
         "targeted_output_token_limit": 3500,
+        "requested_fields": requested if targeted_calls else [],
+        "cloud_fallback_enabled": os.getenv("UW_TARGETED_LLM_FALLBACK", "false").lower() == "true",
         "unresolved": pending,
         "fallback_error": fallback_error,
         "documents_read_once": [d.filename for d in documents],

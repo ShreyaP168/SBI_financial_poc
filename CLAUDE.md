@@ -5,8 +5,8 @@ in `docs/history`; do not describe it as current behavior.
 
 - Code is namespaced under `src/underwriting_platform`; keep application ports,
   domain policy, infrastructure adapters and HTTP services separate.
-- Extraction defaults to `local_first` for all clients. Legacy `domain` is
-  explicitly selected for comparison. Experimental `source_once`
+- Extraction defaults to `local_first` for all clients. Legacy `domain` resolves to
+  `local_first` and cannot enable repeated domain-agent calls. Experimental `source_once`
   requires explicit configuration and must retain domain interpretation rules.
   Domain views of one reader are not independent autonomous reasoners.
 - LLMs extract facts; the deterministic engine applies carrier rules. Retain raw
@@ -29,6 +29,6 @@ in `docs/history`; do not describe it as current behavior.
   evidence handoff, not a shared volume. Keep these services single-instance.
 - Read `docs/PRODUCTION_PREREQUISITES.md` before deployment changes. Shared tokens
   provide no tenant isolation. Production mode remains blocked.
-- Test both extraction modes explicitly when changing extraction behavior. Live
+- Test local-first, legacy-setting migration and experimental source-once when changing extraction behavior. Live
   field/provenance/gate comparisons are required before promoting source-once.
   Do not claim local tests prove hosted CI ran or missing-source cases passed.

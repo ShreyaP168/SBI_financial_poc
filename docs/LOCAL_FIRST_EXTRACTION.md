@@ -1,8 +1,7 @@
 # Local-first extraction
 
-`UW_EXTRACTION_MODE=local_first` is now the consistent default. Legacy `domain`
-and experimental `source_once` are explicit comparison modes, not automatic
-fallbacks. Each document is read locally and feeds one shared fact/provenance
+`UW_EXTRACTION_MODE=local_first` is now the consistent default. Legacy `domain` now resolves to `local_first`; it cannot trigger repeated
+domain-agent calls. Experimental `source_once` remains an explicit comparison mode. Each document is read locally and feeds one shared fact/provenance
 record; domain views consume that record without rereading it through separate LLMs.
 Unknown classifications no longer activate assets/business agents without evidence.
 
@@ -19,7 +18,8 @@ handles numerical/table-rich scans when `UW_PADDLE_CONFIG` is configured.
 Install `.[paddle-ocr]` separately and provision models before processing. Its
 Paddle pipeline YAML must specify existing local `model_dir` directories; missing
 model configuration fails closed. The adapter is tested against representative
-PP-Structure output; live Paddle inference has not been validated in this checkout.
+PP-Structure output and installed CPU inference on a synthetic salary-table image.
+See `PADDLEOCR_SETUP.md` for provisioning and measured validation details.
 It is not included in the default lightweight container dependency set.
 
 ```dotenv
@@ -37,7 +37,8 @@ value crops (1000x250 maximum), not whole pages. Crop-only facts require review.
 Quotes must match sent text; invented documents/pages, normalization mismatches,
 overrides of local facts and contradictory responses cannot silently replace facts.
 The cumulative token ledger still bounds all retries/invocations; no budget reset
-or additional allowance is implicit in enabling fallback.
+or additional allowance is implicit in enabling fallback. The workspace's external
+settings now enable text-only fallback; the application default remains opt-in.
 
 Unsupported medical, rider, nominee, insurance-purpose and cover declarations
 are explicitly pending review. No screening or authenticity clearance is inferred.
@@ -54,4 +55,4 @@ end-to-end saving. Real source formats require additional parser/template covera
 Validation: 313 regression tests passed and the rebuilt Docker/PostgreSQL
 workflow passed, including both offline OCR engines and blocked/reviewer artifact
 checks. No additional paid case run was performed. Paddle adapter output handling
-is covered by a representative backend fixture, not live installed model inference.
+is covered by a representative backend fixture and offline installed CPU inference.

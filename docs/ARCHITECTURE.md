@@ -30,13 +30,14 @@ and geometry. OCR candidates are distinct from native text; vision is retained.
 `UW_EXTRACTION_MODE` defaults to [local-first extraction](LOCAL_FIRST_EXTRACTION.md)
 for every client, including test doubles. Shared local facts replace repeated
 cloud document reads; optional cloud fallback is bounded to unresolved evidence.
-Domain mode uses domain prompts and owned blocks; compliance can consume shared
+Legacy domain settings now resolve to local-first; paid domain dispatch is removed.
+Local domain views consume shared
 structured context. `source_once` is explicitly experimental: one reader owns each
 selected document and emits the applicable canonical domain blocks, which are
 partitioned into domain views. It retains the complete selected domain prompts,
 not just their JSON examples. It skips the paid cross-agent reconciler because
 those views are not independent extractions. Neither mode makes underwriting
-decisions in the LLM. Domain-mode reconciler overrides cannot rewrite facts.
+decisions in the LLM. The local-first path does not call a paid reconciler.
 
 Structured workbook and bureau joins run with configured external inputs. Identity
 classification and photo matching are separate mandatory/advisory checks according

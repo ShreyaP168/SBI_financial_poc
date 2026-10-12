@@ -413,115 +413,11 @@ class MasterOrchestrator:
                         existing.add(fn)
                 scout_hits_by_agent.setdefault(ag, set()).update(corr_docs)
 
-        async def _run_one(agent_name: str):
-            agent_cls = _AGENT_REGISTRY[agent_name]
-            agent = agent_cls(self.llm)
-            # An explicitly empty plan means missing evidence, not permission to
-            # resend the entire folder. Unclassified files remain eligible.
-            classified = {row.get("filename") for row in survey.get("files") or []}
-            relevant_files = list(relevance_map.get(agent_name) or [])
-            relevant_files += [d.filename for d in documents if d.filename not in classified]
-            relevant_docs = [
-                d
-                for d in documents
-                if d.filename in relevant_files
-                and not d.extraction_error
-                and not is_face_photo(d, kinds.get(d.filename))
-            ]
-            shared_context = {}
-            if agent_name == "compliance":
-                # Share only evidence-backed upstream findings; declarations still
-                # need direct reading because identity/income do not own them.
-                shared_context = {
-                    name: {
-                        "block": result.block,
-                        "field_sources": result.field_sources,
-                        "source_findings": result.source_findings,
-                        "error": result.error,
-                    }
-                    for name, result in agent_outputs.items()
-                    if name in {"identity", "income"}
-                }
-                relevant_docs = [
-                    d
-                    for d in relevant_docs
-                    if kinds.get(d.filename)
-                    not in financial_text_kinds
-                    | {"pan", "pan_card", "aadhaar", "aadhar", "id_proof", "identity_proof"}
-                ]
-            if not relevant_docs and not shared_context:
-                return agent_name, AgentResult(
-                    block={agent_cls.OUTPUT_BLOCK: {}},
-                    error="MissingRelevantDocuments",
-                    retryable=False,
-                    notes="No relevant source evidence supplied; manual review required.",
-                )
-            # Split into priority-ordered batches of at most 8 docs each —
-            # a single call can't take more than that and stay under
-            # Anthropic's 100-per-request image ceiling (prepare_doc(
-            # max_pages_image=12) → up to 12 images per doc, so 8 docs ≈ 96
-            # images max) — and run one extraction call per batch instead
-            # of truncating to the first batch and silently dropping the
-            # rest. Every relevant document reaches extraction this way.
-            doc_batches = self._batch_docs(
-                agent_name,
-                relevant_docs,
-                max_count=8,
-                scout_hits=scout_hits_by_agent.get(agent_name),
-            )
-            if not doc_batches and shared_context:
-                doc_batches = [[]]
-            try:
-                batch_results = []
-                for batch_index, batch in enumerate(doc_batches):
-                    key = f"{agent_name}:{batch_index}"
-                    cached = store.agent(key) if store is not None else None
-                    try:
-                        extracted = cached or await agent.extract(
-                            batch, shared_context=shared_context, rules=self.rules
-                        )
-                    except Exception as error:
-                        extracted = AgentResult(
-                            block={agent_cls.OUTPUT_BLOCK: {}},
-                            error=getattr(error, "code", type(error).__name__),
-                            retryable=getattr(
-                                error,
-                                "retryable",
-                                not isinstance(error, (ValueError, TypeError, FileNotFoundError)),
-                            ),
-                            notes="This batch failed; completed batches are retained.",
-                        )
-                    batch_results.append(extracted)
-                    if store is not None and cached is None:
-                        store.save_agent(key, extracted)
-                    if extracted.error == "LLM_TOKEN_BUDGET_EXCEEDED":
-                        break
-                result = _merge_agent_results(batch_results)
-                if len(doc_batches) > 1:
-                    logger.info(
-                        "[%s] %d docs split into %d batches, merged",
-                        agent_name,
-                        len(relevant_docs),
-                        len(doc_batches),
-                    )
-                logger.info("[%s] confidence=%.2f", agent_name, result.confidence)
-                return agent_name, result
-            except Exception as e:
-                logger.error("[%s] failed: %s", agent_name, e)
-
-                return agent_name, AgentResult(
-                    block={agent_cls.OUTPUT_BLOCK: {}},
-                    confidence=0.0,
-                    notes="Agent extraction failed; manual review required.",
-                    error=type(e).__name__,
-                    retryable=getattr(
-                        e,
-                        "retryable",
-                        not isinstance(e, (ValueError, TypeError, FileNotFoundError)),
-                    ),
-                )
-
         mode = os.getenv("UW_EXTRACTION_MODE", "local_first")
+        if mode == "domain":
+            # Older deployments must not re-enable repeated paid domain reads.
+            logger.warning("Legacy domain setting migrated to shared local-first extraction")
+            mode = "local_first"
         source_owner = None
         if mode == "local_first":
             from underwriting_platform.extraction.coordinator import extract_local_first
@@ -649,15 +545,6 @@ class MasterOrchestrator:
                     error=error,
                     retryable=owned.retryable if error else False,
                 )
-        elif mode == "domain":
-            results = await asyncio.gather(
-                *[_run_one(name) for name in agents_to_run if name != "compliance"]
-            )
-            for name, result in results:
-                agent_outputs[name] = result
-            if "compliance" in agents_to_run:
-                name, result = await _run_one("compliance")
-                agent_outputs[name] = result
         else:
             raise ValueError("Unsupported extraction mode")
 

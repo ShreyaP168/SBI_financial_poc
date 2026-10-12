@@ -44,7 +44,9 @@ class PaddleStructureExtractor:
                 raise ValueError("Paddle configuration must specify local model directories")
             from paddleocr import PPStructureV3
 
-            self.backend = PPStructureV3(paddlex_config=config, device="cpu")
+            # Paddle 3.3 CPU oneDNN cannot execute some layout-model PIR attributes.
+            # Use the portable CPU executor consistently across local platforms.
+            self.backend = PPStructureV3(paddlex_config=config, device="cpu", enable_mkldnn=False)
         with TemporaryDirectory(prefix="uw_local_structure_") as temporary:
             path = Path(temporary) / "page.png"
             image.save(path)

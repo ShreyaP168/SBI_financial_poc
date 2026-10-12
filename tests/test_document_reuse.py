@@ -87,69 +87,36 @@ async def test_compliance_rejects_fabricated_upstream_page():
     assert result.source_findings[0]["code"] == "INVALID_SOURCE_LOCATION"
 
 
-async def test_orchestrator_compliance_reuses_owner_outputs(tmp_path, monkeypatch):
+async def test_legacy_domain_setting_uses_one_local_owner(tmp_path, monkeypatch):
     monkeypatch.setenv("UW_EXTRACTION_MODE", "domain")
+    import underwriting_platform.extraction.coordinator as coordinator
     import underwriting_platform.orchestrator.master as master
 
-    documents = [
-        Document(name, "Applicant evidence " * 100, page_count=1)
-        for name in ("id.pdf", "itr.pdf", "proposal.pdf", "RECENTPHOTOGRAPH.jpg")
-    ]
-    monkeypatch.setattr(
-        master, "_collect_case_files", lambda *a: [tmp_path / d.filename for d in documents]
-    )
-    monkeypatch.setattr(
-        master, "prepare_doc", lambda path: next(d for d in documents if d.filename == path.name)
-    )
-    calls = {}
+    document = Document("proposal.pdf", "Applicant Age: 35\nSum Assured: 1000000")
+    monkeypatch.setattr(master, "_collect_case_files", lambda *a: [tmp_path / document.filename])
+    monkeypatch.setattr(master, "prepare_doc", lambda *a: document)
+    calls = []
 
-    class Identity:
-        OUTPUT_BLOCK = "applicant"
+    async def shared_reader(client, documents):
+        calls.append([d.filename for d in documents])
+        return AgentResult(
+            {
+                "applicant": {"age": 35, "sum_assured": 1000000},
+                "income": {"annual_income": 1000000},
+                "compliance": {},
+            },
+            confidence=1,
+        ), {"unresolved": []}
 
-        def __init__(self, *args):
-            pass
-
-        async def extract(self, docs, **kwargs):
-            calls["identity"] = [d.filename for d in docs]
-            return AgentResult({"applicant": {"age": 35, "sum_assured": 1000000}}, confidence=1)
-
-    class Income(Identity):
-        OUTPUT_BLOCK = "income"
-
-        async def extract(self, docs, **kwargs):
-            calls["income"] = [d.filename for d in docs]
-            return AgentResult({"income": {"annual_income": 1000000}}, confidence=1)
-
-    class Compliance(Identity):
-        OUTPUT_BLOCK = "compliance"
-
-        async def extract(self, docs, shared_context=None, **kwargs):
-            calls["compliance"] = [d.filename for d in docs]
-            assert shared_context["identity"]["block"]["applicant"]["age"] == 35
-            assert shared_context["income"]["block"]["income"]["annual_income"] == 1000000
-            return AgentResult({"compliance": {}}, confidence=1)
-
-    for name, cls in (("identity", Identity), ("income", Income), ("compliance", Compliance)):
-        monkeypatch.setitem(master._AGENT_REGISTRY, name, cls)
+    monkeypatch.setattr(coordinator, "extract_local_first", shared_reader)
     orchestrator = master.MasterOrchestrator(object(), rules={}, reconcile=False)
 
-    async def survey(*args):
-        return {
-            "files": [
-                {
-                    "filename": d.filename,
-                    "kind": kind,
-                    "relevance": ["identity", "income", "compliance"],
-                }
-                for d, kind in zip(
-                    documents, ("id_proof", "itr", "proposal_form", "other"), strict=True
-                )
-            ],
-            "agents_to_dispatch": ["identity", "income", "compliance"],
-        }
+    async def survey(*a):
+        return {"files": [], "agents_to_dispatch": ["identity", "income", "compliance"]}
 
     monkeypatch.setattr(orchestrator, "_survey", survey)
-    await orchestrator.run(tmp_path, "SYNTHETIC")
-    assert calls["compliance"] == ["proposal.pdf"]
-    assert "id.pdf" in calls["identity"] and "itr.pdf" in calls["income"]
-    assert all("RECENTPHOTOGRAPH.jpg" not in names for names in calls.values())
+    result = await orchestrator.run(tmp_path, "SYNTHETIC")
+    assert calls == [["proposal.pdf"]]
+    assert result.case_json["_extraction_mode"] == "local_first"
+    assert result.case_json["applicant"]["age"] == 35
+    assert result.case_json["income"]["annual_income"] == 1000000

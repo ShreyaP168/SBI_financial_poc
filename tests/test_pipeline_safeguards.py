@@ -101,6 +101,12 @@ async def test_reconciler_cannot_erase_declared_disallowed_trade(tmp_path,monkey
             'applicant.business_petty_trade_flag':'Under Review',
             'applicant.declared_business_nature':'Coaching',
             'applicant':{'occupation':'Salaried'}})
+    import underwriting_platform.extraction.coordinator as coordinator
+    async def shared_reader(*a):
+        identity = await Identity().extract()
+        income = await Income().extract()
+        return AgentResult({**identity.block, **income.block, 'compliance': {}}, confidence=1), {'unresolved': []}
+    monkeypatch.setattr(coordinator, 'extract_local_first', shared_reader)
     orch=MasterOrchestrator(object(),rules={},reconcile=False);orch.reconciler=Reconciler()
     async def survey(*a):return {'files':[],'agents_to_dispatch':['identity','income','compliance']}
     monkeypatch.setattr(orch,'_survey',survey)

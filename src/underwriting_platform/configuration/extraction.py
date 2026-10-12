@@ -87,7 +87,15 @@ def cache_revision(
     for asset in local_ocr.assets():
         revision.update(str(asset).encode())
         revision.update(asset.read_bytes())
-    for name in ("rapidocr-onnxruntime", "onnxruntime", "numpy", "opencv-python"):
+    for name in (
+        "rapidocr-onnxruntime",
+        "onnxruntime",
+        "numpy",
+        "opencv-python",
+        "paddleocr",
+        "paddlex",
+        "paddlepaddle",
+    ):
         try:
             revision.update(f"{name}:{version(name)}".encode())
         except PackageNotFoundError:
