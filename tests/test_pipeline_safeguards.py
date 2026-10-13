@@ -102,7 +102,7 @@ async def test_reconciler_cannot_erase_declared_disallowed_trade(tmp_path,monkey
             'applicant.declared_business_nature':'Coaching',
             'applicant':{'occupation':'Salaried'}})
     import underwriting_platform.extraction.coordinator as coordinator
-    async def shared_reader(*a):
+    async def shared_reader(*a, **kw):
         identity = await Identity().extract()
         income = await Income().extract()
         return AgentResult({**identity.block, **income.block, 'compliance': {}}, confidence=1), {'unresolved': []}

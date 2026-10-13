@@ -1,9 +1,13 @@
-"""Local content classification; unknowns stay explicit and are never dropped."""
+"""Local content classification; unclassified content is routed to extraction, never dropped."""
 
 import json
 import re
+from collections import Counter
 
 from underwriting_platform.configuration.paths import CONFIG_ROOT
+
+UNCLASSIFIED = "other"
+PHOTOGRAPH = "photograph"
 
 
 def classify_text(text, *, rules=None):
@@ -14,7 +18,8 @@ def classify_text(text, *, rules=None):
     hits = [
         rule
         for rule in rules["rules"]
-        if all(re.search(pattern, normalized, re.I) for pattern in rule["all"])
+        if len(normalized) <= rule.get("max_chars", len(normalized))
+        and all(re.search(pattern, normalized, re.I) for pattern in rule["all"])
     ]
     # A proposal/financial document can mention ID labels without being an ID card.
     substantive = [rule for rule in hits if rule["kind"] != "id_proof"]
@@ -25,10 +30,12 @@ def classify_text(text, *, rules=None):
     distinct = {(rule["kind"], rule.get("label", "FORM_OR_TEXT")) for rule in hits}
     if len(distinct) != 1:
         return {
-            "kind": "unknown",
+            "kind": UNCLASSIFIED,
             "label": "OTHER",
             "relevance": [],
+            "candidates": sorted({rule["kind"] for rule in hits}),
             "requires_review": True,
+            "extraction_required": True,
             "reason": "ambiguous_content" if hits else "insufficient_content",
             "version": rules["version"],
         }
@@ -38,8 +45,26 @@ def classify_text(text, *, rules=None):
         "label": rule.get("label", "FORM_OR_TEXT"),
         "relevance": list(dict.fromkeys(agent for hit in hits for agent in hit["agents"])),
         "requires_review": False,
+        "extraction_required": False,
         "reason": "content_rule_match",
         "version": rules["version"],
+    }
+
+
+def _photograph(document, number, text, version):
+    from .photo import MAX_TEXT_CHARS, contains_face, page_image
+
+    image = page_image(document, number)
+    if len(text.strip()) > MAX_TEXT_CHARS or image is None or not contains_face(image):
+        return None
+    return {
+        "kind": PHOTOGRAPH,
+        "label": "PHOTOGRAPH",
+        "relevance": ["identity"],
+        "requires_review": False,
+        "extraction_required": False,
+        "reason": "face_detected",
+        "version": version,
     }
 
 
@@ -65,24 +90,50 @@ def survey_documents(documents, agents):
                     )
                     >= rules["min_ocr_line_confidence"]
                 )
+            result = classify_text(text, rules=rules)
+            if result["kind"] == UNCLASSIFIED:
+                result = _photograph(document, number, text, rules["version"]) or result
             pages.append(
-                {
-                    "page": number,
-                    "basis": "local_ocr" if ocr else "native_text",
-                    **classify_text(text, rules=rules),
-                }
+                {"page": number, "basis": "local_ocr" if ocr else "native_text", **result}
             )
         if not pages:
+            result = classify_text(document.text, rules=rules)
+            if result["kind"] == UNCLASSIFIED:
+                result = _photograph(document, 1, document.text, rules["version"]) or result
             pages = [
                 {
                     "page": 1,
                     "basis": "local_ocr" if document.ocr_pages else "native_text",
-                    **classify_text(document.text, rules=rules),
+                    **result,
                 }
             ]
-        kinds = {page["kind"] for page in pages if page["kind"] != "unknown"}
-        kind = next(iter(kinds)) if len(kinds) == 1 else "unknown"
-        review = any(page["requires_review"] for page in pages) or len(kinds) != 1
+        counts = Counter(
+            page["kind"] for page in pages if page["kind"] not in {UNCLASSIFIED, PHOTOGRAPH}
+        )
+        if counts:
+            kind = counts.most_common(1)[0][0]
+            anchor = next(page for page in pages if page["kind"] == kind)
+            for page in pages:
+                if page["kind"] == UNCLASSIFIED and (
+                    page["reason"] == "insufficient_content"
+                    or kind in page.get("candidates", [])
+                ):
+                    page.update(
+                        kind=kind,
+                        label="CONTINUATION",
+                        relevance=anchor["relevance"],
+                        requires_review=False,
+                        extraction_required=False,
+                        reason="document_continuation",
+                    )
+        elif all(page["kind"] == PHOTOGRAPH for page in pages):
+            kind = PHOTOGRAPH
+        else:
+            kind = UNCLASSIFIED
+        subdocs = sorted(
+            {page["kind"] for page in pages if page["kind"] not in {kind, UNCLASSIFIED, PHOTOGRAPH}}
+        )
+        review = any(page["requires_review"] for page in pages)
         relevance = (
             list(
                 dict.fromkeys(
@@ -90,7 +141,7 @@ def survey_documents(documents, agents):
                     + [
                         agent
                         for page in pages
-                        if page["kind"] != "unknown"
+                        if page["kind"] != UNCLASSIFIED
                         for agent in page["relevance"]
                     ]
                 )
@@ -102,8 +153,10 @@ def survey_documents(documents, agents):
             {
                 "filename": document.filename,
                 "kind": kind,
+                "subdocs": subdocs,
                 "relevance": relevance,
                 "requires_review": review,
+                "extraction_required": any(page["extraction_required"] for page in pages),
                 "pages": pages,
             }
         )
@@ -121,5 +174,5 @@ def survey_documents(documents, agents):
         "classifier_version": rules["version"],
         "provider": "local_ocr_rules",
         "provider_tokens": 0,
-        "notes": "Unknown or mixed documents retained for review and conservative extraction routing.",
+        "notes": "Unclassified documents are labeled other and routed to extraction.",
     }

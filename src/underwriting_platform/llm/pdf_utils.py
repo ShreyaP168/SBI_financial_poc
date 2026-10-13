@@ -174,7 +174,9 @@ def prepare_doc(
                                     "basis": "native_pdf",
                                 }
                             )
-                        if len(page_text.strip()) < 80:
+                        if len(page_text.strip()) < 80 or (
+                            pg.images and len(page_text.strip()) < 300
+                        ):
                             if pg.width * pg.height * (150 / 72) ** 2 > 25_000_000:
                                 ocr_pages.append({"page": i + 1, "status": "render_limit"})
                             else:

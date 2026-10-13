@@ -7,11 +7,33 @@ import re
 from underwriting_platform.agents.base import AgentResult
 from underwriting_platform.application.completion import CONDITIONAL_EVIDENCE_FIELDS, CORE_FIELDS
 
-from .local_fields import PATTERNS, extract_local, normalize
+from .local_fields import PATTERNS, extract_local, normalize, pages
+
+PENDING_PAGE_CHARS = 1500
+REVIEW_EVIDENCE = {
+    "applicant.rider_review": "applicant.riders",
+    "applicant.nominee_review": "applicant.nominees",
+    "compliance.existing_cover_review": "compliance.existing_cover_declared",
+    "medical.declaration_review": "medical.declaration_reviewed",
+    "compliance.kyc_evidence_review": "compliance.kyc_evidence",
+}
 
 
-async def extract_local_first(client, documents):
-    block, sources, findings, windows = extract_local(documents)
+async def extract_local_first(client, documents, pending_documents=(), page_kinds=None):
+    block, sources, findings, windows = extract_local(documents, page_kinds)
+    pending_names = set(pending_documents)
+    pending_texts = {
+        (d.filename, page): text.strip()
+        for d in documents
+        if d.filename in pending_names
+        for page, text in pages(d)
+        if text.strip()
+    }
+    windows = [
+        {"document": name, "page": page, "text": text[:PENDING_PAGE_CHARS]}
+        for (name, page), text in pending_texts.items()
+    ] + windows
+    read_documents = []
     unresolved = [path for path in CORE_FIELDS if path not in sources]
     blocked = {finding.get("field") for finding in findings}
     # Employer/trade evidence is critical to occupation eligibility as well.
@@ -37,9 +59,12 @@ async def extract_local_first(client, documents):
             total += cost
         crops = []
         if os.getenv("UW_TARGETED_VISION_FALLBACK", "false").lower() == "true":
-            from .crops import field_crops
+            from .crops import field_crops, page_images
 
             crops = field_crops(documents)
+            crops += page_images(
+                documents, pending_names, set(pending_texts), maximum=2 - len(crops)
+            )
         if selected or crops:
             targeted_calls = 1
             try:
@@ -167,6 +192,21 @@ async def extract_local_first(client, documents):
                         "retryable": False,
                     }
                 )
+    if targeted_calls and not fallback_error:
+        sent = {(w["document"], w["page"]) for w in selected} | {
+            (c["document"], c["page"]) for c in crops
+        }
+        read_documents = [
+            d.filename
+            for d in documents
+            if d.filename in pending_names
+            and {(d.filename, n) for n in range(1, max(d.page_count, 1) + 1)} <= sent
+            and all(
+                len(text) <= PENDING_PAGE_CHARS
+                for (name, _), text in pending_texts.items()
+                if name == d.filename
+            )
+        ]
     unresolved = [path for path in CORE_FIELDS if path not in sources]
     # A raw status is not a complete compliance/medical underwriting read.
     pending = list(unresolved)
@@ -187,7 +227,7 @@ async def extract_local_first(client, documents):
     ):
         if re.search(pattern, content, re.I):
             pending.append(path)
-    pending = list(dict.fromkeys(pending))
+    pending = [path for path in dict.fromkeys(pending) if REVIEW_EVIDENCE.get(path) not in sources]
     report = {
         "mode": "local_first",
         "parser_version": "labeled-fields-1.0",
@@ -198,6 +238,7 @@ async def extract_local_first(client, documents):
         "cloud_fallback_enabled": os.getenv("UW_TARGETED_LLM_FALLBACK", "false").lower() == "true",
         "unresolved": pending,
         "fallback_error": fallback_error,
+        "pending_documents": {"requested": sorted(pending_names), "read": read_documents},
         "documents_read_once": [d.filename for d in documents],
         "local_sources": sources,
     }

@@ -1,7 +1,9 @@
 """Conservative labeled-field parsers. Missing/conflicting facts are never guessed."""
 
 import re
-from datetime import datetime
+
+from .documents import document_fields, iso_date, names_compatible
+from .kyc import kyc_evidence
 
 PATTERNS = {
     "applicant.applicant_name": r"(?:Name of (?:Life Assured|Applicant)|Applicant Name)\s*[:\-]\s*([^\n]+)",
@@ -21,7 +23,7 @@ PATTERNS = {
 
 def normalize(path, raw):
     raw = raw.strip()
-    if path in {"applicant.age", "applicant.sum_assured"}:
+    if path in {"applicant.age", "applicant.sum_assured", "applicant.declared_annual_income"}:
         from .financial import amount
 
         number = amount(raw)
@@ -29,14 +31,14 @@ def normalize(path, raw):
             raise ValueError("Invalid positive integer")
         return int(number)
     if path == "applicant.dob":
-        for fmt in ("%d/%m/%Y", "%d-%m-%Y", "%Y-%m-%d"):
-            try:
-                return datetime.strptime(raw, fmt).date().isoformat()
-            except ValueError:
-                pass
-        raise ValueError("Invalid full DOB")
+        return iso_date(raw)
     if path == "applicant.pan":
         return re.sub(r"\s", "", raw).upper()
+    if path == "applicant.gender":
+        return raw.title()
+    if path == "applicant.applicant_name":
+        name = " ".join(raw.replace(".", " ").split())
+        return name.title() if name.isupper() or name.islower() else name
     return raw
 
 
@@ -62,10 +64,26 @@ def pages(document):
         yield page, text
 
 
-def extract_local(documents):
+def extract_local(documents, page_kinds=None):
     candidates, windows, findings = {}, [], []
+    page_kinds = page_kinds or {}
     for document in documents:
         for page, text in pages(document):
+            kind, label = page_kinds.get((document.filename, page), (None, None))
+            page_tables = [t for t in document.tables if t.get("page") == page]
+            for path, found in document_fields(kind, label, text, page_tables).items():
+                raw, value = found if isinstance(found, tuple) else (found, None)
+                try:
+                    value = normalize(path, raw) if value is None else value
+                except (ValueError, ArithmeticError):
+                    continue
+                source = {
+                    "document": document.filename,
+                    "page": page,
+                    "raw_value": raw,
+                    "parser_version": "document-fields-1.0",
+                }
+                candidates.setdefault(path, []).append((value, source))
             for path, pattern in PATTERNS.items():
                 for match in re.finditer(r"^\s*" + pattern, text, re.I | re.M):
                     context = text[max(0, match.start() - 180) : match.start()]
@@ -109,14 +127,33 @@ def extract_local(documents):
     }
     sources = {}
     for path, values in candidates.items():
+        if path == "medical.declaration_answers":
+            merged = [item for value, _ in values for item in value]
+            block["medical"]["declaration_answers"] = merged
+            sources[path] = [source for _, source in values]
+            if not any(item["answer"] == "Yes" for item in merged):
+                block["medical"]["declaration_reviewed"] = True
+                sources["medical.declaration_reviewed"] = sources[path]
+            continue
         unique = {str(value) for value, _ in values}
+        chosen = values[0][0]
+        if path == "applicant.applicant_name" and len(unique) > 1:
+            if all(names_compatible(a, b) for a in unique for b in unique):
+                declared = [
+                    value
+                    for value, source in values
+                    if page_kinds.get((source["document"], source["page"]), ("",))[0]
+                    == "proposal_form"
+                ]
+                chosen = (declared or [max(unique, key=len)])[0]
+                unique = {str(chosen)}
         if len(unique) != 1:
             findings.append(
                 {"field": path, "code": "CONFLICTING_LOCAL_EVIDENCE", "retryable": False}
             )
             continue
         owner, name = path.split(".", 1)
-        block[owner][name] = values[0][0]
+        block[owner][name] = chosen
         sources[path] = [source for _, source in values]
     from .financial import financial_facts
 
@@ -140,4 +177,7 @@ def extract_local(documents):
                 income_sources["income.annual_income"] = credit_sources
     sources.update(income_sources)
     findings.extend(income_findings)
+    evidence = kyc_evidence(page_kinds, sources)
+    if evidence:
+        block["compliance"]["kyc_evidence"], sources["compliance.kyc_evidence"] = evidence
     return block, sources, findings, windows

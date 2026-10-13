@@ -3,6 +3,8 @@
 import re
 from decimal import Decimal
 
+from .documents import itr_computation
+
 
 def amount(raw):
     match = re.fullmatch(r"\s*([\d,]+(?:\.\d+)?)\s*(lakh|lakhs|crore|crores)?\s*", raw, re.I)
@@ -20,8 +22,77 @@ def amount(raw):
     return int(value)
 
 
+def _signed(raw):
+    value = int(raw.replace("-", "").replace(",", ""))
+    return -value if raw.startswith("-") else value
+
+
+def _head(flat, name):
+    match = re.search(
+        r"income chargeable under the head\s*[\"“”']?\s*" + name + r"[\"“”']?\s*(-?[\d,]+)",
+        flat,
+        re.I,
+    )
+    return (_signed(match[1]), match[0]) if match else (0, None)
+
+
+def computation_year(pages):
+    flat = " ".join(" ".join(text.split()) for _, text in pages)
+    year = re.search(r"A\.\s?Y\.\s*(\d{4}-\d{2,4})", flat)
+    if not year or not re.search(r"previous year", flat, re.I) or "statement of income" not in flat.lower():
+        return None
+    total = re.search(r"Gross Total Income\s+(-?\d[\d,]{3,})", flat, re.I) or re.search(
+        r"Total Income\s+(-?\d[\d,]{3,})", flat, re.I
+    )
+    if not total:
+        return None
+    salary, salary_raw = _head(flat, r"Salar(?:y|ies)")
+    business, business_raw = _head(flat, r"Business\s*(?:and|or|&)\s*Profession")
+    gross = _signed(total[1])
+    earned = max(salary, 0) + max(business, 0)
+    row = {
+        "assessment_year": year[1],
+        "gross_total_income": gross,
+        "salary_head": max(salary, 0),
+        "business_head": max(business, 0),
+        "other_head": max(gross - earned, 0),
+        "earned_total": earned,
+        "name_on_document": itr_computation(flat).get("applicant.applicant_name"),
+    }
+    raw = "; ".join(part for part in (salary_raw, business_raw, total[0]) if part)
+    return row, raw, pages[0][0]
+
+
+def computation_years(pages):
+    segments = []
+    for number, text in pages:
+        if re.search(r"^\s*A\.\s?Y\.\s*\d{4}-\d{2,4}", text, re.M):
+            segments.append([])
+        if segments:
+            segments[-1].append((number, text))
+    return [found for found in map(computation_year, segments) if found]
+
+
 def financial_facts(documents, page_reader):
     slips, years, citations, findings = {}, {}, {}, []
+    for document in documents:
+        for row, raw, page in computation_years(list(page_reader(document))):
+            record = {
+                "document": document.filename,
+                "page": page,
+                "raw_value": raw,
+                "parser_version": "financial-fields-1.0",
+            }
+            if row["assessment_year"] in years and years[row["assessment_year"]][0] != row:
+                findings.append(
+                    {
+                        "field": "income.itr_years",
+                        "code": "CONFLICTING_ASSESSMENT_YEAR",
+                        "retryable": False,
+                    }
+                )
+            else:
+                years.setdefault(row["assessment_year"], (row, record))
     for document in documents:
         for page, text in page_reader(document):
 
@@ -94,6 +165,8 @@ def financial_facts(documents, page_reader):
             "primary_source": "itr",
             "annual_income": years[max(years)][0]["earned_total"],
         }
+        if any(row[0].get("business_head") for row in years.values()):
+            income["is_salaried"] = False
         citations["income.itr_years"] = [row[1] for row in years.values()]
         citations["income.annual_income"] = [years[max(years)][1]]
     elif slips and not any(f["code"] == "CONFLICTING_SALARY_PERIOD" for f in findings):

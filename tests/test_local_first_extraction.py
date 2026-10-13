@@ -1,3 +1,5 @@
+import json
+
 import pytest
 from PIL import Image
 
@@ -62,6 +64,42 @@ async def test_local_default_makes_no_cloud_calls(monkeypatch):
     )
     assert report["targeted_calls"] == 0
     assert result.error == "LOCAL_EVIDENCE_REVIEW_REQUIRED"
+
+
+async def test_unclassified_document_is_extracted_and_only_then_reported_read(monkeypatch):
+    monkeypatch.setenv("UW_TARGETED_LLM_FALLBACK", "true")
+    seen = []
+
+    class Client:
+        async def extract_json(self, system, blocks, **kwargs):
+            seen.extend(json.loads(blocks[0]["text"]))
+            return {
+                "fields": [
+                    {
+                        "path": "applicant.gender",
+                        "value": "Female",
+                        "document": "scan.jpg",
+                        "page": 1,
+                        "raw_value": "Female",
+                    }
+                ]
+            }
+
+    documents = [
+        Document("p.pdf", "Applicant Age: 35"),
+        Document("scan.jpg", "--- page 1 ---\nthe holder is Female", page_count=1),
+    ]
+    result, report = await extract_local_first(Client(), documents, ["scan.jpg"])
+    assert seen[0]["document"] == "scan.jpg"
+    assert result.block["applicant"]["gender"] == "Female"
+    assert report["pending_documents"] == {"requested": ["scan.jpg"], "read": ["scan.jpg"]}
+
+
+async def test_unclassified_document_stays_unread_without_the_fallback(monkeypatch):
+    monkeypatch.delenv("UW_TARGETED_LLM_FALLBACK", raising=False)
+    documents = [Document("scan.jpg", "--- page 1 ---\nthe holder is Female", page_count=1)]
+    _, report = await extract_local_first(NoCloud(), documents, ["scan.jpg"])
+    assert report["pending_documents"] == {"requested": ["scan.jpg"], "read": []}
 
 
 async def test_targeted_fallback_is_bounded_text_only_and_does_not_override_local_fields(

@@ -6,7 +6,11 @@ import asyncio
 import copy
 from pathlib import Path
 
-from underwriting_platform.application.completion import assess_decision, delivery_outcome
+from underwriting_platform.application.completion import (
+    assess_decision,
+    delivery_outcome,
+    identity_blocked,
+)
 from underwriting_platform.configuration.paths import CONFIG_ROOT
 from underwriting_platform.engine import run_engine
 from underwriting_platform.infrastructure.files import atomic_json, scoped_path
@@ -204,9 +208,7 @@ async def _extract_and_process(
     except Exception:
         failed.append("EXTRACTION_FAILED")
         case = {"case_id": case_id, "processing_errors": [{"stage": "extraction"}]}
-    if not failed and not (
-        case.get("_extraction_mode") == "local_first" and case.get("processing_errors")
-    ):
+    if not failed and not identity_blocked(case):
         try:
             from underwriting_platform.engine.identity_verification import run_identity_verification
 
