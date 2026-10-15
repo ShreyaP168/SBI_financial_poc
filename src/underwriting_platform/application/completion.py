@@ -27,6 +27,13 @@ def field_value(case: dict, path: str):
     return value
 
 
+def identity_blocked(case: dict) -> bool:
+    return case.get("_extraction_mode") == "local_first" and any(
+        error.get("type") != "LOCAL_EVIDENCE_REVIEW_REQUIRED"
+        for error in case.get("processing_errors") or []
+    )
+
+
 def evidence_present(records) -> bool:
     return isinstance(records, list) and any(
         isinstance(s, dict)

@@ -1,5 +1,5 @@
 {
-  "version": "local-classification-1.0",
+  "version": "local-classification-1.4",
   "min_ocr_line_confidence": 0.65,
   "rules": [
     {"kind":"policy_illustration","all":["benefit illustration","(?:premium|sum assured)"],"agents":["identity","income","compliance"]},
@@ -20,10 +20,22 @@
     {"kind":"partnership_deed","all":["partnership deed"],"agents":["business_surrogate","income"]},
     {"kind":"board_resolution","all":["board resolution"],"agents":["business_surrogate"]},
     {"kind":"corporate_doc","all":["(?:certificate of incorporation|gst registration certificate|memorandum of association)"],"agents":["business_surrogate","identity"]},
-    {"kind":"id_proof","label":"PAN_CARD","all":["income tax department","permanent account number","[a-z]{5}\\s*[0-9]{4}\\s*[a-z]"],"agents":["identity","compliance"]},
-    {"kind":"id_proof","label":"PASSPORT","all":["passport","republic of india"],"agents":["identity","compliance"]},
-    {"kind":"id_proof","label":"DRIVING_LICENSE","all":["driving licen[cs]e","(?:transport|licen[cs]e no|date of issue)"],"agents":["identity","compliance"]},
-    {"kind":"id_proof","label":"AADHAAR_FRONT","all":["(?:aadhaar|aadhar|government of india|unique identification authority)","[0-9]{4}\\s*[0-9]{4}\\s*[0-9]{4}","(?:date of birth|dob|year of birth)"],"agents":["identity","compliance"]},
-    {"kind":"id_proof","label":"AADHAAR_BACK","all":["(?:aadhaar|aadhar|unique identification authority)","[0-9]{4}\\s*[0-9]{4}\\s*[0-9]{4}","address"],"agents":["identity","compliance"]}
+    {"kind":"id_proof","label":"PAN_CARD","all":["income\\s*tax\\s*department","permanent\\s*account\\s*number","[a-z]{5}\\s*[0-9]{4}\\s*[a-z]"],"agents":["identity","compliance"]},
+    {"kind":"id_proof","label":"PASSPORT","all":["passport","republic\\s*of\\s*india"],"agents":["identity","compliance"]},
+    {"kind":"id_proof","label":"DRIVING_LICENSE","all":["driving\\s*licen[cs]e","(?:transport|licen[cs]e\\s*no|date\\s*of\\s*issue)"],"agents":["identity","compliance"]},
+    {"kind":"id_proof","label":"AADHAAR_FRONT","all":["(?:aadhaar|aadhar|government\\s*of\\s*india|unique\\s*identification\\s*authority)","[0-9]{4}\\s*[0-9]{4}\\s*[0-9]{4}","(?:date\\s*of\\s*birth|dob|year\\s*of\\s*birth)"],"agents":["identity","compliance"]},
+    {"kind":"id_proof","label":"AADHAAR_BACK","all":["(?:aadhaar|aadhar|unique\\s*identification\\s*authority)","[0-9]{4}\\s*[0-9]{4}\\s*[0-9]{4}","address"],"agents":["identity","compliance"]},
+    {"kind":"id_proof","label":"PAN_CARD","max_chars":400,"all":["\\b[a-z]{5}[0-9]{4}[a-z]\\b","\\b[0-9]{2}/[0-9]{2}/[0-9]{4}\\b","\\b(?:male|female)\\b"],"agents":["identity","compliance"]},
+    {"kind":"id_proof","label":"AADHAAR_LETTER","all":["(?:enrolment\\s*no|unique\\s*identification\\s*authority|uidai)","(?:vtc|pin\\s*code)"],"agents":["identity","compliance"]},
+    {"kind":"itr","all":["a\\.?\\s?y\\.?\\s*20[0-9]{2}-[0-9]{2,4}","previous year","(?:total income|gross total income|income from)"],"agents":["identity","income"]},
+    {"kind":"proposal_form","all":["nominee details","declaration to be given by the proposer"],"agents":["identity","income","compliance","medical","business_surrogate"]},
+    {"kind":"corporate_doc","all":["type of organi[sz]ation","gstin"],"agents":["business_surrogate","identity"]},
+    {"kind":"correspondence","label":"EMAIL","priority":200,"all":["from\\s*:\\s*\\S+@\\S+","subject\\s*:"],"agents":["identity","income","compliance"]},
+    {"kind":"id_proof","label":"PASSPORT","all":["p<ind[a-z<]{6,}"],"agents":["identity","compliance"]},
+    {"kind":"correspondence","label":"INSURER_LETTER","all":["payout\\s*intimation","(?:policy|application)"],"agents":["identity","income","compliance"]},
+    {"kind":"correspondence","label":"PAYMENT_RECEIPT","all":["payment\\s*successful","(?:razorpay|payments?\\b)"],"agents":["compliance"]},
+    {"kind":"itr","all":["name\\s*of\\s*assessee","computation\\s*of\\s*total\\s*income"],"agents":["identity","income"]},
+    {"kind":"corporate_doc","label":"GST_CERTIFICATE","all":["registration\\s*certificate","legal\\s*name","constitution\\s*of\\s*business"],"agents":["business_surrogate","identity"]},
+    {"kind":"mhr","label":"MORAL_HAZARD_REPORT","priority":200,"all":["moral\\s*hazard","verification\\s*report"],"agents":["identity","compliance","income"]}
   ]
 }

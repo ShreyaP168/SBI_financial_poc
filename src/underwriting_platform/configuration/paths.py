@@ -10,6 +10,7 @@ _default_project = PACKAGE_ROOT.parents[1] if PACKAGE_ROOT.parent.name == "src" 
 PROJECT_ROOT = Path(os.getenv("UW_PROJECT_ROOT", str(_default_project))).resolve()
 DATA_ROOT = Path(os.getenv("UW_DATA_ROOT", str(PROJECT_ROOT.parent / "data"))).resolve()
 RUNTIME_ROOT = Path(os.getenv("UW_RUNTIME_ROOT", str(DATA_ROOT / "runtime"))).resolve()
+OUTPUT_ROOT = Path(os.getenv("UW_OUTPUT_ROOT", str(PROJECT_ROOT / "output"))).resolve()
 CASE_ROOT = Path(
     os.getenv("UW_CASE_ROOT", str(DATA_ROOT / "cases" / "Financial Evaluation"))
 ).resolve()

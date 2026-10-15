@@ -422,7 +422,27 @@ class MasterOrchestrator:
         if mode == "local_first":
             from underwriting_platform.extraction.coordinator import extract_local_first
 
-            owned, source_owner = await extract_local_first(self.llm, documents)
+            owned, source_owner = await extract_local_first(
+                self.llm,
+                documents,
+                [
+                    row["filename"]
+                    for row in survey.get("files") or []
+                    if row.get("extraction_required")
+                ],
+                page_kinds={
+                    (row["filename"], page["page"]): (row["kind"], page["label"])
+                    for row in survey.get("files") or []
+                    for page in row.get("pages", [])
+                },
+            )
+            read = set((source_owner.get("pending_documents") or {}).get("read", []))
+            for row in survey.get("files") or []:
+                if row["filename"] in read:
+                    row["requires_review"] = row["extraction_required"] = False
+                    row["extracted_by"] = "targeted_fallback"
+                    for page in row.get("pages", []):
+                        page["requires_review"] = page["extraction_required"] = False
             for name in {
                 "identity",
                 "income",

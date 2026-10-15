@@ -249,14 +249,13 @@ class KernelExtractor:
             with case_scope(
                 client.cfg.token_budget_per_case, spent=prior.get("spent", 0)
             ) as budget:
+                from underwriting_platform.application.completion import identity_blocked
                 from underwriting_platform.configuration.paths import CACHE_ROOT
                 from underwriting_platform.orchestrator.budget_ledger import attach_budget
 
                 attach_budget(budget, CACHE_ROOT / "agent-stages", request.case_id)
                 try:
-                    if result.case_json.get(
-                        "_extraction_mode"
-                    ) == "local_first" and result.case_json.get("processing_errors"):
+                    if identity_blocked(result.case_json):
                         result.case_json.setdefault("_processing_stages", {})["identity"] = (
                             "not_started_incomplete_extraction"
                         )

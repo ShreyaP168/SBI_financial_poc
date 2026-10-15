@@ -1,7 +1,12 @@
 """Conservative labeled-field parsers. Missing/conflicting facts are never guessed."""
 
 import re
-from datetime import datetime
+
+from .bank import recurring_credits
+from .documents import document_fields, iso_date, names_compatible
+from .income_documents import business_description
+from .kyc import kyc_evidence
+from .layout import rows_text
 
 PATTERNS = {
     "applicant.applicant_name": r"(?:Name of (?:Life Assured|Applicant)|Applicant Name)\s*[:\-]\s*([^\n]+)",
@@ -11,17 +16,36 @@ PATTERNS = {
     "applicant.occupation": r"(?:Occupation|Nature of Occupation)\s*[:\-]\s*([^\n]+)",
     "applicant.education_level": r"(?:Education|Educational Qualification)\s*[:\-]\s*([^\n]+)",
     "applicant.residential_status": r"(?:Residential Status|Residence Status)\s*[:\-]\s*([^\n]+)",
-    "applicant.sum_assured": r"(?:Proposed Sum Assured|Sum Assured)\s*[:\-]\s*(?:INR|Rs\.?|₹)?\s*([\d,]+(?:\.\d+)?(?:\s+(?:lakh|lakhs|crore|crores))?)",
-    "applicant.employer_name": r"(?:Employer Name|Name of Business Organi[sz]ation)\s*[:\-]?\s*(.+?)(?:\s+Your Role\b|\n|$)",
+    "applicant.sum_assured": r"(?:Proposed Sum Assured|Sum Assured)\s*(?:\(Rs\.?\)\s*)?[:\-]?\s*(?:INR|Rs\.?|₹)?\s*([\d,]+(?:\.\d+)?(?:\s+(?:lakh|lakhs|crore|crores))?)",
+    "applicant.employer_name": r"(?:Employer Name|Name of Business Organi[sz]ation(?:\s+run by you)?)\s*[:\-]?\s*(.+?)(?:\s+Your Role\b|\n|$)",
     "applicant.business_nature": r"(?:Nature of Business|Business Nature)\s*[:\-]\s*([^\n]+)",
     "applicant.pan": r"(?:PAN(?: Number| No\.?)?|Permanent Account Number(?: Card)?)\s*[:\-]?\s*([A-Z]{5}\s*\d{4}\s*[A-Z])\b",
     "compliance.kyc_status": r"KYC Status\s*[:\-]\s*(Verified|Partial|Pending)\b",
 }
 
 
+EDUCATION_CATEGORIES = (
+    (r"illiterate", "Illiterate"),
+    (r"non[- ]?ssc|below|primary|\bliterate\b|under[- ]?matric", "Below SSC"),
+    (r"post[- ]?grad|master|\bpg\b|\bmba\b|m\.?\s?tech|m\.?\s?sc\b", "Postgraduate"),
+    (r"professional|mbbs|chartered|doctorate|ph\.?\s?d", "Professional Degree"),
+    (r"graduate|bachelor|b\.?\s?com|b\.?\s?sc\b|b\.?\s?a\b|b\.?\s?tech|b\.?\s?e\b", "Graduate"),
+    (r"12th|\bhsc\b|higher secondary|intermediate|\bpuc\b", "HSC-12th"),
+    (r"10th|\bssc\b|matric|secondary", "SSC-10th"),
+)
+
+
+def education_category(raw):
+    return next(
+        (label for pattern, label in EDUCATION_CATEGORIES if re.search(pattern, raw, re.I)), raw
+    )
+
+
 def normalize(path, raw):
     raw = raw.strip()
-    if path in {"applicant.age", "applicant.sum_assured"}:
+    if path == "applicant.education_level":
+        return education_category(raw)
+    if path in {"applicant.age", "applicant.sum_assured", "applicant.declared_annual_income"}:
         from .financial import amount
 
         number = amount(raw)
@@ -29,18 +53,18 @@ def normalize(path, raw):
             raise ValueError("Invalid positive integer")
         return int(number)
     if path == "applicant.dob":
-        for fmt in ("%d/%m/%Y", "%d-%m-%Y", "%Y-%m-%d"):
-            try:
-                return datetime.strptime(raw, fmt).date().isoformat()
-            except ValueError:
-                pass
-        raise ValueError("Invalid full DOB")
+        return iso_date(raw)
     if path == "applicant.pan":
         return re.sub(r"\s", "", raw).upper()
+    if path == "applicant.gender":
+        return raw.title()
+    if path == "applicant.applicant_name":
+        name = " ".join(raw.replace(".", " ").split())
+        return name.title() if name.isupper() or name.islower() else name
     return raw
 
 
-def pages(document):
+def pages(document, rows=False):
     parts = re.split(r"--- page (\d+) ---\n", document.text)
     if len(parts) == 1 and document.text:
         yield 1, document.text
@@ -49,8 +73,12 @@ def pages(document):
         ocr = next((row for row in document.ocr_pages if row.get("page") == page), None)
         text = parts[index + 1]
         if ocr is not None:
-            text = "\n".join(
-                row["text"] for row in ocr.get("lines", []) if row.get("confidence", 0) >= 0.9
+            text = (
+                rows_text(ocr.get("lines", []))
+                if rows
+                else "\n".join(
+                    row["text"] for row in ocr.get("lines", []) if row.get("confidence", 0) >= 0.9
+                )
             )
         for table in document.tables:
             if table.get("page") == page:
@@ -62,11 +90,34 @@ def pages(document):
         yield page, text
 
 
-def extract_local(documents):
+def extract_local(documents, page_kinds=None, extra_slips=()):
     candidates, windows, findings = {}, [], []
+    page_kinds = page_kinds or {}
     for document in documents:
         for page, text in pages(document):
+            kind, label = page_kinds.get((document.filename, page), (None, None))
+            page_tables = [t for t in document.tables if t.get("page") == page]
+            fields = document_fields(kind, label, text, page_tables)
+            if kind == "itr":
+                nature = business_description(dict(pages(document, rows=True)).get(page, ""))
+                if nature:
+                    fields.setdefault("applicant.business_nature", nature)
+            for path, found in fields.items():
+                raw, value = found if isinstance(found, tuple) else (found, None)
+                try:
+                    value = normalize(path, raw) if value is None else value
+                except (ValueError, ArithmeticError):
+                    continue
+                source = {
+                    "document": document.filename,
+                    "page": page,
+                    "raw_value": raw,
+                    "parser_version": "document-fields-1.0",
+                }
+                candidates.setdefault(path, []).append((value, source))
             for path, pattern in PATTERNS.items():
+                if kind == "mhr" and path == "applicant.occupation":
+                    continue
                 for match in re.finditer(r"^\s*" + pattern, text, re.I | re.M):
                     context = text[max(0, match.start() - 180) : match.start()]
                     if path.startswith("applicant.") and re.search(
@@ -109,18 +160,53 @@ def extract_local(documents):
     }
     sources = {}
     for path, values in candidates.items():
+        if path == "medical.declaration_answers":
+            merged = [item for value, _ in values for item in value]
+            block["medical"]["declaration_answers"] = merged
+            sources[path] = [source for _, source in values]
+            if not any(item["answer"] == "Yes" for item in merged):
+                block["medical"]["declaration_reviewed"] = True
+                sources["medical.declaration_reviewed"] = sources[path]
+            continue
         unique = {str(value) for value, _ in values}
+        chosen = values[0][0]
+        if path == "applicant.applicant_name" and len(unique) > 1:
+            if all(names_compatible(a, b) for a in unique for b in unique):
+                declared = [
+                    value
+                    for value, source in values
+                    if page_kinds.get((source["document"], source["page"]), ("",))[0]
+                    == "proposal_form"
+                ]
+                chosen = (declared or [max(unique, key=len)])[0]
+                unique = {str(chosen)}
+        if path == "applicant.business_nature" and len(unique) > 1:
+            if len({re.sub(r"[^a-z0-9]", "", text.casefold()) for text in unique}) == 1:
+                chosen = max(unique, key=lambda text: text.count(" "))
+                unique = {chosen}
+            else:
+                filed = {
+                    str(value)
+                    for value, source in values
+                    if page_kinds.get((source["document"], source["page"]), ("",))[0] == "itr"
+                }
+                declared = unique - filed
+                if len(filed) == 1 and len(declared) == 1:
+                    chosen = f"{next(iter(declared))}; per filed ITR: {next(iter(filed))}"
+                    unique = {chosen}
         if len(unique) != 1:
             findings.append(
                 {"field": path, "code": "CONFLICTING_LOCAL_EVIDENCE", "retryable": False}
             )
             continue
         owner, name = path.split(".", 1)
-        block[owner][name] = values[0][0]
+        block[owner][name] = chosen
         sources[path] = [source for _, source in values]
     from .financial import financial_facts
 
-    income, income_sources, income_findings = financial_facts(documents, pages)
+    income, income_sources, income_findings = financial_facts(
+        documents, lambda document: pages(document, rows=True), extra_slips
+    )
     block["income"] = income
     if not income:
         from underwriting_platform.engine.calculator import _bank_credits_modal_annual
@@ -128,7 +214,9 @@ def extract_local(documents):
         from .tables import bank_salary_credits
 
         credits, credit_sources = bank_salary_credits(documents)
-        if len({row["date"][:7] for row in credits}) >= 3:
+        if len({row["date"][:7] for row in credits}) < 3:
+            credits, credit_sources = recurring_credits(documents)
+        if len(credits) >= 3:
             computed = _bank_credits_modal_annual(credits)
             if computed:
                 block["income"] = {
@@ -138,6 +226,17 @@ def extract_local(documents):
                 }
                 income_sources["income.bank_salary_credits"] = credit_sources
                 income_sources["income.annual_income"] = credit_sources
+    declared = block["applicant"].get("declared_annual_income")
+    if not block["income"] and declared and "applicant.declared_annual_income" in sources:
+        block["income"] = {
+            "primary_source": "declared_only",
+            "annual_income": declared,
+            "declared_only": True,
+        }
+        income_sources["income.annual_income"] = sources["applicant.declared_annual_income"]
     sources.update(income_sources)
     findings.extend(income_findings)
+    evidence = kyc_evidence(page_kinds, sources)
+    if evidence:
+        block["compliance"]["kyc_evidence"], sources["compliance.kyc_evidence"] = evidence
     return block, sources, findings, windows

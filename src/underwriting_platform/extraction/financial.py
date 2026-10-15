@@ -3,6 +3,9 @@
 import re
 from decimal import Decimal
 
+from .documents import itr_computation
+from .income_documents import computation_page, slip_page
+
 
 def amount(raw):
     match = re.fullmatch(r"\s*([\d,]+(?:\.\d+)?)\s*(lakh|lakhs|crore|crores)?\s*", raw, re.I)
@@ -20,8 +23,148 @@ def amount(raw):
     return int(value)
 
 
-def financial_facts(documents, page_reader):
+def _signed(raw):
+    value = int(raw.replace("-", "").replace(",", ""))
+    return -value if raw.startswith("-") else value
+
+
+def _head(flat, name):
+    match = re.search(
+        r"income chargeable under the head\s*[\"“”']?\s*" + name + r"[\"“”']?\s*(-?[\d,]+)",
+        flat,
+        re.I,
+    )
+    return (_signed(match[1]), match[0]) if match else (0, None)
+
+
+def assessee_year(pages):
+    flat = " ".join(" ".join(text.split()) for _, text in pages)
+    year = re.search(r"Assessment Year\s+(\d{4}-\d{4})", flat)
+    if not year or "Computation of Total Income" not in flat:
+        return None
+    total = re.search(r"Gross Total Income\s+(-?\d[\d,]{3,})", flat)
+    business = re.search(r"Income from Business or Profession[^\d-]*(-?\d[\d,]*)", flat)
+    salary = re.search(r"Income from Salar(?:y|ies)[^\d-]*(-?\d[\d,]*)", flat)
+    if not total or not (business or salary):
+        return None
+    gross = _signed(total[1])
+    business_head = max(_signed(business[1]), 0) if business else 0
+    salary_head = max(_signed(salary[1]), 0) if salary else 0
+    earned = business_head + salary_head
+    row = {
+        "assessment_year": year[1],
+        "gross_total_income": gross,
+        "salary_head": salary_head,
+        "business_head": business_head,
+        "other_head": max(gross - earned, 0),
+        "earned_total": earned,
+        "name_on_document": itr_computation(flat).get("applicant.applicant_name"),
+    }
+    raw = "; ".join(m[0] for m in (salary, business, total) if m)
+    return row, raw, pages[0][0]
+
+
+def itr_form_year(pages):
+    flat = " ".join(" ".join(text.split()) for _, text in pages)
+    if not re.search(r"PART A\s+GENERAL INFORMATION", flat):
+        return None
+    year = re.search(r"\b(20\d{2}-\d{2})\b", flat)
+    business = re.search(r"Income from Business\s*(?:&|and)\s*Profession\s*B1\s*(-?\d[\d,]*)", flat)
+    salary = re.search(r"Salaries['‘’]?\s*\(iii - iv\)\s*B2\s*(-?\d[\d,]*)", flat)
+    if not year or not (business or salary):
+        return None
+    business_head = max(_signed(business[1]), 0) if business else 0
+    salary_head = max(_signed(salary[1]), 0) if salary else 0
+    total = re.search(r"\bB5\s*B5\s*(-?\d[\d,]*)", flat)
+    others = [
+        re.search(pattern, flat)
+        for pattern in (
+            r"\bB3\s+(-?\d[\d,]*)\s+B4",
+            r"Income from Other Sources\s*B4\s*(-?\d[\d,]*)",
+        )
+    ]
+    gross = (
+        _signed(total[1])
+        if total
+        else business_head + salary_head + sum(max(_signed(m[1]), 0) for m in others if m)
+    )
+    earned = business_head + salary_head
+    row = {
+        "assessment_year": year[1],
+        "gross_total_income": gross,
+        "salary_head": salary_head,
+        "business_head": business_head,
+        "other_head": max(gross - earned, 0),
+        "earned_total": earned,
+        "name_on_document": None,
+    }
+    raw = "; ".join(m[0] for m in (business, salary, total) if m)
+    return row, raw, pages[0][0]
+
+
+def computation_year(pages):
+    flat = " ".join(" ".join(text.split()) for _, text in pages)
+    if re.search(r"PART A\s+GENERAL INFORMATION", flat):
+        return itr_form_year(pages)
+    if "Name of Assessee" in flat:
+        return assessee_year(pages)
+    year = re.search(r"A\.\s?Y\.\s*(\d{4}-\d{2,4})", flat)
+    if not year or not re.search(r"previous year", flat, re.I) or "statement of income" not in flat.lower():
+        return None
+    total = re.search(r"Gross Total Income\s+(-?\d[\d,]{3,})", flat, re.I) or re.search(
+        r"Total Income\s+(-?\d[\d,]{3,})", flat, re.I
+    )
+    if not total:
+        return None
+    salary, salary_raw = _head(flat, r"Salar(?:y|ies)")
+    business, business_raw = _head(flat, r"Business\s*(?:and|or|&)\s*Profession")
+    gross = _signed(total[1])
+    earned = max(salary, 0) + max(business, 0)
+    row = {
+        "assessment_year": year[1],
+        "gross_total_income": gross,
+        "salary_head": max(salary, 0),
+        "business_head": max(business, 0),
+        "other_head": max(gross - earned, 0),
+        "earned_total": earned,
+        "name_on_document": itr_computation(flat).get("applicant.applicant_name"),
+    }
+    raw = "; ".join(part for part in (salary_raw, business_raw, total[0]) if part)
+    return row, raw, pages[0][0]
+
+
+def computation_years(pages):
+    segments = []
+    for number, text in pages:
+        if re.search(
+            r"^\s*(?:A\.\s?Y\.\s*\d{4}-\d{2,4}|Name of Assessee\b)", text, re.M
+        ) or re.search(r"PART A\s+GENERAL INFORMATION", text):
+            segments.append([])
+        if segments:
+            segments[-1].append((number, text))
+    return [found for found in map(computation_year, segments) if found]
+
+
+def financial_facts(documents, page_reader, extra_slips=()):
     slips, years, citations, findings = {}, {}, {}, []
+    for document in documents:
+        for row, raw, page in computation_years(list(page_reader(document))):
+            record = {
+                "document": document.filename,
+                "page": page,
+                "raw_value": raw,
+                "parser_version": "financial-fields-1.0",
+            }
+            if row["assessment_year"] in years and years[row["assessment_year"]][0] != row:
+                findings.append(
+                    {
+                        "field": "income.itr_years",
+                        "code": "CONFLICTING_ASSESSMENT_YEAR",
+                        "retryable": False,
+                    }
+                )
+            else:
+                years.setdefault(row["assessment_year"], (row, record))
     for document in documents:
         for page, text in page_reader(document):
 
@@ -33,6 +176,34 @@ def financial_facts(documents, page_reader):
                     "parser_version": "financial-fields-1.0",
                 }
 
+            slip = slip_page(text)
+            if slip:
+                row, raw = slip
+                if row["month_year"] in slips and slips[row["month_year"]][0] != row:
+                    findings.append(
+                        {
+                            "field": "income.salary_slips",
+                            "code": "CONFLICTING_SALARY_PERIOD",
+                            "retryable": False,
+                        }
+                    )
+                else:
+                    slips.setdefault(row["month_year"], (row, source(raw)))
+                continue
+            computation = computation_page(text)
+            if computation:
+                row, raw = computation
+                if row["assessment_year"] in years and years[row["assessment_year"]][0] != row:
+                    findings.append(
+                        {
+                            "field": "income.itr_years",
+                            "code": "CONFLICTING_ASSESSMENT_YEAR",
+                            "retryable": False,
+                        }
+                    )
+                else:
+                    years.setdefault(row["assessment_year"], (row, source(raw)))
+                continue
             if re.search(r"pay\s*slip|salary\s*slip|pay statement", text, re.I):
                 month = re.search(
                     r"(?:Pay Period|Salary Month|Month Year)\s*[:\-]\s*(\d{4}-\d{2}|[A-Za-z]+\s+\d{4})",
@@ -87,19 +258,25 @@ def financial_facts(documents, page_reader):
                         )
                     else:
                         years[year[1]] = (row, source(salary[0] + "; " + gti[0]))
+    for row, record in extra_slips:
+        if row["month_year"] in slips and slips[row["month_year"]][0] != row:
+            findings.append(
+                {
+                    "field": "income.salary_slips",
+                    "code": "CONFLICTING_SALARY_PERIOD",
+                    "retryable": False,
+                }
+            )
+        else:
+            slips.setdefault(row["month_year"], (row, record))
     income = {}
-    if years and not any(f["code"] == "CONFLICTING_ASSESSMENT_YEAR" for f in findings):
-        income = {
-            "itr_years": [years[key][0] for key in sorted(years)],
-            "primary_source": "itr",
-            "annual_income": years[max(years)][0]["earned_total"],
-        }
-        citations["income.itr_years"] = [row[1] for row in years.values()]
-        citations["income.annual_income"] = [years[max(years)][1]]
-    elif slips and not any(f["code"] == "CONFLICTING_SALARY_PERIOD" for f in findings):
+    recent = sorted(slips)[-3:]
+    slips_ok = bool(slips) and not any(f["code"] == "CONFLICTING_SALARY_PERIOD" for f in findings)
+    years_ok = bool(years) and not any(f["code"] == "CONFLICTING_ASSESSMENT_YEAR" for f in findings)
+    if slips_ok and len(recent) >= 2:
         from underwriting_platform.engine.calculator import _salary_slip_mean_annual
 
-        rows = [row[0] for row in slips.values()]
+        rows = [slips[key][0] for key in recent]
         computed = _salary_slip_mean_annual(rows)
         if computed:
             income = {
@@ -107,6 +284,26 @@ def financial_facts(documents, page_reader):
                 "primary_source": "salary_slip",
                 "annual_income": computed[0],
             }
-            citations["income.salary_slips"] = [row[1] for row in slips.values()]
+            citations["income.salary_slips"] = [slips[key][1] for key in recent]
             citations["income.annual_income"] = citations["income.salary_slips"]
+    elif years_ok:
+        income = {
+            "itr_years": [years[key][0] for key in sorted(years)],
+            "primary_source": "itr",
+            "annual_income": years[max(years)][0]["earned_total"],
+        }
+        if any(row[0].get("business_head") for row in years.values()):
+            income["is_salaried"] = False
+        citations["income.itr_years"] = [row[1] for row in years.values()]
+        citations["income.annual_income"] = [years[max(years)][1]]
+    elif slips_ok:
+        row = slips[recent[0]][0]
+        income = {
+            "salary_slips": [row],
+            "primary_source": "salary_slip",
+            "annual_income": row["gross_salary"] * 12,
+            "indicative_only": True,
+        }
+        citations["income.salary_slips"] = [slips[recent[0]][1]]
+        citations["income.annual_income"] = citations["income.salary_slips"]
     return income, citations, findings
