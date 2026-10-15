@@ -21,6 +21,17 @@ REVIEW_EVIDENCE = {
 
 async def extract_local_first(client, documents, pending_documents=(), page_kinds=None):
     block, sources, findings, windows = extract_local(documents, page_kinds)
+    if os.getenv("UW_TARGETED_LLM_FALLBACK", "false").lower() == "true":
+        from .idp import read_slips, slip_targets
+
+        slip_pages = slip_targets(documents, page_kinds)
+        if slip_pages:
+            extra, idp_findings = await read_slips(client, documents, slip_pages)
+            if extra:
+                block, sources, findings, windows = extract_local(
+                    documents, page_kinds, extra_slips=extra
+                )
+            findings = [*findings, *idp_findings]
     pending_names = set(pending_documents)
     pending_texts = {
         (d.filename, page): text.strip()

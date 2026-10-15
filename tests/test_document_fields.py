@@ -562,3 +562,28 @@ def test_different_people_remain_a_conflict():
     assert "applicant_name" not in block["applicant"]
     assert {"field": "applicant.applicant_name", "code": "CONFLICTING_LOCAL_EVIDENCE",
             "retryable": False} in findings
+
+
+@pytest.mark.parametrize(
+    "printed,category",
+    [
+        ("Literate/Non-SSC", "Below SSC"),
+        ("Illiterate", "Illiterate"),
+        ("10th Pass/SSC", "SSC-10th"),
+        ("12th Pass/HSC", "HSC-12th"),
+        ("Graduate", "Graduate"),
+        ("Post Graduate", "Postgraduate"),
+        ("Diploma", "Diploma"),
+    ],
+)
+def test_qualification_options_map_to_the_guideline_categories(printed, category):
+    from underwriting_platform.extraction.local_fields import normalize
+
+    assert normalize("applicant.education_level", printed) == category
+
+
+def test_the_printed_qualification_stays_in_the_citation():
+    text = "--- page 1 ---\n" + PROPOSAL.replace("Graduate", "Literate/Non-SSC")
+    block, sources, _, _ = extract_local([Document("form.pdf", text)], {("form.pdf", 1): ("proposal_form", "X")})
+    assert block["applicant"]["education_level"] == "Below SSC"
+    assert sources["applicant.education_level"][0]["raw_value"] == "Literate/Non-SSC"

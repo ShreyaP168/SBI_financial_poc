@@ -29,6 +29,9 @@ _ROLE_WORDS = {
     "managing",
     "founder",
     "karta",
+    "run",
+    "by",
+    "you",
     "na",
     "n",
     "a",
@@ -247,7 +250,7 @@ def proposal_form(text, tables=()):
     flat = _flat(text)
     found = {}
     found["applicant.declared_annual_income"] = _first(
-        r"Annual\s+Total\s+Income\s*:?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+)", flat
+        r"Annual\s+Total\s+Income\s*(?:\(\s*Rs\.?\s*\))?\s*:?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+)", flat
     )
     found["applicant.nominees"] = _nominees(tables)
     found["applicant.riders"] = _riders(tables)
@@ -281,14 +284,23 @@ def proposal_form(text, tables=()):
     role = _first(r"Your\s+role\s+(.+?)(?=\s+Duration\b)", flat)
     if role and not set(re.findall(r"[a-z]+", role.casefold())) <= _ROLE_WORDS:
         found["applicant.business_nature"] = role
-    found["applicant.age"] = _first(r"\bAge\s+(\d{1,3})\s+Years", flat)
+    if "applicant.business_nature" not in found:
+        listed = _first(
+            r"Name of Business Organi[sz]ation run by you[:\-\s]*Your role[:\s]*"
+            r"Duration of business Org\.?\s*\(years\)[:\s]*(.+?)\s+\d{1,2}\s+Annual",
+            flat,
+        )
+        if listed and not set(re.findall(r"[a-z]+", listed.casefold())) <= _ROLE_WORDS:
+            found["applicant.business_nature"] = listed
+    found["applicant.age"] = _first(r"\bAge\s+(\d{1,3})\b(?!\s*[-/])", flat)
     found["applicant.residential_status"] = _first(
         r"Resident\s+Status\s+((?:Non[- ])?Resident(?: Indian)?|NRI|PIO|OCI|Foreign National)"
         r"(?=\s+Nationality\b)",
         flat,
     )
     found["applicant.education_level"] = _first(
-        r"\bQualification\s+(.{1,60}?)(?=\s+CONTACT DETAILS\b)", flat
+        r"\bQualification\s*:?\s+(.{1,40}?)(?=\s+(?:CONTACT DETAILS|NCPF|Page\s+\d|Authenticated)\b)",
+        flat,
     )
     return {path: raw for path, raw in found.items() if raw}
 

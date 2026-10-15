@@ -2,8 +2,11 @@
 
 import re
 
+from .bank import recurring_credits
 from .documents import document_fields, iso_date, names_compatible
+from .income_documents import business_description
 from .kyc import kyc_evidence
+from .layout import rows_text
 
 PATTERNS = {
     "applicant.applicant_name": r"(?:Name of (?:Life Assured|Applicant)|Applicant Name)\s*[:\-]\s*([^\n]+)",
@@ -21,8 +24,27 @@ PATTERNS = {
 }
 
 
+EDUCATION_CATEGORIES = (
+    (r"illiterate", "Illiterate"),
+    (r"non[- ]?ssc|below|primary|\bliterate\b|under[- ]?matric", "Below SSC"),
+    (r"post[- ]?grad|master|\bpg\b|\bmba\b|m\.?\s?tech|m\.?\s?sc\b", "Postgraduate"),
+    (r"professional|mbbs|chartered|doctorate|ph\.?\s?d", "Professional Degree"),
+    (r"graduate|bachelor|b\.?\s?com|b\.?\s?sc\b|b\.?\s?a\b|b\.?\s?tech|b\.?\s?e\b", "Graduate"),
+    (r"12th|\bhsc\b|higher secondary|intermediate|\bpuc\b", "HSC-12th"),
+    (r"10th|\bssc\b|matric|secondary", "SSC-10th"),
+)
+
+
+def education_category(raw):
+    return next(
+        (label for pattern, label in EDUCATION_CATEGORIES if re.search(pattern, raw, re.I)), raw
+    )
+
+
 def normalize(path, raw):
     raw = raw.strip()
+    if path == "applicant.education_level":
+        return education_category(raw)
     if path in {"applicant.age", "applicant.sum_assured", "applicant.declared_annual_income"}:
         from .financial import amount
 
@@ -42,7 +64,7 @@ def normalize(path, raw):
     return raw
 
 
-def pages(document):
+def pages(document, rows=False):
     parts = re.split(r"--- page (\d+) ---\n", document.text)
     if len(parts) == 1 and document.text:
         yield 1, document.text
@@ -51,8 +73,12 @@ def pages(document):
         ocr = next((row for row in document.ocr_pages if row.get("page") == page), None)
         text = parts[index + 1]
         if ocr is not None:
-            text = "\n".join(
-                row["text"] for row in ocr.get("lines", []) if row.get("confidence", 0) >= 0.9
+            text = (
+                rows_text(ocr.get("lines", []))
+                if rows
+                else "\n".join(
+                    row["text"] for row in ocr.get("lines", []) if row.get("confidence", 0) >= 0.9
+                )
             )
         for table in document.tables:
             if table.get("page") == page:
@@ -64,14 +90,19 @@ def pages(document):
         yield page, text
 
 
-def extract_local(documents, page_kinds=None):
+def extract_local(documents, page_kinds=None, extra_slips=()):
     candidates, windows, findings = {}, [], []
     page_kinds = page_kinds or {}
     for document in documents:
         for page, text in pages(document):
             kind, label = page_kinds.get((document.filename, page), (None, None))
             page_tables = [t for t in document.tables if t.get("page") == page]
-            for path, found in document_fields(kind, label, text, page_tables).items():
+            fields = document_fields(kind, label, text, page_tables)
+            if kind == "itr":
+                nature = business_description(dict(pages(document, rows=True)).get(page, ""))
+                if nature:
+                    fields.setdefault("applicant.business_nature", nature)
+            for path, found in fields.items():
                 raw, value = found if isinstance(found, tuple) else (found, None)
                 try:
                     value = normalize(path, raw) if value is None else value
@@ -149,6 +180,20 @@ def extract_local(documents, page_kinds=None):
                 ]
                 chosen = (declared or [max(unique, key=len)])[0]
                 unique = {str(chosen)}
+        if path == "applicant.business_nature" and len(unique) > 1:
+            if len({re.sub(r"[^a-z0-9]", "", text.casefold()) for text in unique}) == 1:
+                chosen = max(unique, key=lambda text: text.count(" "))
+                unique = {chosen}
+            else:
+                filed = {
+                    str(value)
+                    for value, source in values
+                    if page_kinds.get((source["document"], source["page"]), ("",))[0] == "itr"
+                }
+                declared = unique - filed
+                if len(filed) == 1 and len(declared) == 1:
+                    chosen = f"{next(iter(declared))}; per filed ITR: {next(iter(filed))}"
+                    unique = {chosen}
         if len(unique) != 1:
             findings.append(
                 {"field": path, "code": "CONFLICTING_LOCAL_EVIDENCE", "retryable": False}
@@ -159,7 +204,9 @@ def extract_local(documents, page_kinds=None):
         sources[path] = [source for _, source in values]
     from .financial import financial_facts
 
-    income, income_sources, income_findings = financial_facts(documents, pages)
+    income, income_sources, income_findings = financial_facts(
+        documents, lambda document: pages(document, rows=True), extra_slips
+    )
     block["income"] = income
     if not income:
         from underwriting_platform.engine.calculator import _bank_credits_modal_annual
@@ -167,7 +214,9 @@ def extract_local(documents, page_kinds=None):
         from .tables import bank_salary_credits
 
         credits, credit_sources = bank_salary_credits(documents)
-        if len({row["date"][:7] for row in credits}) >= 3:
+        if len({row["date"][:7] for row in credits}) < 3:
+            credits, credit_sources = recurring_credits(documents)
+        if len(credits) >= 3:
             computed = _bank_credits_modal_annual(credits)
             if computed:
                 block["income"] = {
@@ -177,6 +226,14 @@ def extract_local(documents, page_kinds=None):
                 }
                 income_sources["income.bank_salary_credits"] = credit_sources
                 income_sources["income.annual_income"] = credit_sources
+    declared = block["applicant"].get("declared_annual_income")
+    if not block["income"] and declared and "applicant.declared_annual_income" in sources:
+        block["income"] = {
+            "primary_source": "declared_only",
+            "annual_income": declared,
+            "declared_only": True,
+        }
+        income_sources["income.annual_income"] = sources["applicant.declared_annual_income"]
     sources.update(income_sources)
     findings.extend(income_findings)
     evidence = kyc_evidence(page_kinds, sources)

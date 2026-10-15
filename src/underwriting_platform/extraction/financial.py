@@ -4,6 +4,7 @@ import re
 from decimal import Decimal
 
 from .documents import itr_computation
+from .income_documents import computation_page, slip_page
 
 
 def amount(raw):
@@ -144,7 +145,7 @@ def computation_years(pages):
     return [found for found in map(computation_year, segments) if found]
 
 
-def financial_facts(documents, page_reader):
+def financial_facts(documents, page_reader, extra_slips=()):
     slips, years, citations, findings = {}, {}, {}, []
     for document in documents:
         for row, raw, page in computation_years(list(page_reader(document))):
@@ -175,6 +176,34 @@ def financial_facts(documents, page_reader):
                     "parser_version": "financial-fields-1.0",
                 }
 
+            slip = slip_page(text)
+            if slip:
+                row, raw = slip
+                if row["month_year"] in slips and slips[row["month_year"]][0] != row:
+                    findings.append(
+                        {
+                            "field": "income.salary_slips",
+                            "code": "CONFLICTING_SALARY_PERIOD",
+                            "retryable": False,
+                        }
+                    )
+                else:
+                    slips.setdefault(row["month_year"], (row, source(raw)))
+                continue
+            computation = computation_page(text)
+            if computation:
+                row, raw = computation
+                if row["assessment_year"] in years and years[row["assessment_year"]][0] != row:
+                    findings.append(
+                        {
+                            "field": "income.itr_years",
+                            "code": "CONFLICTING_ASSESSMENT_YEAR",
+                            "retryable": False,
+                        }
+                    )
+                else:
+                    years.setdefault(row["assessment_year"], (row, source(raw)))
+                continue
             if re.search(r"pay\s*slip|salary\s*slip|pay statement", text, re.I):
                 month = re.search(
                     r"(?:Pay Period|Salary Month|Month Year)\s*[:\-]\s*(\d{4}-\d{2}|[A-Za-z]+\s+\d{4})",
@@ -229,8 +258,35 @@ def financial_facts(documents, page_reader):
                         )
                     else:
                         years[year[1]] = (row, source(salary[0] + "; " + gti[0]))
+    for row, record in extra_slips:
+        if row["month_year"] in slips and slips[row["month_year"]][0] != row:
+            findings.append(
+                {
+                    "field": "income.salary_slips",
+                    "code": "CONFLICTING_SALARY_PERIOD",
+                    "retryable": False,
+                }
+            )
+        else:
+            slips.setdefault(row["month_year"], (row, record))
     income = {}
-    if years and not any(f["code"] == "CONFLICTING_ASSESSMENT_YEAR" for f in findings):
+    recent = sorted(slips)[-3:]
+    slips_ok = bool(slips) and not any(f["code"] == "CONFLICTING_SALARY_PERIOD" for f in findings)
+    years_ok = bool(years) and not any(f["code"] == "CONFLICTING_ASSESSMENT_YEAR" for f in findings)
+    if slips_ok and len(recent) >= 2:
+        from underwriting_platform.engine.calculator import _salary_slip_mean_annual
+
+        rows = [slips[key][0] for key in recent]
+        computed = _salary_slip_mean_annual(rows)
+        if computed:
+            income = {
+                "salary_slips": rows,
+                "primary_source": "salary_slip",
+                "annual_income": computed[0],
+            }
+            citations["income.salary_slips"] = [slips[key][1] for key in recent]
+            citations["income.annual_income"] = citations["income.salary_slips"]
+    elif years_ok:
         income = {
             "itr_years": [years[key][0] for key in sorted(years)],
             "primary_source": "itr",
@@ -240,17 +296,14 @@ def financial_facts(documents, page_reader):
             income["is_salaried"] = False
         citations["income.itr_years"] = [row[1] for row in years.values()]
         citations["income.annual_income"] = [years[max(years)][1]]
-    elif slips and not any(f["code"] == "CONFLICTING_SALARY_PERIOD" for f in findings):
-        from underwriting_platform.engine.calculator import _salary_slip_mean_annual
-
-        rows = [row[0] for row in slips.values()]
-        computed = _salary_slip_mean_annual(rows)
-        if computed:
-            income = {
-                "salary_slips": rows,
-                "primary_source": "salary_slip",
-                "annual_income": computed[0],
-            }
-            citations["income.salary_slips"] = [row[1] for row in slips.values()]
-            citations["income.annual_income"] = citations["income.salary_slips"]
+    elif slips_ok:
+        row = slips[recent[0]][0]
+        income = {
+            "salary_slips": [row],
+            "primary_source": "salary_slip",
+            "annual_income": row["gross_salary"] * 12,
+            "indicative_only": True,
+        }
+        citations["income.salary_slips"] = [slips[recent[0]][1]]
+        citations["income.annual_income"] = citations["income.salary_slips"]
     return income, citations, findings
