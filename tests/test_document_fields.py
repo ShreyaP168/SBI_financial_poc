@@ -113,6 +113,22 @@ def test_passport_zone_gives_name_sex_and_a_dob_confirmed_by_the_printed_date():
     assert names_compatible("Asha Kumar", "ASHA  KU MAR")
 
 
+def test_pan_card_where_each_value_precedes_its_label():
+    text = (
+        "02/10/1994\nTa/DateofBirth\nKISHANA RAM\nfuaT T TH/Father'sName\nRAKESH DOBAR\n/Name\n"
+        "INCOME TAX DEPARTMENT\nPermanent Account Number Card\nEODPD6550P\nGOVT.OFINDIA\n"
+    )
+    assert pan_card(text) == {
+        "applicant.dob": "02/10/1994",
+        "applicant.applicant_name": "RAKESH DOBAR",
+    }
+
+
+def test_pan_header_text_is_never_taken_as_the_name():
+    text = "02/10/1994\nKISHANA RAM\nRAKESH DOBAR\nINCOME TAX DEPARTMENT\nEODPD6550P\nGOVT.OFINDIA\n"
+    assert "applicant.applicant_name" not in pan_card(text)
+
+
 def test_aadhaar_letter_and_itr_computation():
     assert aadhaar_letter(AADHAAR) == {
         "applicant.applicant_name": "Asha. K",

@@ -19,6 +19,13 @@ def iso_date(raw):
     raise ValueError("Invalid full DOB")
 
 
+_PAN_HEADER = re.compile(
+    r"govt|government|india|income\s*tax|department|permanent|account|number|card|signature|"
+    r"father|mother|date|birth|gender|name",
+    re.I,
+)
+
+
 def _flat(text):
     return " ".join(text.split())
 
@@ -222,8 +229,26 @@ def proposal_form(text, tables=()):
     return {path: raw for path, raw in found.items() if raw}
 
 
+def _value_before_label(lines):
+    found = {}
+    for index, line in enumerate(lines[1:], start=1):
+        previous = lines[index - 1]
+        label = re.sub(r"[^a-z]", "", line.casefold())
+        if label.endswith("name") and "father" not in label and "mother" not in label:
+            if re.fullmatch(r"[A-Za-z][A-Za-z .']*", previous):
+                found["applicant.applicant_name"] = previous
+        elif label.endswith("dateofbirth") and re.fullmatch(_DATE, previous):
+            found["applicant.dob"] = previous
+        elif label.endswith("gender") and re.fullmatch(_GENDER, previous, re.I):
+            found["applicant.gender"] = previous
+    return found
+
+
 def pan_card(text):
     lines = [line.strip() for line in text.splitlines() if line.strip()]
+    before = _value_before_label(lines)
+    if "applicant.applicant_name" in before:
+        return before
     start = next(
         (i for i, line in enumerate(lines) if re.fullmatch(r"[A-Z]{5}\s*\d{4}\s*[A-Z]", line)),
         None,
@@ -238,7 +263,11 @@ def pan_card(text):
             found.setdefault("applicant.dob", line)
         elif re.fullmatch(_GENDER, line, re.I):
             found.setdefault("applicant.gender", line)
-        elif len(names) < 2 and re.fullmatch(r"[A-Za-z][A-Za-z .']*", line):
+        elif (
+            len(names) < 2
+            and re.fullmatch(r"[A-Za-z][A-Za-z .']*", line)
+            and not _PAN_HEADER.search(line)
+        ):
             names.append(line)
     if names:
         found["applicant.applicant_name"] = names[0]
