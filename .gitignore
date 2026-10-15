@@ -7,6 +7,7 @@
 data/
 runtime/
 output*/
+Input/
 # Python and build tooling
 __pycache__/
 *.py[cod]
