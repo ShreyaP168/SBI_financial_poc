@@ -232,6 +232,16 @@ def test_proposal_tables_give_nominees_riders_and_a_no_existing_cover_answer():
     assert found["applicant.declared_annual_income"] == "1000000"
 
 
+def test_riders_printed_as_na_are_recorded_as_not_opted():
+    rows = [
+        ["Rider Name : SBI Life - Accident Benefit Rider (111B041V01)", "", "", "", ""],
+        ["Option A : Accidental Death Benefit (ADB)", "NA", "NA", "NA", "NA"],
+        ["Option B: Accidental Partial Permanent Disability Benefit (APPD)", "NA", "NA", "NA", "NA"],
+    ]
+    riders = proposal_form("", [{"page": 5, "rows": rows}])["applicant.riders"][1]
+    assert [(r["option"], r["sum_assured"]) for r in riders] == [("ADB", 0), ("APPD", 0)]
+
+
 def test_a_yes_answer_is_not_reported_as_resolved():
     rows = [["Do you have any other individual existing life insurance policy?", "", "Yes"]]
     assert "compliance.existing_cover_declared" not in proposal_form("", [{"page": 5, "rows": rows}])
@@ -454,6 +464,92 @@ async def test_resolved_review_items_no_longer_raise_processing_errors(monkeypat
     kinds = {("form.pdf", 1): ("proposal_form", "X"), ("pan.pdf", 1): ("id_proof", "PAN_CARD")}
     _, report = await extract_local_first(NoCloud(), [document, pan], page_kinds=kinds)
     assert not [item for item in report["unresolved"] if item.endswith("_review")]
+
+
+STACKED_PROPOSAL = """SECTION A PERSONAL DETAILS
+First Name Asha
+Middle Name
+Last Name Kumar
+Gender Female
+Date of Birth 02-08-1974 Age 52 Years
+Resident Status Resident Indian
+Nationality Indian
+Qualification Graduate
+CONTACT DETAILS
+Occupation Business
+Force Name NA
+Name of Business Organization run by you SELF EMPLOYED
+Your role OWNER OF SWEET BUSINESS KOLKAT
+Duration of business Org. (years) 20
+Annual Total Income Rs. 1800000
+Sum Assured(Rs.) 50,00,000.00 Base Premium without
+SBI Life 3NNK537749 609110 4200000 Self Inforce
+SBI Life 53NA412738 150000 1500000 Self Terminated
+"""
+
+
+def test_stacked_proposal_layout_gives_identity_business_and_declared_policies():
+    found = proposal_form(STACKED_PROPOSAL)
+    assert found["applicant.applicant_name"] == "Asha Kumar"
+    assert (found["applicant.dob"], found["applicant.gender"]) == ("02-08-1974", "Female")
+    assert found["applicant.occupation"] == "Business"
+    assert found["applicant.business_nature"] == "OWNER OF SWEET BUSINESS KOLKAT"
+    cover = found["compliance.existing_cover_declared"][1]
+    assert (cover["answer"], cover["total_life_cover_other"]) == ("Yes", 4200000)
+    assert [p["status"] for p in cover["policies_in_other_companies"]] == ["Inforce", "Terminated"]
+
+
+def test_a_bare_role_is_not_taken_as_the_nature_of_business():
+    text = "Occupation BUSINESS If Business:- Name of Business Organization Chai Co Your Role Proprietor Duration"
+    assert "applicant.business_nature" not in proposal_form(text)
+
+
+def test_sum_assured_label_without_a_colon_is_read_locally():
+    block, sources, _, _ = extract_local([Document("p.pdf", "Sum Assured(Rs.) 50,00,000.00 Base Premium")])
+    assert block["applicant"]["sum_assured"] == 5000000
+    assert sources["applicant.sum_assured"][0]["raw_value"].startswith("50,00,000")
+
+
+def test_nominee_table_with_a_leading_serial_column_and_split_cells():
+    rows = [
+        ["", "Name of Nominee", "Date of Birth", "Gend er", "Relati onship", "Percen tage Share (%)*"],
+        ["1.", "Ms. Avantika Kumar", "28-03- 2007", "Female", "Daughte r", "100"],
+    ]
+    nominees = proposal_form("", [{"page": 4, "rows": rows}])["applicant.nominees"][1]
+    assert nominees == [
+        {"name": "Avantika Kumar", "dob": "2007-03-28", "gender": "Female",
+         "relation": "Daughter", "share_pct": 100}
+    ]
+
+
+FULL_ITR_PAGE_1 = (
+    "Acknowledgement Number : 1 Date of Filing : 12-Sep-2025* INDIAN INCOME TAX RETURN "
+    "Assessment ITR4 SUGAM Year 2025-26 PART A GENERAL INFORMATION (A1) First Name"
+)
+FULL_ITR_PAGE_2 = (
+    "PART B GROSS TOTAL INCOME B1 Income from Business & Profession B1 7,89,560 "
+    "B2 i Gross Salary i 0 v Income chargeable under the head 'Salaries' (iii - iv) B2 0 "
+    "B4 Income from Other Sources B4 70,841 Gross Total Income (B1+B2+B3+B4) B5 B5 8,60,401"
+)
+
+
+def test_full_itr4_form_gives_the_business_head_and_gross_total_income():
+    row, raw, page = computation_year([(1, FULL_ITR_PAGE_1), (2, FULL_ITR_PAGE_2)])
+    assert page == 1 and "7,89,560" in raw
+    assert (row["assessment_year"], row["business_head"], row["gross_total_income"]) == (
+        "2025-26",
+        789560,
+        860401,
+    )
+    assert row["earned_total"] == 789560
+
+
+def test_the_moral_hazard_report_does_not_supply_an_occupation():
+    report = "--- page 1 ---\nOccupation : Proposer Business Professional Qualification : graduate"
+    form = "--- page 1 ---\nOccupation: Business"
+    kinds = {("mhr.pdf", 1): ("mhr", "MORAL_HAZARD_REPORT"), ("form.pdf", 1): ("proposal_form", "X")}
+    block, _, findings, _ = extract_local([Document("mhr.pdf", report), Document("form.pdf", form)], kinds)
+    assert block["applicant"]["occupation"] == "Business" and not findings
 
 
 def test_different_people_remain_a_conflict():

@@ -11,7 +11,7 @@ import statistics
 from datetime import date
 from pathlib import Path
 
-from underwriting_platform.configuration.paths import RUNTIME_ROOT
+from underwriting_platform.configuration.paths import OUTPUT_ROOT
 from underwriting_platform.extraction.documents import iso_date, names_compatible
 
 FIELDS = (
@@ -188,7 +188,11 @@ def matches(path, got, expected):
         except ValueError:
             return False
     if path == "applicant.applicant_name":
-        return names_compatible(str(got), str(expected)) and _canonical(got)[0] == _canonical(expected)[0]
+        return (
+            len(_canonical(got)) == len(_canonical(expected))
+            and names_compatible(str(got), str(expected))
+            and _canonical(got)[0] == _canonical(expected)[0]
+        )
     return _canonical(got) == _canonical(expected)
 
 
@@ -283,7 +287,7 @@ def main():
     comparison = None
     if args.truth:
         comparison = compare_to_truth(rows, json.loads(Path(args.truth).read_text(encoding="utf8")))
-    output = Path(args.output_dir) if args.output_dir else RUNTIME_ROOT / "accuracy" / args.case_id
+    output = Path(args.output_dir) if args.output_dir else OUTPUT_ROOT / "accuracy" / args.case_id
     output.mkdir(parents=True, exist_ok=True)
     (output / f"{args.case_id}_accuracy.json").write_text(
         json.dumps(

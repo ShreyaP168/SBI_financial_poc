@@ -13,8 +13,8 @@ PATTERNS = {
     "applicant.occupation": r"(?:Occupation|Nature of Occupation)\s*[:\-]\s*([^\n]+)",
     "applicant.education_level": r"(?:Education|Educational Qualification)\s*[:\-]\s*([^\n]+)",
     "applicant.residential_status": r"(?:Residential Status|Residence Status)\s*[:\-]\s*([^\n]+)",
-    "applicant.sum_assured": r"(?:Proposed Sum Assured|Sum Assured)\s*[:\-]\s*(?:INR|Rs\.?|₹)?\s*([\d,]+(?:\.\d+)?(?:\s+(?:lakh|lakhs|crore|crores))?)",
-    "applicant.employer_name": r"(?:Employer Name|Name of Business Organi[sz]ation)\s*[:\-]?\s*(.+?)(?:\s+Your Role\b|\n|$)",
+    "applicant.sum_assured": r"(?:Proposed Sum Assured|Sum Assured)\s*(?:\(Rs\.?\)\s*)?[:\-]?\s*(?:INR|Rs\.?|₹)?\s*([\d,]+(?:\.\d+)?(?:\s+(?:lakh|lakhs|crore|crores))?)",
+    "applicant.employer_name": r"(?:Employer Name|Name of Business Organi[sz]ation(?:\s+run by you)?)\s*[:\-]?\s*(.+?)(?:\s+Your Role\b|\n|$)",
     "applicant.business_nature": r"(?:Nature of Business|Business Nature)\s*[:\-]\s*([^\n]+)",
     "applicant.pan": r"(?:PAN(?: Number| No\.?)?|Permanent Account Number(?: Card)?)\s*[:\-]?\s*([A-Z]{5}\s*\d{4}\s*[A-Z])\b",
     "compliance.kyc_status": r"KYC Status\s*[:\-]\s*(Verified|Partial|Pending)\b",
@@ -85,6 +85,8 @@ def extract_local(documents, page_kinds=None):
                 }
                 candidates.setdefault(path, []).append((value, source))
             for path, pattern in PATTERNS.items():
+                if kind == "mhr" and path == "applicant.occupation":
+                    continue
                 for match in re.finditer(r"^\s*" + pattern, text, re.I | re.M):
                     context = text[max(0, match.start() - 180) : match.start()]
                     if path.startswith("applicant.") and re.search(

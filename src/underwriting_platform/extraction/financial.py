@@ -63,8 +63,48 @@ def assessee_year(pages):
     return row, raw, pages[0][0]
 
 
+def itr_form_year(pages):
+    flat = " ".join(" ".join(text.split()) for _, text in pages)
+    if not re.search(r"PART A\s+GENERAL INFORMATION", flat):
+        return None
+    year = re.search(r"\b(20\d{2}-\d{2})\b", flat)
+    business = re.search(r"Income from Business\s*(?:&|and)\s*Profession\s*B1\s*(-?\d[\d,]*)", flat)
+    salary = re.search(r"Salaries['‘’]?\s*\(iii - iv\)\s*B2\s*(-?\d[\d,]*)", flat)
+    if not year or not (business or salary):
+        return None
+    business_head = max(_signed(business[1]), 0) if business else 0
+    salary_head = max(_signed(salary[1]), 0) if salary else 0
+    total = re.search(r"\bB5\s*B5\s*(-?\d[\d,]*)", flat)
+    others = [
+        re.search(pattern, flat)
+        for pattern in (
+            r"\bB3\s+(-?\d[\d,]*)\s+B4",
+            r"Income from Other Sources\s*B4\s*(-?\d[\d,]*)",
+        )
+    ]
+    gross = (
+        _signed(total[1])
+        if total
+        else business_head + salary_head + sum(max(_signed(m[1]), 0) for m in others if m)
+    )
+    earned = business_head + salary_head
+    row = {
+        "assessment_year": year[1],
+        "gross_total_income": gross,
+        "salary_head": salary_head,
+        "business_head": business_head,
+        "other_head": max(gross - earned, 0),
+        "earned_total": earned,
+        "name_on_document": None,
+    }
+    raw = "; ".join(m[0] for m in (business, salary, total) if m)
+    return row, raw, pages[0][0]
+
+
 def computation_year(pages):
     flat = " ".join(" ".join(text.split()) for _, text in pages)
+    if re.search(r"PART A\s+GENERAL INFORMATION", flat):
+        return itr_form_year(pages)
     if "Name of Assessee" in flat:
         return assessee_year(pages)
     year = re.search(r"A\.\s?Y\.\s*(\d{4}-\d{2,4})", flat)
@@ -95,7 +135,9 @@ def computation_year(pages):
 def computation_years(pages):
     segments = []
     for number, text in pages:
-        if re.search(r"^\s*(?:A\.\s?Y\.\s*\d{4}-\d{2,4}|Name of Assessee\b)", text, re.M):
+        if re.search(
+            r"^\s*(?:A\.\s?Y\.\s*\d{4}-\d{2,4}|Name of Assessee\b)", text, re.M
+        ) or re.search(r"PART A\s+GENERAL INFORMATION", text):
             segments.append([])
         if segments:
             segments[-1].append((number, text))

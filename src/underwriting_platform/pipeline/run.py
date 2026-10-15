@@ -1,7 +1,7 @@
 """Single-case extraction, deterministic underwriting, PDF/QC and delivery CLI."""
 
 from __future__ import annotations
-from underwriting_platform.configuration.paths import CONFIG_ROOT, RUNTIME_ROOT
+from underwriting_platform.configuration.paths import CONFIG_ROOT, OUTPUT_ROOT
 import argparse
 import asyncio
 import json
@@ -88,7 +88,7 @@ def main() -> int:
     p.add_argument("--case_id", required=True, help="Case identifier (used in output paths)")
     p.add_argument(
         "--output_dir",
-        default=str(RUNTIME_ROOT / "outputs"),
+        default=str(OUTPUT_ROOT),
         help="Where to write case_json + report",
     )
     p.add_argument(

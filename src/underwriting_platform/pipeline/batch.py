@@ -7,7 +7,7 @@ Usage:
 """
 
 from __future__ import annotations
-from underwriting_platform.configuration.paths import CONFIG_ROOT, RUNTIME_ROOT
+from underwriting_platform.configuration.paths import CONFIG_ROOT, OUTPUT_ROOT
 import argparse
 import asyncio
 import json
@@ -190,7 +190,7 @@ async def main_async(args: argparse.Namespace) -> int:
 def main() -> int:
     p = argparse.ArgumentParser(description="UW v9 — batch IDP run")
     p.add_argument("--source_root", required=True, help="Folder containing per-case sub-folders")
-    p.add_argument("--output_dir", default=str(RUNTIME_ROOT / "outputs"))
+    p.add_argument("--output_dir", default=str(OUTPUT_ROOT))
     p.add_argument("--concurrency", type=int, default=4)
     p.add_argument("--cases", nargs="*", help="Specific case folder names to run")
     p.add_argument(

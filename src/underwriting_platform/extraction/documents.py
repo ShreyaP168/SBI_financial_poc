@@ -19,6 +19,20 @@ def iso_date(raw):
     raise ValueError("Invalid full DOB")
 
 
+_ROLE_WORDS = {
+    "proprietor",
+    "owner",
+    "partner",
+    "director",
+    "self",
+    "employed",
+    "managing",
+    "founder",
+    "karta",
+    "na",
+    "n",
+    "a",
+}
 _PAN_HEADER = re.compile(
     r"govt|government|india|income\s*tax|department|permanent|account|number|card|signature|"
     r"father|mother|date|birth|gender|name",
@@ -39,28 +53,36 @@ def _number(raw):
     return float(raw.replace(",", "")) if re.fullmatch(r"[\d,]+(?:\.\d+)?", raw or "") else None
 
 
+def _compact(cell):
+    return re.sub(r"\s+", "", cell)
+
+
 def _nominees(tables):
     for rows in _rows(tables):
-        start = next((i for i, r in enumerate(rows) if r[0].lower().startswith("name of nominee")), None)
-        if start is None:
-            continue
-        nominees, raws = [], []
-        for row in rows[start + 1 :]:
-            if len(row) < 5 or not re.fullmatch(_DATE, row[1]):
-                break
-            share = _number(row[4])
-            nominees.append(
-                {
-                    "name": row[0],
-                    "dob": iso_date(row[1]),
-                    "gender": row[2],
-                    "relation": row[3],
-                    "share_pct": int(share) if share is not None else None,
-                }
+        for start, header in enumerate(rows):
+            column = next(
+                (i for i, cell in enumerate(header) if cell.lower().startswith("name of nominee")),
+                None,
             )
-            raws.append(" ".join(row[:5]))
-        if nominees:
-            return "; ".join(raws), nominees
+            if column is None:
+                continue
+            nominees, raws = [], []
+            for row in rows[start + 1 :]:
+                if len(row) < column + 5 or not re.fullmatch(_DATE, _compact(row[column + 1])):
+                    break
+                share = _number(row[column + 4])
+                nominees.append(
+                    {
+                        "name": re.sub(r"^(?:Mr|Mrs|Ms|Miss|Shri|Smt)\.?\s+", "", row[column]),
+                        "dob": iso_date(_compact(row[column + 1])),
+                        "gender": _compact(row[column + 2]),
+                        "relation": _compact(row[column + 3]),
+                        "share_pct": int(share) if share is not None else None,
+                    }
+                )
+                raws.append(" ".join(row[column : column + 5]))
+            if nominees:
+                return "; ".join(raws), nominees
     return None
 
 
@@ -75,7 +97,8 @@ def _riders(tables):
         name = re.sub(r"(?i)^rider name\s*:\s*", "", header)
         for row in rows:
             option = next((c for c in row if re.match(r"(?i)option\s+[a-z]\s*:", c)), None)
-            numbers = [_number(c) for c in row[row.index(option) + 1 :]] if option else []
+            cells = row[row.index(option) + 1 :] if option else []
+            numbers = [0.0 if c.upper() in {"NA", "N/A"} else _number(c) for c in cells]
             numbers = [n for n in numbers if n is not None]
             if option and len(numbers) >= 4:
                 code = re.search(r"\(([A-Z]+)\)\s*$", option)
@@ -101,6 +124,39 @@ def _cover_details(tables):
                 if amount:
                     return " ".join(row), int(amount)
     return None
+
+
+_POLICY_ROW = re.compile(
+    r"^(?P<insurer>[A-Za-z][A-Za-z .&]+?)\s+(?P<number>[A-Z0-9]{8,})\s+\d+\s+(?P<sa>\d{5,})\s+"
+    r"(?:Self|Spouse|Parent)\s+(?P<status>[A-Za-z][A-Za-z -]*)$"
+)
+
+
+def _declared_policies(text):
+    policies, raws = [], []
+    for line in text.splitlines():
+        match = _POLICY_ROW.match(" ".join(line.split()))
+        if match:
+            policies.append(
+                {
+                    "insurer": match["insurer"].strip(),
+                    "policy_no": match["number"],
+                    "sum_assured": int(match["sa"]),
+                    "status": match["status"].strip(),
+                }
+            )
+            raws.append(" ".join(line.split()))
+    if not policies:
+        return None
+    in_force = sum(
+        p["sum_assured"] for p in policies if re.match(r"(?i)in\s*-?force", p["status"])
+    )
+    return "; ".join(raws), {
+        "answer": "Yes",
+        "total_life_cover_other": in_force,
+        "policies_in_other_companies": policies,
+        "pending_applications_other": [],
+    }
 
 
 def _existing_cover(tables):
@@ -195,7 +251,7 @@ def proposal_form(text, tables=()):
     )
     found["applicant.nominees"] = _nominees(tables)
     found["applicant.riders"] = _riders(tables)
-    found["compliance.existing_cover_declared"] = _existing_cover(tables)
+    found["compliance.existing_cover_declared"] = _existing_cover(tables) or _declared_policies(text)
     riders = found["applicant.riders"]
     for option, path in (("ADB", "applicant.adb_sum_assured"), ("APPD", "applicant.appd_sum_assured")):
         row = next((r for r in (riders[1] if riders else []) if r["option"] == option), None)
@@ -208,15 +264,23 @@ def proposal_form(text, tables=()):
     if answers:
         found["medical.declaration_answers"] = ("; ".join(raws)[:300], answers)
     name = re.search(
-        r"First\s+Name\s+(.+?)\s+Middle\s+Name\s*(.*?)\s*Last\s+Name\s+(.+?)\s+Date of Birth",
+        r"First\s+Name\s+(.+?)\s+Middle\s+Name\s*(.*?)\s*Last\s+Name\s+(.+?)"
+        r"(?=\s+(?:Gender|Date of Birth)\b)",
         flat,
         re.I,
     )
     if name:
         found["applicant.applicant_name"] = " ".join(part for part in name.groups() if part)
-    dob = re.search(rf"Date of Birth\s+({_DATE})\s+Gender\s+({_GENDER})\b", flat, re.I)
-    if dob:
-        found["applicant.dob"], found["applicant.gender"] = dob.groups()
+        found["applicant.dob"] = _first(rf"Date of Birth\s+({_DATE})", flat)
+        found["applicant.gender"] = _first(rf"\bGender\s+({_GENDER})\b", flat)
+    found["applicant.occupation"] = _first(
+        r"(?<!\w)Occupation\s+(?!Details\b)([A-Za-z][A-Za-z /-]{2,30}?)"
+        r"(?=\s+(?:Force Name|If Business|Name of Business|Employer|Designation|Annual|Are you)\b)",
+        flat,
+    )
+    role = _first(r"Your\s+role\s+(.+?)(?=\s+Duration\b)", flat)
+    if role and not set(re.findall(r"[a-z]+", role.casefold())) <= _ROLE_WORDS:
+        found["applicant.business_nature"] = role
     found["applicant.age"] = _first(r"\bAge\s+(\d{1,3})\s+Years", flat)
     found["applicant.residential_status"] = _first(
         r"Resident\s+Status\s+((?:Non[- ])?Resident(?: Indian)?|NRI|PIO|OCI|Foreign National)"
