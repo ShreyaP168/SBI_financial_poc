@@ -97,7 +97,7 @@ async def test_legacy_domain_setting_uses_one_local_owner(tmp_path, monkeypatch)
     monkeypatch.setattr(master, "prepare_doc", lambda *a: document)
     calls = []
 
-    async def shared_reader(client, documents):
+    async def shared_reader(client, documents, pending=(), page_kinds=None):
         calls.append([d.filename for d in documents])
         return AgentResult(
             {
