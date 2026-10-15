@@ -36,8 +36,37 @@ def _head(flat, name):
     return (_signed(match[1]), match[0]) if match else (0, None)
 
 
+def assessee_year(pages):
+    flat = " ".join(" ".join(text.split()) for _, text in pages)
+    year = re.search(r"Assessment Year\s+(\d{4}-\d{4})", flat)
+    if not year or "Computation of Total Income" not in flat:
+        return None
+    total = re.search(r"Gross Total Income\s+(-?\d[\d,]{3,})", flat)
+    business = re.search(r"Income from Business or Profession[^\d-]*(-?\d[\d,]*)", flat)
+    salary = re.search(r"Income from Salar(?:y|ies)[^\d-]*(-?\d[\d,]*)", flat)
+    if not total or not (business or salary):
+        return None
+    gross = _signed(total[1])
+    business_head = max(_signed(business[1]), 0) if business else 0
+    salary_head = max(_signed(salary[1]), 0) if salary else 0
+    earned = business_head + salary_head
+    row = {
+        "assessment_year": year[1],
+        "gross_total_income": gross,
+        "salary_head": salary_head,
+        "business_head": business_head,
+        "other_head": max(gross - earned, 0),
+        "earned_total": earned,
+        "name_on_document": itr_computation(flat).get("applicant.applicant_name"),
+    }
+    raw = "; ".join(m[0] for m in (salary, business, total) if m)
+    return row, raw, pages[0][0]
+
+
 def computation_year(pages):
     flat = " ".join(" ".join(text.split()) for _, text in pages)
+    if "Name of Assessee" in flat:
+        return assessee_year(pages)
     year = re.search(r"A\.\s?Y\.\s*(\d{4}-\d{2,4})", flat)
     if not year or not re.search(r"previous year", flat, re.I) or "statement of income" not in flat.lower():
         return None
@@ -66,7 +95,7 @@ def computation_year(pages):
 def computation_years(pages):
     segments = []
     for number, text in pages:
-        if re.search(r"^\s*A\.\s?Y\.\s*\d{4}-\d{2,4}", text, re.M):
+        if re.search(r"^\s*(?:A\.\s?Y\.\s*\d{4}-\d{2,4}|Name of Assessee\b)", text, re.M):
             segments.append([])
         if segments:
             segments[-1].append((number, text))

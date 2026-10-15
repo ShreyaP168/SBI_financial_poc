@@ -295,6 +295,54 @@ def test_a_bundled_multi_year_pdf_is_split_per_assessment_year():
     ]
 
 
+ASSESSEE_PAGE_1 = """Name of Assessee Asha Kumar
+Father's Name Kumar K
+Status Individual Assessment Year 2024-2025
+PAN ABCPK1234D Date of Birth 07/03/1990
+Residential Status Resident Gender Female
+Particular of Business Retail Trading
+Nature of Business HOTELS, RESTAURANTS AND HOSPITALITY SERVICES-Restaurants
+without bars(10008),Trade Name:Asha & Co.
+Stock Valuation Method Cost Price or Market Price Whichever is less
+Filing Status Original
+Computation of Total Income [As per Section 115BAC (New Tax Regime)]
+Income from Business or Profession (Chapter IV D) 4,90,120
+Income u/s 44AD 4,90,120
+Income from Other Sources (Chapter IV F) 2,463
+Gross Total Income 4,92,583
+Total Income 4,92,583
+"""
+ASSESSEE_PAGE_2 = (
+    "NAME OF ASSESSEE : Asha Kumar A.Y. 2024-2025 PAN : ABCPK1234D\n"
+    "Income Declared u/s 44 AD Foodcart\nGross Receipts/Turnover (Total) 1650480.00\n"
+)
+
+
+def test_assessee_style_computation_gives_presumptive_business_income_and_nature():
+    found = computation_year([(1, ASSESSEE_PAGE_1), (2, ASSESSEE_PAGE_2)])
+    row, raw, page = found
+    assert page == 1 and "4,90,120" in raw
+    assert (row["assessment_year"], row["gross_total_income"], row["earned_total"]) == (
+        "2024-2025",
+        492583,
+        490120,
+    )
+    assert (row["business_head"], row["other_head"], row["name_on_document"]) == (
+        490120,
+        2463,
+        "Asha Kumar",
+    )
+    fields = itr_computation(ASSESSEE_PAGE_1)
+    assert fields["applicant.business_nature"].startswith("HOTELS, RESTAURANTS")
+    assert fields["applicant.business_nature"].endswith("Trade Name:Asha & Co.")
+    assert (fields["applicant.dob"], fields["applicant.gender"]) == ("07/03/1990", "Female")
+
+
+def test_acknowledgement_only_pages_are_not_mistaken_for_a_computation():
+    ack = "Acknowledgement Number:1 INDIAN INCOME TAX RETURN ACKNOWLEDGEMENT Total Income 1A 6,24,200"
+    assert computation_year([(1, ack)]) is None
+
+
 def test_business_filer_income_block_uses_itr_years_and_is_not_salaried():
     documents = [
         Document("a.pdf", "--- page 1 ---\n" + COMPUTATION),

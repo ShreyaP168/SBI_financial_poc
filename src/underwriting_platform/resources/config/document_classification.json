@@ -1,5 +1,5 @@
 {
-  "version": "local-classification-1.2",
+  "version": "local-classification-1.3",
   "min_ocr_line_confidence": 0.65,
   "rules": [
     {"kind":"policy_illustration","all":["benefit illustration","(?:premium|sum assured)"],"agents":["identity","income","compliance"]},
@@ -33,6 +33,8 @@
     {"kind":"correspondence","label":"EMAIL","priority":200,"all":["from\\s*:\\s*\\S+@\\S+","subject\\s*:"],"agents":["identity","income","compliance"]},
     {"kind":"id_proof","label":"PASSPORT","all":["p<ind[a-z<]{6,}"],"agents":["identity","compliance"]},
     {"kind":"correspondence","label":"INSURER_LETTER","all":["payout\\s*intimation","(?:policy|application)"],"agents":["identity","income","compliance"]},
-    {"kind":"correspondence","label":"PAYMENT_RECEIPT","all":["payment\\s*successful","(?:razorpay|payments?\\b)"],"agents":["compliance"]}
+    {"kind":"correspondence","label":"PAYMENT_RECEIPT","all":["payment\\s*successful","(?:razorpay|payments?\\b)"],"agents":["compliance"]},
+    {"kind":"itr","all":["name\\s*of\\s*assessee","computation\\s*of\\s*total\\s*income"],"agents":["identity","income"]},
+    {"kind":"corporate_doc","label":"GST_CERTIFICATE","all":["registration\\s*certificate","legal\\s*name","constitution\\s*of\\s*business"],"agents":["business_surrogate","identity"]}
   ]
 }

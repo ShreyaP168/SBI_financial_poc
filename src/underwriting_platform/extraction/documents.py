@@ -306,8 +306,23 @@ def aadhaar_letter(text):
     return {path: raw for path, raw in found.items() if raw}
 
 
+def assessee_computation(text):
+    flat = _flat(text)
+    found = {
+        "applicant.applicant_name": _first(r"Name of Assessee\s+(.+?)\s+(?:Father|A\.Y\.)", flat),
+        "applicant.dob": _first(rf"Date of Birth\s+({_DATE})", flat),
+        "applicant.gender": _first(rf"\bGender\s+({_GENDER})\b", flat),
+        "applicant.business_nature": _first(
+            r"Nature of Business\s+(.+?)(?=\s+Stock Valuation Method|\s+Filing Status|$)", flat
+        ),
+    }
+    return {path: raw for path, raw in found.items() if raw}
+
+
 def itr_computation(text):
     flat = _flat(text)
+    if "Name of Assessee" in flat:
+        return assessee_computation(text)
     if "Previous Year" not in flat:
         return {}
     found = {
