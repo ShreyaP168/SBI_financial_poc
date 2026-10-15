@@ -55,7 +55,7 @@ def test_a_page_without_a_readable_month_or_gross_is_not_a_slip():
     assert slip_page("Statement of income\nGross Salary 2,58,738") is None
 
 
-COMPUTATION = """NAMEOFASSESSEE :CHOTU
+COMPUTATION = """NAMEOFASSESSEE :RAMU
 RESIDENTIALADDRESS :2026-2027
 STATUS :INDIVIDUAL ASSESSMENTYEAR :2025-2026
 COMPUTATIONDATE :29-08-2026
@@ -65,7 +65,7 @@ GROSSTOTALINCOME 10,25,828
 TOTALINCOME 10,25,828
 TOTALINCOMEROUNDEDOFFU/S288A 10,25,830
 TAX ON RS. 2,25,830 (10,25,830 -8,00,000) @ 10% 22,583
-1 CHOTU 09028-WHOLESALEANDRETAILTRADE-Retail kirana store sale of other products n.e.c CHOTU
+1 RAMU 09028-WHOLESALEANDRETAILTRADE-Retail kirana store sale of other products n.e.c RAMU
 """
 
 
@@ -90,7 +90,7 @@ def pension_table(count=5):
     rows = [header]
     for month in range(count):
         rows.append(["03/08/2026", "", "", "63,040.00", "1,00,000.00", f"GBSS/PENS/{month + 1:02d}-26/TDS0"])
-    rows.append(["07/08/2026", "", "", "14,000.00", "1,00,000.00", "UPI/CR/621150599179/Piyush"])
+    rows.append(["07/08/2026", "", "", "14,000.00", "1,00,000.00", "UPI/CR/621150599179/Rohit"])
     return {"page": 1, "rows": rows}
 
 
@@ -127,7 +127,7 @@ def test_declared_income_is_used_only_when_no_proof_exists():
 
 
 COLON_PROPOSAL = (
-    "First Name Amar Middle Name Chand\nLast Name Purbiya Gender Male\nDate of Birth 06/02/1987 "
+    "First Name Ravi Middle Name Kant\nLast Name Mehra Gender Male\nDate of Birth 06/02/1987 "
     "Spouse's Name NA\nAge 39 C-KYC No NA\nQualification Post graduate\n"
     "NCPF.ver.08.10-25 PF Page 1 of 12\n"
 )
@@ -225,13 +225,13 @@ def test_a_single_slip_is_indicative_and_never_overrides_an_itr():
 
 
 def test_declared_and_filed_business_natures_are_both_kept_when_they_differ():
-    form = "--- page 1 ---\nYour role OWNER OF SWEET BUSINESS KOLKAT Duration of business Org. (years) 20\n"
-    itr = "--- page 1 ---\n1 CHOTU 09028-COACHING CENTRES AND TUITIONS-PRIVATE COACHING sale of other n.e.c\n"
+    form = "--- page 1 ---\nYour role OWNER OF SWEET BUSINESS TOWNX Duration of business Org. (years) 20\n"
+    itr = "--- page 1 ---\n1 RAMU 09028-COACHING CENTRES AND TUITIONS-PRIVATE COACHING sale of other n.e.c\n"
     kinds = {("form.pdf", 1): ("proposal_form", "X"), ("itr.pdf", 1): ("itr", "X")}
     block, sources, findings, _ = extract_local(
         [Document("form.pdf", form), Document("itr.pdf", itr)], kinds
     )
     nature = block["applicant"]["business_nature"]
-    assert nature.startswith("OWNER OF SWEET BUSINESS KOLKAT; per filed ITR: ")
+    assert nature.startswith("OWNER OF SWEET BUSINESS TOWNX; per filed ITR: ")
     assert "PRIVATE COACHING" in nature and not findings
     assert {s["document"] for s in sources["applicant.business_nature"]} == {"form.pdf", "itr.pdf"}

@@ -115,17 +115,17 @@ def test_passport_zone_gives_name_sex_and_a_dob_confirmed_by_the_printed_date():
 
 def test_pan_card_where_each_value_precedes_its_label():
     text = (
-        "02/10/1994\nTa/DateofBirth\nKISHANA RAM\nfuaT T TH/Father'sName\nRAKESH DOBAR\n/Name\n"
-        "INCOME TAX DEPARTMENT\nPermanent Account Number Card\nEODPD6550P\nGOVT.OFINDIA\n"
+        "05/04/1991\nTa/DateofBirth\nRAJ KUMAR\nfuaT T TH/Father'sName\nASHA KUMARI\n/Name\n"
+        "INCOME TAX DEPARTMENT\nPermanent Account Number Card\nABCPK1234D\nGOVT.OFINDIA\n"
     )
     assert pan_card(text) == {
-        "applicant.dob": "02/10/1994",
-        "applicant.applicant_name": "RAKESH DOBAR",
+        "applicant.dob": "05/04/1991",
+        "applicant.applicant_name": "ASHA KUMARI",
     }
 
 
 def test_pan_header_text_is_never_taken_as_the_name():
-    text = "02/10/1994\nKISHANA RAM\nRAKESH DOBAR\nINCOME TAX DEPARTMENT\nEODPD6550P\nGOVT.OFINDIA\n"
+    text = "05/04/1991\nRAJ KUMAR\nASHA KUMARI\nINCOME TAX DEPARTMENT\nABCPK1234D\nGOVT.OFINDIA\n"
     assert "applicant.applicant_name" not in pan_card(text)
 
 
@@ -479,11 +479,11 @@ CONTACT DETAILS
 Occupation Business
 Force Name NA
 Name of Business Organization run by you SELF EMPLOYED
-Your role OWNER OF SWEET BUSINESS KOLKAT
+Your role OWNER OF SWEET BUSINESS TOWNX
 Duration of business Org. (years) 20
 Annual Total Income Rs. 1800000
 Sum Assured(Rs.) 50,00,000.00 Base Premium without
-SBI Life 3NNK537749 609110 4200000 Self Inforce
+SBI Life 1ABC234567 609110 4200000 Self Inforce
 SBI Life 53NA412738 150000 1500000 Self Terminated
 """
 
@@ -493,7 +493,7 @@ def test_stacked_proposal_layout_gives_identity_business_and_declared_policies()
     assert found["applicant.applicant_name"] == "Asha Kumar"
     assert (found["applicant.dob"], found["applicant.gender"]) == ("02-08-1974", "Female")
     assert found["applicant.occupation"] == "Business"
-    assert found["applicant.business_nature"] == "OWNER OF SWEET BUSINESS KOLKAT"
+    assert found["applicant.business_nature"] == "OWNER OF SWEET BUSINESS TOWNX"
     cover = found["compliance.existing_cover_declared"][1]
     assert (cover["answer"], cover["total_life_cover_other"]) == ("Yes", 4200000)
     assert [p["status"] for p in cover["policies_in_other_companies"]] == ["Inforce", "Terminated"]

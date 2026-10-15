@@ -29,14 +29,14 @@ from underwriting_platform.orchestrator import MasterOrchestrator
         ("PAYSLIP Employee 555 Gross Pay 70000 Net Pay 65000", "salary_slip", "FORM_OR_TEXT"),
         ("Statement of Account Date Debit Credit Balance", "bank_statement", "FORM_OR_TEXT"),
         ("Medical Examination Report Patient history", "mer", "FORM_OR_TEXT"),
-        ("BYMPS7486M SREEKANTH S SARAVANA BHAVAN 07/03/1989 Male BYMPS7486M", "id_proof", "PAN_CARD"),
+        ("ABCPK1234D ASHA K RAJ KUMAR 07/03/1990 Male ABCPK1234D", "id_proof", "PAN_CARD"),
         (
-            "Enrolment No.: 0636/16266/01188 To Sreekanth S VTC: Kollam PIN Code: 691001",
+            "Enrolment No.: 0000/00000/00000 To Asha K VTC: Townville PIN Code: 123456",
             "id_proof",
             "AADHAAR_LETTER",
         ),
         (
-            "A.Y. 2024-2025 Name : Sreekanth Previous Year : 2023-2024 Aadhaar No. : 7240 6984 8650 "
+            "A.Y. 2024-2025 Name : Asha Previous Year : 2023-2024 Aadhaar No. : 1111 2222 3333 "
             "Date of Birth : 07-Mar-1989 Total Income 640000",
             "itr",
             "FORM_OR_TEXT",
@@ -83,7 +83,7 @@ def test_proposal_id_references_do_not_become_an_id_card():
 
 
 def test_bare_identity_pattern_in_a_long_document_is_not_a_pan_card():
-    text = "BYMPS7486M 07/03/1989 Male " + "unrelated narrative " * 40
+    text = "ABCPK1234D 07/03/1990 Male " + "unrelated narrative " * 40
     result = classify_text(text)
     assert (result["kind"], result["extraction_required"]) == ("other", True)
 

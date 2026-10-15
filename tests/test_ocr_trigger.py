@@ -16,7 +16,7 @@ def test_short_native_text_page_with_images_is_also_read_locally(
     )
     path = tmp_path / "card.pdf"
     pdf = canvas.Canvas(str(path))
-    pdf.drawString(72, 700, "BYMPS7486M SREEKANTH S 07/03/1989 Male " * 3)
+    pdf.drawString(72, 700, "ABCPK1234D ASHA K 07/03/1990 Male " * 3)
     if with_image:
         Image.new("RGB", (40, 40), "white").save(tmp_path / "pixel.png")
         pdf.drawImage(str(tmp_path / "pixel.png"), 72, 400, width=100, height=100)
